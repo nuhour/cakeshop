@@ -5,6 +5,7 @@ import type { CsFulfillmentSlot, CsProduct } from '@/types'
 import { catalogStore } from '@/store/catalog'
 import { cartStore } from '@/store/cart'
 import { checkoutStore } from '@/store/checkout'
+import { userStore } from '@/store/user'
 import { csApi } from '@/api/cakeshop'
 import { AppNavBar } from '@/components/ui/AppNavBar'
 import { PriceText } from '@/components/ui/PriceText'
@@ -68,16 +69,18 @@ export default function ProductDetailPage() {
   const gallery = product.media.length ? product.media.map((item) => item.url) : [product.cover]
   const normalizedPlaqueText = plaqueText.trim() || undefined
 
-  const buyNow = () => {
+  const buyNow = async () => {
     if (soldOut) {
       Taro.showToast({ title: '商品已售罄', icon: 'none' })
       return
     }
+    if (!(await userStore.ensureLogin('登录后可下单'))) return
     checkoutStore.set({ source: 'buyNow', productId: product.id, buyNowProductType: product.productType, quantity, flavorId, specId, plaqueText: normalizedPlaqueText, slotId: undefined })
     Taro.navigateTo({ url: '/pages/checkout/index' })
   }
 
   const addToCart = async () => {
+    if (!(await userStore.ensureLogin('登录后可加入提篮'))) return
     try {
       await cartStore.add(product.id, quantity, flavorId, specId, normalizedPlaqueText)
       Taro.showToast({ title: '已加入提篮', icon: 'success' })

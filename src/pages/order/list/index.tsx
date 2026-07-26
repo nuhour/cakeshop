@@ -1,8 +1,9 @@
 import Taro, { useDidShow, useRouter } from '@tarojs/taro'
-import { Text, View } from '@tarojs/components'
+import { Button, Text, View } from '@tarojs/components'
 import { useState } from 'react'
 import type { CsOrder, OrderStatus } from '@/types'
 import { orderStore } from '@/store/order'
+import { userStore } from '@/store/user'
 import { AppNavBar } from '@/components/ui/AppNavBar'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { OrderCard } from '@/components/order/OrderCard'
@@ -20,14 +21,35 @@ export default function OrderListPage() {
   const router = useRouter()
   const initialStatus = tabs.some((tab) => tab.value === router.params.status) ? router.params.status as OrderStatus : undefined
   const [active, setActive] = useState<OrderStatus | undefined>(initialStatus)
-  const [orders, setOrders] = useState<CsOrder[]>(orderStore.list())
-  const [counts, setCounts] = useState<Record<string, number>>(orderStore.statusCounts())
+  const [loggedIn, setLoggedIn] = useState(userStore.isLoggedIn())
+  const [orders, setOrders] = useState<CsOrder[]>(userStore.isLoggedIn() ? orderStore.list() : [])
+  const [counts, setCounts] = useState<Record<string, number>>(userStore.isLoggedIn() ? orderStore.statusCounts() : {})
 
   const reload = (status = active) => orderStore.load().then(() => {
     setOrders(orderStore.list(status))
     setCounts(orderStore.statusCounts())
   })
-  useDidShow(() => { reload() })
+  useDidShow(() => {
+    const authed = userStore.isLoggedIn()
+    setLoggedIn(authed)
+    if (authed) {
+      reload()
+    } else {
+      setOrders([])
+      setCounts({})
+    }
+  })
+
+  const login = async () => {
+    try {
+      await userStore.login()
+      setLoggedIn(true)
+      reload()
+      Taro.showToast({ title: '登录成功', icon: 'success' })
+    } catch (error) {
+      Taro.showToast({ title: error instanceof Error ? error.message : '登录失败', icon: 'none' })
+    }
+  }
 
   const handleAction = async (actionId: CsOrderActionId, order: CsOrder) => {
     if (actionId === 'pay') {
@@ -67,7 +89,13 @@ export default function OrderListPage() {
           </Text>
         ))}
       </View>
-      {!orders.length ? <EmptyState title="暂无订单" description="预定一份甜蜜好味，订单会出现在这里" /> : null}
+      {!loggedIn ? (
+        <View>
+          <EmptyState title="登录后查看订单" description="登录同步你的订单与预约" />
+          <Button className="cs-login-btn" onClick={login}>微信一键登录</Button>
+        </View>
+      ) : null}
+      {loggedIn && !orders.length ? <EmptyState title="暂无订单" description="预定一份甜蜜好味，订单会出现在这里" /> : null}
       {orders.map((order) => (
         <OrderCard
           key={order.id}

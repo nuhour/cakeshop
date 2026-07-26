@@ -19,6 +19,17 @@ export const userStore = {
     Taro.eventCenter.trigger('cakeshop:login-required', message)
     return false
   },
+  // 未登录时先尝试微信静默登录（无需用户额外操作），失败才提示
+  async ensureLogin(message = '请先登录') {
+    if (this.isLoggedIn()) return true
+    try {
+      await this.login()
+      return true
+    } catch (_error) {
+      Taro.showToast({ title: message, icon: 'none' })
+      return false
+    }
+  },
   async loadProfile() {
     try {
       profile = await csApi.profile()

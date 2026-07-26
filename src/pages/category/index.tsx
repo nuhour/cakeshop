@@ -4,6 +4,7 @@ import { useState } from 'react'
 import type { CsCategory, CsProduct } from '@/types'
 import { catalogStore } from '@/store/catalog'
 import { cartStore } from '@/store/cart'
+import { userStore } from '@/store/user'
 import { AppNavBar } from '@/components/ui/AppNavBar'
 import { PriceText } from '@/components/ui/PriceText'
 import { EmptyState } from '@/components/ui/EmptyState'
@@ -44,9 +45,10 @@ export default function CategoryPage() {
   })
 
   const addProduct = async (id: string) => {
+    if (!(await userStore.ensureLogin('登录后可加入提篮'))) return
     try {
       await cartStore.add(id)
-      Taro.showToast({ title: '已加入购物车', icon: 'success' })
+      Taro.showToast({ title: '已加入提篮', icon: 'success' })
     } catch (error) {
       Taro.showToast({ title: error instanceof Error ? error.message : '加入失败', icon: 'none' })
     }

@@ -160,6 +160,7 @@ export default function CheckoutPage() {
   }
 
   const submit = async () => {
+    if (!(await userStore.ensureLogin('登录后可提交订单'))) return
     const warnings = checkout.source === 'cart' ? cartStore.getSelectedStockWarnings() : selectedItems.map((item) => {
       const product = catalogStore.findProduct(item.productId)
       if (!product || !product.isActive) return '商品已下架'

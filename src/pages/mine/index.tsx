@@ -10,7 +10,7 @@ import { statusGroupForMine } from '@/utils/orderActions'
 import { openShopContact } from '@/utils/service'
 import './index.scss'
 
-const defaultAsset: CsMemberAsset = { balance: 86, points: 1280, couponCount: 3 }
+const emptyAsset: CsMemberAsset = { balance: 0, points: 0, couponCount: 0 }
 
 const ORDER_ICONS: Record<string, string> = {
   pendingPay: '💰',
@@ -34,32 +34,50 @@ const TERMS_CONTENT = [
 ].join('\n')
 
 export default function MinePage() {
-  const [profile, setProfile] = useState<CsUserProfile | null>(userStore.getProfile())
-  const [asset, setAsset] = useState<CsMemberAsset>(profile?.asset || defaultAsset)
-  const [orderCounts, setOrderCounts] = useState<Record<string, number>>(orderStore.statusCounts())
+  const [loggedIn, setLoggedIn] = useState(userStore.isLoggedIn())
+  const [profile, setProfile] = useState<CsUserProfile | null>(loggedIn ? userStore.getProfile() : null)
+  const [asset, setAsset] = useState<CsMemberAsset>((loggedIn && userStore.getProfile()?.asset) || emptyAsset)
+  const [orderCounts, setOrderCounts] = useState<Record<string, number>>(loggedIn ? orderStore.statusCounts() : {})
 
   useDidShow(() => {
-    if (userStore.isLoggedIn()) {
+    const authed = userStore.isLoggedIn()
+    setLoggedIn(authed)
+    if (authed) {
       userStore.loadProfile().then((next) => setProfile(next ? { ...next } : null))
       csApi.assets().then(setAsset).catch(() => {})
       orderStore.load().then(() => setOrderCounts(orderStore.statusCounts()))
+    } else {
+      setProfile(null)
+      setAsset(emptyAsset)
+      setOrderCounts({})
     }
   })
 
   const login = async () => {
     try {
       const next = await userStore.login()
+      setLoggedIn(true)
       setProfile(next ? { ...next } : null)
+      csApi.assets().then(setAsset).catch(() => {})
+      orderStore.load().then(() => setOrderCounts(orderStore.statusCounts()))
       Taro.showToast({ title: '登录成功', icon: 'success' })
+      return true
     } catch (error) {
       Taro.showToast({ title: error instanceof Error ? error.message : '登录失败', icon: 'none' })
+      return false
     }
+  }
+
+  const ensureLoggedIn = async () => {
+    if (userStore.isLoggedIn()) return true
+    return login()
   }
 
   const logout = () => {
     userStore.logout()
+    setLoggedIn(false)
     setProfile(null)
-    setAsset(defaultAsset)
+    setAsset(emptyAsset)
     setOrderCounts({})
     Taro.showToast({ title: '已退出', icon: 'success' })
   }
@@ -74,7 +92,13 @@ export default function MinePage() {
   }
 
   const menuItems: Array<{ icon: string; label: string; onClick: () => void }> = [
-    { icon: '📍', label: '地址管理', onClick: () => Taro.navigateTo({ url: '/pages/address/list/index' }) },
+    {
+      icon: '📍',
+      label: '地址管理',
+      onClick: async () => {
+        if (await ensureLoggedIn()) Taro.navigateTo({ url: '/pages/address/list/index' })
+      }
+    },
     { icon: '📞', label: '联系客服', onClick: () => openShopContact() },
     { icon: '📜', label: '条款与隐私', onClick: showTerms }
   ]
@@ -92,39 +116,47 @@ export default function MinePage() {
           )}
         </View>
         <View className="mine-card__info">
-          <Text className="mine-card__name cs-serif">{profile?.nickname || '如也甜品屋会员'}</Text>
-          <Text className="mine-card__level">{profile?.level || '如也会员'}</Text>
+          <Text className="mine-card__name cs-serif">{loggedIn ? (profile?.nickname || '如也甜品屋会员') : '未登录'}</Text>
+          <Text className="mine-card__level">{loggedIn ? (profile?.level || '如也会员') : '登录后同步会员权益与订单'}</Text>
         </View>
         <Text className="cs-seal mine-card__seal">如也</Text>
-        <Button className="mine-card__auth" onClick={profile ? logout : login}>{profile ? '退出' : '登录'}</Button>
+        <Button className="mine-card__auth" onClick={loggedIn ? logout : login}>{loggedIn ? '退出' : '登录'}</Button>
       </View>
 
-      <View className="mine-assets cakeshop-card">
+      <View className="mine-assets cakeshop-card" onClick={loggedIn ? undefined : login}>
         <View className="mine-assets__item">
-          <Text className="mine-assets__value cs-serif">¥{asset.balance.toFixed(2)}</Text>
+          <Text className="mine-assets__value cs-serif">{loggedIn ? `¥${asset.balance.toFixed(2)}` : '--'}</Text>
           <Text className="mine-assets__label">余额</Text>
         </View>
         <View className="mine-assets__item">
-          <Text className="mine-assets__value cs-serif">{asset.points}</Text>
+          <Text className="mine-assets__value cs-serif">{loggedIn ? asset.points : '--'}</Text>
           <Text className="mine-assets__label">积分</Text>
         </View>
         <View className="mine-assets__item">
-          <Text className="mine-assets__value cs-serif">{asset.couponCount}</Text>
+          <Text className="mine-assets__value cs-serif">{loggedIn ? asset.couponCount : '--'}</Text>
           <Text className="mine-assets__label">优惠券</Text>
         </View>
+        {!loggedIn ? <Text className="mine-assets__hint">登录后查看会员资产</Text> : null}
       </View>
 
       <View className="mine-section cakeshop-card">
         <View className="mine-section__head cs-hairline">
           <Text className="cs-serif">我的订单</Text>
-          <Text className="mine-section__more" onClick={() => Taro.navigateTo({ url: '/pages/order/list/index' })}>全部订单 ›</Text>
+          <Text
+            className="mine-section__more"
+            onClick={async () => {
+              if (await ensureLoggedIn()) Taro.navigateTo({ url: '/pages/order/list/index' })
+            }}
+          >全部订单 ›</Text>
         </View>
         <View className="mine-order-grid">
           {statusGroupForMine.map((item) => (
             <View
               key={item.value}
               className="mine-order-grid__item"
-              onClick={() => Taro.navigateTo({ url: `/pages/order/list/index?status=${item.value}` })}
+              onClick={async () => {
+                if (await ensureLoggedIn()) Taro.navigateTo({ url: `/pages/order/list/index?status=${item.value}` })
+              }}
             >
               <View className="mine-order-grid__icon">
                 <Text>{ORDER_ICONS[item.value] || '🍰'}</Text>

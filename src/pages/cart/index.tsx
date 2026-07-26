@@ -5,18 +5,37 @@ import type { CsCartItem } from '@/types'
 import { cartStore } from '@/store/cart'
 import { catalogStore } from '@/store/catalog'
 import { checkoutStore } from '@/store/checkout'
+import { userStore } from '@/store/user'
 import { AppNavBar } from '@/components/ui/AppNavBar'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { PriceText } from '@/components/ui/PriceText'
 import './index.scss'
 
 export default function CartPage() {
-  const [items, setItems] = useState<CsCartItem[]>(cartStore.getItems())
+  const [loggedIn, setLoggedIn] = useState(userStore.isLoggedIn())
+  const [items, setItems] = useState<CsCartItem[]>(userStore.isLoggedIn() ? cartStore.getItems() : [])
 
   const reload = () => setItems([...cartStore.getItems()])
   useDidShow(() => {
-    cartStore.load().then(setItems)
+    const authed = userStore.isLoggedIn()
+    setLoggedIn(authed)
+    if (authed) {
+      cartStore.load().then(setItems)
+    } else {
+      setItems([])
+    }
   })
+
+  const login = async () => {
+    try {
+      await userStore.login()
+      setLoggedIn(true)
+      cartStore.load().then(setItems)
+      Taro.showToast({ title: '登录成功', icon: 'success' })
+    } catch (error) {
+      Taro.showToast({ title: error instanceof Error ? error.message : '登录失败', icon: 'none' })
+    }
+  }
 
   const stockWarnings = cartStore.getSelectedStockWarnings()
   const selectedItems = cartStore.getSelectedItems()
@@ -45,7 +64,13 @@ export default function CartPage() {
           <Text className="cart-notice__text">本单含定制蛋糕，将整单按预约时段交付</Text>
         </View>
       ) : null}
-      {!items.length ? <EmptyState title="提篮还是空的" description="先去挑几样美味甜品吧" /> : null}
+      {!loggedIn ? (
+        <View>
+          <EmptyState title="登录后查看提篮" description="登录同步你的提篮与订单" />
+          <Button className="cs-login-btn" onClick={login}>微信一键登录</Button>
+        </View>
+      ) : null}
+      {loggedIn && !items.length ? <EmptyState title="提篮还是空的" description="先去挑几样美味甜品吧" /> : null}
       {items.map((item) => {
         const product = catalogStore.findProduct(item.productId)
         if (!product) return null
@@ -87,13 +112,15 @@ export default function CartPage() {
           </View>
         )
       })}
-      <View className="cart-bar">
-        <View>
-          <Text className="cart-bar__label">合计</Text>
-          <PriceText value={cartStore.getSelectedTotal()} />
+      {loggedIn ? (
+        <View className="cart-bar">
+          <View>
+            <Text className="cart-bar__label">合计</Text>
+            <PriceText value={cartStore.getSelectedTotal()} />
+          </View>
+          <Button className="cart-bar__button" disabled={!canCheckout} onClick={checkout}>结算</Button>
         </View>
-        <Button className="cart-bar__button" disabled={!canCheckout} onClick={checkout}>结算</Button>
-      </View>
+      ) : null}
     </View>
   )
 }

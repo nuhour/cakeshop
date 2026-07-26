@@ -70,3 +70,23 @@ button::after {
   font-size: 10px;
   letter-spacing: 1px;
 }
+
+// 未登录空态下的登录引导按钮（购物车/订单列表等页共用）
+.cs-login-btn {
+  display: block;
+  width: 200px;
+  margin: 4px auto 24px;
+  padding: 0;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 8px;
+  background: $cinnabar;
+  color: #ffffff;
+  font-size: 14px;
+  letter-spacing: 2px;
+  border: none;
+
+  &::after {
+    border: none;
+  }
+}
