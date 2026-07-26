@@ -31,7 +31,10 @@ export const demoProducts: CsProduct[] = [
     nutrition: [{ label: '热量', value: '320kcal' }, { label: '蛋白质', value: '6g' }],
     isActive: true,
     isRecommended: true,
-    isNew: false
+    isNew: false,
+    productType: 'reservation',
+    leadTimeHours: 4,
+    allowPlaque: true
   },
   {
     id: 'cakeshop-mousse-001',
@@ -53,7 +56,10 @@ export const demoProducts: CsProduct[] = [
     nutrition: [{ label: '热量', value: '210kcal' }, { label: '脂肪', value: '9g' }],
     isActive: true,
     isRecommended: true,
-    isNew: true
+    isNew: true,
+    productType: 'instock',
+    leadTimeHours: 0,
+    allowPlaque: false
   },
   {
     id: 'cakeshop-cookie-001',
@@ -75,7 +81,10 @@ export const demoProducts: CsProduct[] = [
     nutrition: [{ label: '热量', value: '380kcal' }, { label: '碳水', value: '48g' }],
     isActive: true,
     isRecommended: true,
-    isNew: false
+    isNew: false,
+    productType: 'instock',
+    leadTimeHours: 0,
+    allowPlaque: false
   },
   {
     id: 'cakeshop-bread-001',
@@ -97,7 +106,10 @@ export const demoProducts: CsProduct[] = [
     nutrition: [{ label: '热量', value: '420kcal' }, { label: '碳水', value: '55g' }],
     isActive: true,
     isRecommended: false,
-    isNew: false
+    isNew: false,
+    productType: 'reservation',
+    leadTimeHours: 2,
+    allowPlaque: false
   }
 ]
 

@@ -26,68 +26,68 @@ export const cartStore = {
     } catch (_error) {}
     return items
   },
-  async add(productId: string, quantity = 1, flavorId?: string, specId?: string) {
+  async add(productId: string, quantity = 1, flavorId?: string, specId?: string, plaqueText?: string) {
     const product = catalogStore.findProduct(productId)
     if (!product || !product.isActive) throw new Error('商品已下架')
     if (product.stock <= 0) throw new Error('商品已售罄')
-    const existing = items.find((item) => item.productId === productId && item.flavorId === flavorId && item.specId === specId)
+    const existing = items.find((item) => this.matches(item, productId, flavorId, specId, plaqueText))
     const nextQuantity = (existing?.quantity || 0) + quantity
     if (nextQuantity > product.stock) throw new Error('库存不足')
     if (existing) {
       existing.quantity = nextQuantity
     } else {
-      items = [{ productId, quantity, flavorId, specId, selected: true }, ...items]
+      items = [{ productId, quantity, flavorId, specId, plaqueText, selected: true }, ...items]
     }
     persist()
     notifyUpdated()
     if (userStore.isLoggedIn()) {
       try {
-        replaceItems(await csApi.addCartItem({ productId, quantity, flavorId, specId }))
+        replaceItems(await csApi.addCartItem({ productId, quantity, flavorId, specId, plaqueText }))
       } catch (_error) {}
     }
     return items
   },
-  async setQuantity(productId: string, quantity: number, flavorId?: string, specId?: string) {
-    if (quantity <= 0) return this.remove(productId, flavorId, specId)
+  async setQuantity(productId: string, quantity: number, flavorId?: string, specId?: string, plaqueText?: string) {
+    if (quantity <= 0) return this.remove(productId, flavorId, specId, plaqueText)
     const product = catalogStore.findProduct(productId)
     if (!product || !product.isActive) throw new Error('商品已下架')
     if (product.stock <= 0) throw new Error('商品已售罄')
     const nextQuantity = Math.min(Math.max(1, quantity), product.stock)
-    items = items.map((item) => this.matches(item, productId, flavorId, specId) ? { ...item, quantity: nextQuantity } : item)
+    items = items.map((item) => this.matches(item, productId, flavorId, specId, plaqueText) ? { ...item, quantity: nextQuantity } : item)
     persist()
     notifyUpdated()
     if (userStore.isLoggedIn()) {
       try {
-        replaceItems(await csApi.updateCartItem(productId, { quantity: nextQuantity, flavorId, specId }))
+        replaceItems(await csApi.updateCartItem(productId, { quantity: nextQuantity, flavorId, specId, plaqueText }))
       } catch (_error) {}
     }
     return items
   },
-  async toggle(productId: string, flavorId?: string, specId?: string) {
-    items = items.map((item) => this.matches(item, productId, flavorId, specId) ? { ...item, selected: !item.selected } : item)
+  async toggle(productId: string, flavorId?: string, specId?: string, plaqueText?: string) {
+    items = items.map((item) => this.matches(item, productId, flavorId, specId, plaqueText) ? { ...item, selected: !item.selected } : item)
     persist()
     notifyUpdated()
-    const item = items.find((row) => this.matches(row, productId, flavorId, specId))
+    const item = items.find((row) => this.matches(row, productId, flavorId, specId, plaqueText))
     if (userStore.isLoggedIn() && item) {
       try {
-        replaceItems(await csApi.updateCartItem(productId, { selected: item.selected, flavorId, specId }))
+        replaceItems(await csApi.updateCartItem(productId, { selected: item.selected, flavorId, specId, plaqueText }))
       } catch (_error) {}
     }
     return items
   },
-  async remove(productId: string, flavorId?: string, specId?: string) {
-    items = items.filter((item) => !this.matches(item, productId, flavorId, specId))
+  async remove(productId: string, flavorId?: string, specId?: string, plaqueText?: string) {
+    items = items.filter((item) => !this.matches(item, productId, flavorId, specId, plaqueText))
     persist()
     notifyUpdated()
     if (userStore.isLoggedIn()) {
       try {
-        replaceItems(await csApi.deleteCartItem(productId, { flavorId, specId }))
+        replaceItems(await csApi.deleteCartItem(productId, { flavorId, specId, plaqueText }))
       } catch (_error) {}
     }
     return items
   },
-  matches(item: CsCartItem, productId: string, flavorId?: string, specId?: string) {
-    return item.productId === productId && (item.flavorId || '') === (flavorId || '') && (item.specId || '') === (specId || '')
+  matches(item: CsCartItem, productId: string, flavorId?: string, specId?: string, plaqueText?: string) {
+    return item.productId === productId && (item.flavorId || '') === (flavorId || '') && (item.specId || '') === (specId || '') && (item.plaqueText || '') === (plaqueText || '')
   },
   clearSelected() {
     items = items.filter((item) => !item.selected)
@@ -112,5 +112,18 @@ export const cartStore = {
   },
   getBadgeCount() {
     return items.reduce((total, item) => total + item.quantity, 0)
+  },
+  getSelectedMaxLeadHours() {
+    return items.filter((item) => item.selected).reduce((max, item) => {
+      const product = catalogStore.findProduct(item.productId)
+      if (!product || product.productType !== 'reservation') return max
+      return Math.max(max, product.leadTimeHours || 0)
+    }, 0)
+  },
+  hasSelectedReservation() {
+    return items.filter((item) => item.selected).some((item) => {
+      const product = catalogStore.findProduct(item.productId)
+      return product?.productType === 'reservation'
+    })
   }
 }

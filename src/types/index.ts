@@ -35,6 +35,9 @@ export interface CsProduct {
   isActive: boolean
   isRecommended: boolean
   isNew: boolean
+  productType: 'instock' | 'reservation'
+  leadTimeHours: number
+  allowPlaque: boolean
 }
 
 export interface CsHomeBanner {
@@ -106,6 +109,7 @@ export interface CsCartItem {
   selected: boolean
   flavorId?: string
   specId?: string
+  plaqueText?: string
 }
 
 export interface CsCoupon {
@@ -138,6 +142,7 @@ export interface CsOrderItem {
   price: number
   flavorId?: string
   specId?: string
+  plaqueText?: string
   product?: CsProduct | null
 }
 
@@ -146,9 +151,10 @@ export interface CsOrder {
   orderNo: string
   status: OrderStatus
   fulfillmentType: FulfillmentType
+  fulfillmentMode: 'instant' | 'scheduled'
   storeId?: string
   addressId?: string
-  slotId: string
+  slotId: string | null
   appointmentDate: string
   appointmentStartTime: string
   appointmentEndTime: string
@@ -161,6 +167,8 @@ export interface CsOrder {
   couponAmount: number
   pointsAmount: number
   payableAmount: number
+  tablewareCount: number
+  candles: string
   message: string
   createdAt: string
   paidAt?: string

@@ -40,7 +40,7 @@ export const csApi = {
     request<CsProduct[]>(`/products${query(params)}`),
   productDetail: (id: string) => request<CsProduct>(`/products/${id}`),
   stores: () => request<CsStore[]>('/stores'),
-  slots: (params: { date?: string; fulfillmentType?: FulfillmentType; storeId?: string } = {}) =>
+  slots: (params: { date?: string; fulfillmentType?: FulfillmentType; storeId?: string; minLeadHours?: number } = {}) =>
     request<CsFulfillmentSlot[]>(`/slots${query(params)}`),
   wechatLogin: (data: { code: string; nickname?: string; avatar?: string }) =>
     request<WechatLoginResult>('/auth/wechat-login', { method: 'POST', data }),
@@ -52,7 +52,7 @@ export const csApi = {
   setDefaultAddress: (id: string) => request<CsAddress>(`/addresses/${id}`, { method: 'POST', data: { action: 'setDefault' } }),
   deleteAddress: (id: string) => request<{ deleted: boolean }>(`/addresses/${id}`, { method: 'POST', data: { action: 'delete' } }),
   cart: () => request<CsCartItem[]>('/cart'),
-  addCartItem: (data: { productId: string; quantity?: number; flavorId?: string; specId?: string }) =>
+  addCartItem: (data: { productId: string; quantity?: number; flavorId?: string; specId?: string; plaqueText?: string }) =>
     request<CsCartItem[]>('/cart/items', { method: 'POST', data }),
   updateCartItem: (productId: string, data: Partial<CsCartItem>) =>
     request<CsCartItem[]>(`/cart/items/${productId}`, { method: 'POST', data }),

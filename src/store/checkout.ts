@@ -16,6 +16,9 @@ export interface CsCheckoutState {
   useBalance: boolean
   pickupContactName?: string
   pickupContactPhone?: string
+  plaqueText?: string
+  tablewareCount: number
+  candles: string
   message: string
 }
 
@@ -26,6 +29,8 @@ let state: CsCheckoutState = Taro.getStorageSync(KEY) || {
   fulfillmentType: 'pickup',
   usePoints: false,
   useBalance: false,
+  tablewareCount: 0,
+  candles: '',
   message: ''
 }
 
@@ -45,6 +50,8 @@ export const checkoutStore = {
       fulfillmentType: 'pickup',
       usePoints: false,
       useBalance: false,
+      tablewareCount: 0,
+      candles: '',
       message: ''
     }
     persist()
