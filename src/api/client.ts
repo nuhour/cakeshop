@@ -43,7 +43,9 @@ export async function request<T>(path: string, options: RequestOptions = {}): Pr
     })
   } catch (error) {
     console.warn('[cakeshop-api] request failed', path, error)
-    throw error
+    if (error instanceof Error) throw error
+    const errMsg = (error as { errMsg?: string })?.errMsg
+    throw new Error(errMsg ? `网络请求失败（${errMsg}）` : '网络请求失败')
   }
 
   const data = response.data
