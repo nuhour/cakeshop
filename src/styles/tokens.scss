@@ -1,0 +1,26 @@
+// 新中式文艺设计体系 - 全局设计令牌
+// 仅包含变量与 mixin，不产出任何 CSS 规则；由 app.scss 与各组件 scss @import 使用
+
+$paper: #fff8f2;          // 页面底
+$card: #ffffff;           // 卡片
+$card-warm: #fbf2e9;      // 暖卡片/提示条
+$ink: #1e1b16;            // 主文字
+$ink-soft: #57423e;       // 次要文字
+$cinnabar: #953225;       // 朱砂主色
+$cinnabar-light: #b5493a; // 朱砂浅容器
+$hairline: #dec0bb;       // 描边
+$tea-brown: #77583a;      // 价格/茶棕
+
+$cs-radius: 6px;
+$cs-radius-lg: 8px;
+$cs-font-serif: "Songti SC", "STSong", serif;
+
+@mixin cs-serif-font {
+  font-family: $cs-font-serif;
+}
+
+@mixin cs-card {
+  border: 1px solid $hairline;
+  border-radius: $cs-radius;
+  background: $card;
+}

@@ -1,9 +1,11 @@
+@import '../../styles/tokens';
+
 .order-card {
   margin: 14px 18px;
   padding: 16px;
-  border: 1px solid rgba(133, 116, 98, 0.16);
-  border-radius: 18px;
-  background: #ffffff;
+  border: 1px solid $hairline;
+  border-radius: $cs-radius-lg;
+  background: $card;
 }
 
 .order-card__head,
@@ -14,19 +16,19 @@
 }
 
 .order-card__head {
-  color: #524534;
+  color: $ink-soft;
   font-size: 13px;
 }
 
 .order-card__status {
-  color: #835500;
+  color: $cinnabar;
   font-weight: 700;
 }
 
 .order-card__slot {
   display: block;
   margin-top: 12px;
-  color: #1b1c1a;
+  color: $ink;
   font-size: 16px;
   font-weight: 700;
 }
@@ -34,7 +36,7 @@
 .order-card__items {
   display: block;
   margin-top: 6px;
-  color: #999999;
+  color: $ink-soft;
   font-size: 13px;
 }
 
@@ -56,11 +58,11 @@
 }
 
 .order-card__ghost {
-  border: 1px solid #d7c3ae;
-  color: #524534;
+  border: 1px solid $hairline;
+  color: $ink-soft;
 }
 
 .order-card__primary {
-  background: #f5a623;
+  background: $cinnabar;
   color: #ffffff;
 }

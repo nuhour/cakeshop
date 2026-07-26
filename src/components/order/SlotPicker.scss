@@ -1,3 +1,5 @@
+@import '../../styles/tokens';
+
 .slot-picker {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -6,14 +8,20 @@
 
 .slot-picker__item {
   padding: 12px;
-  border: 1px solid #d7c3ae;
-  border-radius: 14px;
-  background: #ffffff;
+  border: 1px solid $hairline;
+  border-radius: $cs-radius-lg;
+  background: $card;
 }
 
 .slot-picker__item--active {
-  border-color: #f5a623;
-  background: #fff4db;
+  border-color: $cinnabar;
+  background: rgba($cinnabar, 0.06);
+}
+
+.slot-picker__item--full {
+  background: $card-warm;
+  border-color: $hairline;
+  opacity: 0.5;
 }
 
 .slot-picker__time,
@@ -22,13 +30,30 @@
 }
 
 .slot-picker__time {
-  color: #333333;
+  color: $ink;
   font-size: 15px;
   font-weight: 700;
 }
 
+.slot-picker__item--active .slot-picker__time {
+  color: $cinnabar;
+}
+
+.slot-picker__item--full .slot-picker__time {
+  color: $ink-soft;
+  font-weight: 500;
+}
+
 .slot-picker__capacity {
   margin-top: 4px;
-  color: #999999;
+  color: $ink-soft;
   font-size: 12px;
+}
+
+.slot-picker__item--active .slot-picker__capacity {
+  color: $cinnabar;
+}
+
+.slot-picker__item--full .slot-picker__capacity {
+  color: $ink-soft;
 }

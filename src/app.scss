@@ -1,7 +1,9 @@
+@import './styles/tokens';
+
 page {
   min-height: 100%;
-  background: #fbf9f5;
-  color: #333333;
+  background: $paper;
+  color: $ink;
   font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", Arial, sans-serif;
 }
 
@@ -20,14 +22,12 @@ button::after {
 .cakeshop-page {
   min-height: 100vh;
   padding-bottom: 40px;
-  background: #fbf9f5;
+  background: $paper;
 }
 
 .cakeshop-card {
-  border: 1px solid rgba(133, 116, 98, 0.16);
-  border-radius: 18px;
-  background: #ffffff;
-  box-shadow: 0 8px 24px rgba(82, 69, 52, 0.08);
+  @include cs-card;
+  box-shadow: 0 4px 20px rgba(58, 54, 48, 0.04);
 }
 
 .cakeshop-section-title {
@@ -35,7 +35,38 @@ button::after {
   align-items: center;
   justify-content: space-between;
   margin: 24px 18px 14px;
-  color: #1b1c1a;
+  color: $ink;
   font-size: 22px;
   font-weight: 700;
+}
+
+// 全局工具类 —— 新中式文艺设计体系
+
+// 衬线标题：宋体 + 宽字距，用于标题/品牌文案
+.cs-serif {
+  @include cs-serif-font;
+  letter-spacing: 0.05em;
+}
+
+// 细线分隔：淡描边色横线，用于内容分区
+.cs-hairline {
+  position: relative;
+  border-bottom: 1px solid $hairline;
+}
+
+// 印章徽标：朱砂底、白字宋体、竖排小方块（如「如也」品牌章）
+.cs-seal {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 0;
+  background: $cinnabar;
+  color: #ffffff;
+  writing-mode: vertical-rl;
+  @include cs-serif-font;
+  font-size: 10px;
+  letter-spacing: 1px;
 }

@@ -1,15 +1,17 @@
+@import '../../styles/tokens';
+
 .product-card {
   overflow: hidden;
-  border: 1px solid rgba(133, 116, 98, 0.18);
-  border-radius: 18px;
-  background: #ffffff;
-  box-shadow: 0 8px 22px rgba(82, 69, 52, 0.08);
+  border: 1px solid $hairline;
+  border-radius: $cs-radius;
+  background: $card;
+  box-shadow: 0 4px 16px rgba(58, 54, 48, 0.05);
 }
 
 .product-card__media {
   position: relative;
   height: 150px;
-  background: #f5f3ef;
+  background: $card-warm;
 }
 
 .product-card__image {
@@ -21,12 +23,24 @@
   position: absolute;
   top: 10px;
   left: 10px;
-  padding: 5px 9px;
-  border-radius: 8px;
-  background: #f1deb3;
-  color: #6f613f;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: $card-warm;
+  color: $tea-brown;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
+}
+
+.product-card__lead-time {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 3px 7px;
+  border-radius: 4px;
+  background: $cinnabar;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 600;
 }
 
 .product-card__sold-out {
@@ -34,11 +48,11 @@
   right: 10px;
   bottom: 10px;
   padding: 5px 9px;
-  border-radius: 8px;
-  background: rgba(27, 28, 26, 0.72);
+  border-radius: 4px;
+  background: rgba(30, 27, 22, 0.72);
   color: #ffffff;
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .product-card__body {
@@ -47,9 +61,10 @@
 
 .product-card__name {
   display: block;
-  color: #1b1c1a;
+  @include cs-serif-font;
+  color: $ink;
   font-size: 17px;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 22px;
 }
 
@@ -57,7 +72,7 @@
   display: block;
   min-height: 20px;
   margin-top: 4px;
-  color: #999999;
+  color: $ink-soft;
   font-size: 13px;
 }
 
@@ -75,10 +90,21 @@
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: #f5a623;
+  background: $ink;
   color: #ffffff;
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 500;
+}
+
+.product-card__add--reserve {
+  width: auto;
+  height: 30px;
+  padding: 0 14px;
+  border-radius: $cs-radius;
+  background: $cinnabar;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .product-card--sold-out {
@@ -87,6 +113,6 @@
 
 .product-card--sold-out .product-card__add {
   width: 48px;
-  background: #c8c1b6;
+  background: rgba(30, 27, 22, 0.32);
   font-size: 12px;
 }

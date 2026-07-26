@@ -7,17 +7,23 @@ import './ProductCard.scss'
 interface Props {
   product: CsProduct
   onAdd?: (productId: string) => void
+  productType?: string
+  leadTimeHours?: number
 }
 
-export function ProductCard({ product, onAdd }: Props) {
+export function ProductCard({ product, onAdd, productType, leadTimeHours }: Props) {
   const openDetail = () => Taro.navigateTo({ url: `/pages/product/detail/index?id=${product.id}` })
   const soldOut = !product.isActive || product.stock <= 0
+  const isReservation = productType === 'reservation'
 
   return (
     <View className={`product-card ${soldOut ? 'product-card--sold-out' : ''}`} onClick={openDetail}>
       <View className="product-card__media">
         <Image className="product-card__image" src={product.cover} mode="aspectFill" />
         {product.tags[0] ? <Text className="product-card__tag">{product.tags[0]}</Text> : null}
+        {isReservation && leadTimeHours ? (
+          <Text className="product-card__lead-time">提前{leadTimeHours}小时</Text>
+        ) : null}
         {soldOut ? <Text className="product-card__sold-out">售罄</Text> : null}
       </View>
       <View className="product-card__body">
@@ -26,7 +32,7 @@ export function ProductCard({ product, onAdd }: Props) {
         <View className="product-card__footer">
           <PriceText value={product.price} original={product.originalPrice} size="small" />
           <Button
-            className="product-card__add"
+            className={`product-card__add ${isReservation ? 'product-card__add--reserve' : ''}`}
             disabled={soldOut}
             onClick={(event) => {
               event.stopPropagation()
@@ -34,7 +40,7 @@ export function ProductCard({ product, onAdd }: Props) {
               onAdd?.(product.id)
             }}
           >
-            {soldOut ? '售罄' : '+'}
+            {soldOut ? '售罄' : isReservation ? '预定' : '+'}
           </Button>
         </View>
       </View>
