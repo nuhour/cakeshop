@@ -1,16 +1,81 @@
 @import '../../styles/tokens';
 
 .slot-picker {
+  display: block;
+}
+
+.slot-picker__dates {
+  display: block;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid $hairline;
+  white-space: nowrap;
+}
+
+.slot-picker__date {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding-bottom: 8px;
+  margin-right: 26px;
+}
+
+.slot-picker__date:last-child {
+  margin-right: 0;
+}
+
+.slot-picker__date-label,
+.slot-picker__date-sub {
+  display: block;
+  color: $ink-soft;
+  font-size: 13px;
+}
+
+.slot-picker__date-sub {
+  margin-top: 2px;
+  font-size: 11px;
+}
+
+.slot-picker__date--active .slot-picker__date-label,
+.slot-picker__date--active .slot-picker__date-sub {
+  color: $cinnabar;
+  font-weight: 600;
+}
+
+.slot-picker__date--active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 20px;
+  height: 2px;
+  border-radius: 999px;
+  background: $cinnabar;
+  transform: translateX(-50%);
+}
+
+.slot-picker__grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
 }
 
+.slot-picker__empty {
+  grid-column: 1 / -1;
+  padding: 18px 0;
+  color: $ink-soft;
+  font-size: 13px;
+  text-align: center;
+}
+
 .slot-picker__item {
-  padding: 12px;
+  padding: 10px 6px;
   border: 1px solid $hairline;
   border-radius: $cs-radius-lg;
   background: $card;
+  text-align: center;
 }
 
 .slot-picker__item--active {
@@ -31,7 +96,7 @@
 
 .slot-picker__time {
   color: $ink;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 700;
 }
 
@@ -47,7 +112,7 @@
 .slot-picker__capacity {
   margin-top: 4px;
   color: $ink-soft;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .slot-picker__item--active .slot-picker__capacity {
