@@ -73,7 +73,7 @@ export default function ProductDetailPage() {
       Taro.showToast({ title: '商品已售罄', icon: 'none' })
       return
     }
-    checkoutStore.set({ source: 'buyNow', productId: product.id, quantity, flavorId, specId, plaqueText: normalizedPlaqueText, slotId: undefined })
+    checkoutStore.set({ source: 'buyNow', productId: product.id, buyNowProductType: product.productType, quantity, flavorId, specId, plaqueText: normalizedPlaqueText, slotId: undefined })
     Taro.navigateTo({ url: '/pages/checkout/index' })
   }
 

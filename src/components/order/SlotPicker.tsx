@@ -14,7 +14,6 @@ interface Props {
 }
 
 const WEEKDAYS = ['日', '一', '二', '三', '四', '五', '六']
-const DAY_COUNT = 7
 
 const pad = (value: number) => String(value).padStart(2, '0')
 const toDateKey = (date: Date) => `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
@@ -25,9 +24,10 @@ interface SlotDate {
   sub: string
 }
 
-const buildDateList = (): SlotDate[] => {
+const buildDateList = (minLeadHours?: number): SlotDate[] => {
+  const dayCount = Math.max(7, Math.ceil((minLeadHours || 0) / 24) + 1)
   const today = new Date()
-  return Array.from({ length: DAY_COUNT }, (_, index) => {
+  return Array.from({ length: dayCount }, (_, index) => {
     const date = new Date(today.getFullYear(), today.getMonth(), today.getDate() + index)
     let label = `周${WEEKDAYS[date.getDay()]}`
     if (index === 0) label = '今天'
@@ -38,7 +38,7 @@ const buildDateList = (): SlotDate[] => {
 }
 
 export function SlotPicker({ fulfillmentType, storeId, minLeadHours, selectedId, onSelect }: Props) {
-  const dateList = useMemo(buildDateList, [])
+  const dateList = useMemo(() => buildDateList(minLeadHours), [minLeadHours])
   const [activeDate, setActiveDate] = useState(dateList[0].key)
   const [slots, setSlots] = useState<CsFulfillmentSlot[]>([])
   const [loading, setLoading] = useState(false)

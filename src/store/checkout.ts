@@ -4,6 +4,7 @@ import type { FulfillmentType } from '@/types'
 export interface CsCheckoutState {
   source: 'cart' | 'buyNow'
   productId?: string
+  buyNowProductType?: 'instock' | 'reservation'
   quantity?: number
   flavorId?: string
   specId?: string

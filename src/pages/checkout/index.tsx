@@ -60,7 +60,7 @@ export default function CheckoutPage() {
     : cartStore.getSelectedItems()
 
   const scheduled = checkout.source === 'buyNow'
-    ? buyNowProduct?.productType === 'reservation'
+    ? (buyNowProduct ? buyNowProduct.productType === 'reservation' : checkout.buyNowProductType === 'reservation')
     : cartStore.hasSelectedReservation()
   const minLeadHours = checkout.source === 'buyNow'
     ? (buyNowProduct?.leadTimeHours || 0)
@@ -175,6 +175,10 @@ export default function CheckoutPage() {
       Taro.showToast({ title: '请选择预约时段', icon: 'none' })
       return
     }
+    if (scheduled && candleMode === 'digit' && !candleDigit) {
+      Taro.showToast({ title: '请填写数字蜡烛的数字', icon: 'none' })
+      return
+    }
     if (checkout.fulfillmentType === 'pickup' && (!checkout.pickupContactName || !checkout.pickupContactPhone)) {
       Taro.showToast({ title: '请填写取货人信息', icon: 'none' })
       return
@@ -185,13 +189,20 @@ export default function CheckoutPage() {
     }
     try {
       const order = await orderStore.createOrder(buildPayload(checkout))
+      let payFailed = false
       try {
         await orderStore.payOrder(order.id)
       } catch (payError) {
+        payFailed = true
         Taro.showToast({ title: payError instanceof Error ? payError.message : '支付发起失败，可在订单详情中重试', icon: 'none' })
       }
       checkoutStore.clear()
-      Taro.navigateTo({ url: `/pages/order/detail/index?id=${order.id}` })
+      const goToOrder = () => Taro.navigateTo({ url: `/pages/order/detail/index?id=${order.id}` })
+      if (payFailed) {
+        setTimeout(goToOrder, 1500)
+      } else {
+        goToOrder()
+      }
     } catch (error) {
       Taro.showToast({ title: error instanceof Error ? error.message : '提交失败', icon: 'none' })
     }
@@ -203,7 +214,7 @@ export default function CheckoutPage() {
 
       <View className="checkout-card">
         <View className="checkout-tabs">
-          {(['delivery', 'pickup'] as FulfillmentType[]).map((type) => (
+          {(['pickup', 'delivery'] as FulfillmentType[]).map((type) => (
             <Text
               key={type}
               className={`checkout-tabs__item ${checkout.fulfillmentType === type ? 'checkout-tabs__item--active' : ''}`}

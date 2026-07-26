@@ -58,7 +58,7 @@ export const cartStore = {
     notifyUpdated()
     if (userStore.isLoggedIn()) {
       try {
-        replaceItems(await csApi.updateCartItem(productId, { quantity: nextQuantity, flavorId, specId, plaqueText }))
+        replaceItems(await csApi.updateCartItem(productId, { quantity: nextQuantity, flavorId, specId, plaqueText: plaqueText || '' }))
       } catch (_error) {}
     }
     return items
@@ -70,7 +70,7 @@ export const cartStore = {
     const item = items.find((row) => this.matches(row, productId, flavorId, specId, plaqueText))
     if (userStore.isLoggedIn() && item) {
       try {
-        replaceItems(await csApi.updateCartItem(productId, { selected: item.selected, flavorId, specId, plaqueText }))
+        replaceItems(await csApi.updateCartItem(productId, { selected: item.selected, flavorId, specId, plaqueText: plaqueText || '' }))
       } catch (_error) {}
     }
     return items
@@ -81,7 +81,7 @@ export const cartStore = {
     notifyUpdated()
     if (userStore.isLoggedIn()) {
       try {
-        replaceItems(await csApi.deleteCartItem(productId, { flavorId, specId, plaqueText }))
+        replaceItems(await csApi.deleteCartItem(productId, { flavorId, specId, plaqueText: plaqueText || '' }))
       } catch (_error) {}
     }
     return items

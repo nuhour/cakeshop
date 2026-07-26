@@ -140,7 +140,7 @@ export const demoHome: CsHomePayload = {
       title: '今日新鲜出炉',
       subtitle: '生日蛋糕 10 点前预定，午间可取',
       image: cover('banner-fresh'),
-      linkUrl: '/pages/category/index',
+      linkUrl: '/pages/product/detail/index?id=cakeshop-cake-001',
       sort: 1,
       isActive: true
     }
