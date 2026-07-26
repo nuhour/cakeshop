@@ -53,19 +53,20 @@ export default function ProductDetailPage() {
   const soldOut = !product.isActive || product.stock <= 0
   const isReservation = product.productType === 'reservation'
   const gallery = product.media.length ? product.media.map((item) => item.url) : [product.cover]
+  const normalizedPlaqueText = plaqueText.trim() || undefined
 
   const buyNow = () => {
     if (soldOut) {
       Taro.showToast({ title: '商品已售罄', icon: 'none' })
       return
     }
-    checkoutStore.set({ source: 'buyNow', productId: product.id, quantity, flavorId, specId, plaqueText: plaqueText || undefined })
+    checkoutStore.set({ source: 'buyNow', productId: product.id, quantity, flavorId, specId, plaqueText: normalizedPlaqueText })
     Taro.navigateTo({ url: '/pages/checkout/index' })
   }
 
   const addToCart = async () => {
     try {
-      await cartStore.add(product.id, quantity, flavorId, specId, plaqueText || undefined)
+      await cartStore.add(product.id, quantity, flavorId, specId, normalizedPlaqueText)
       Taro.showToast({ title: '已加入提篮', icon: 'success' })
     } catch (error) {
       Taro.showToast({ title: error instanceof Error ? error.message : '加入失败', icon: 'none' })
