@@ -1,77 +1,143 @@
+@import '../../styles/tokens';
+
+.mine-page {
+  padding-bottom: 40px;
+}
+
 .mine-card {
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 14px;
   margin: 18px;
-  padding: 22px;
-  border-radius: 20px;
-  background: linear-gradient(135deg, #8b5a2b, #6f411a);
-  color: #ffffff;
+  padding: 20px;
+  border: 1px solid $hairline;
+  border-radius: $cs-radius-lg;
+  background: $card-warm;
+  box-shadow: 0 4px 20px rgba(58, 54, 48, 0.04);
 }
 
-.mine-name,
-.mine-level {
+.mine-card__avatar {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  overflow: hidden;
+  border: 1px solid $hairline;
+  border-radius: 50%;
+  background: $card;
+}
+
+.mine-card__avatar-img {
+  width: 100%;
+  height: 100%;
+}
+
+.mine-card__avatar-fallback {
+  color: $cinnabar;
+  @include cs-serif-font;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.mine-card__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.mine-card__name {
   display: block;
+  color: $ink;
+  font-size: 19px;
+  font-weight: 700;
 }
 
-.mine-name {
-  font-size: 24px;
-  font-weight: 900;
+.mine-card__level {
+  display: block;
+  margin-top: 6px;
+  color: $tea-brown;
+  font-size: 13px;
 }
 
-.mine-level {
-  margin-top: 8px;
-  color: #f1deb3;
-  font-size: 14px;
+.mine-card__seal {
+  position: absolute;
+  top: 16px;
+  right: 16px;
 }
 
-.mine-login {
-  padding: 10px 18px;
+.mine-card__auth {
+  flex-shrink: 0;
+  padding: 8px 18px;
+  border: 1px solid $cinnabar;
   border-radius: 999px;
-  background: #f5a623;
-  color: #ffffff;
-  font-weight: 800;
-}
-
-.mine-assets,
-.mine-section,
-.mine-menu {
-  margin: 14px 18px;
-  border-radius: 18px;
-  background: #ffffff;
+  background: transparent;
+  color: $cinnabar;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .mine-assets {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  padding: 18px;
-  color: #524534;
+  margin: 14px 18px;
+  padding: 20px 0;
+}
+
+.mine-assets__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
   text-align: center;
-  font-size: 13px;
+}
+
+.mine-assets__item:not(:last-child) {
+  position: relative;
+}
+
+.mine-assets__item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  right: 0;
+  width: 1px;
+  height: 20px;
+  background: $hairline;
 }
 
 .mine-assets__value {
-  display: block;
-  margin-bottom: 6px;
-  color: #835500;
+  color: $cinnabar;
   font-size: 20px;
-  font-weight: 900;
+  font-weight: 700;
+}
+
+.mine-assets__label {
+  color: $ink-soft;
+  font-size: 12px;
 }
 
 .mine-section {
+  margin: 14px 18px;
   padding: 18px;
 }
 
 .mine-section__head {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  color: #1b1c1a;
-  font-size: 17px;
-  font-weight: 900;
+  padding-bottom: 16px;
 }
 
-.mine-section__head text:last-child {
-  color: #835500;
+.mine-section__head text:first-child {
+  color: $ink;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.mine-section__more {
+  color: $ink-soft;
   font-size: 13px;
 }
 
@@ -79,43 +145,76 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
-  margin-top: 18px;
-  color: #524534;
-  text-align: center;
-  font-size: 13px;
+  padding-top: 18px;
 }
 
 .mine-order-grid__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.mine-order-grid__icon {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 38px;
+  width: 44px;
+  height: 44px;
+  font-size: 22px;
 }
 
 .mine-order-grid__badge {
   position: absolute;
-  top: -7px;
-  right: 12px;
-  min-width: 17px;
-  height: 17px;
-  padding: 0 5px;
+  top: -4px;
+  right: -2px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
   border-radius: 999px;
-  background: #d9532b;
+  background: $cinnabar;
   color: #ffffff;
-  font-size: 11px;
-  line-height: 17px;
+  font-size: 10px;
+  line-height: 16px;
+  text-align: center;
+}
+
+.mine-order-grid__label {
+  color: $ink-soft;
+  font-size: 12px;
 }
 
 .mine-menu {
   overflow: hidden;
+  margin: 14px 18px;
+  padding: 0 18px;
 }
 
 .mine-menu__item {
   display: flex;
-  justify-content: space-between;
-  padding: 16px 18px;
-  border-bottom: 1px solid rgba(133, 116, 98, 0.12);
-  color: #524534;
-  font-size: 16px;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid $hairline;
+}
+
+.mine-menu__item:last-child {
+  border-bottom: 0;
+}
+
+.mine-menu__icon {
+  flex-shrink: 0;
+  font-size: 18px;
+}
+
+.mine-menu__label {
+  flex: 1;
+  color: $ink;
+  font-size: 15px;
+}
+
+.mine-menu__arrow {
+  color: $ink-soft;
+  font-size: 15px;
 }
