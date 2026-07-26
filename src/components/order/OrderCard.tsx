@@ -22,7 +22,7 @@ export function OrderCard({ order, onAction }: Props) {
         <Text className="order-card__status">{orderStatusText[order.status] || order.status}</Text>
       </View>
       <Text className="order-card__slot">
-        {order.fulfillmentType === 'pickup' ? '到店自提' : '预约配送'} · {order.appointmentDate} {order.appointmentStartTime}-{order.appointmentEndTime}
+        {order.fulfillmentType === 'pickup' ? '到店自提' : '预约配送'} · {order.fulfillmentMode === 'instant' ? '尽快交付' : `${order.appointmentDate} ${order.appointmentStartTime}-${order.appointmentEndTime}`}
       </Text>
       <Text className="order-card__items">共 {order.items.reduce((total, item) => total + item.quantity, 0)} 件商品</Text>
       <View className="order-card__foot">

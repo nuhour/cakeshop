@@ -1,6 +1,12 @@
+@import '../../../styles/tokens';
+
+.order-list-page {
+  padding-bottom: 24px;
+}
+
 .order-tabs {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   overflow-x: auto;
   margin: 14px 18px;
   white-space: nowrap;
@@ -8,30 +14,37 @@
 
 .order-tabs__item {
   position: relative;
-  padding: 9px 15px;
+  padding: 9px 16px;
+  border: 1px solid $hairline;
   border-radius: 999px;
-  background: #efeeea;
-  color: #524534;
-  font-size: 14px;
-  font-weight: 700;
+  background: $card;
+  color: $ink-soft;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .order-tabs__badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 17px;
-  height: 17px;
+  min-width: 16px;
+  height: 16px;
   margin-left: 5px;
-  padding: 0 5px;
+  padding: 0 4px;
   border-radius: 999px;
-  background: #d9532b;
+  background: $cinnabar;
   color: #ffffff;
-  font-size: 11px;
-  line-height: 17px;
+  font-size: 10px;
+  line-height: 16px;
 }
 
 .order-tabs__item--active {
-  background: #f5a623;
+  border-color: $cinnabar;
+  background: $cinnabar;
   color: #ffffff;
+}
+
+.order-tabs__item--active .order-tabs__badge {
+  background: #ffffff;
+  color: $cinnabar;
 }

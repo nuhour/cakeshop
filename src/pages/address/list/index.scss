@@ -1,3 +1,5 @@
+@import '../../../styles/tokens';
+
 .address-page {
   padding-bottom: 32px;
 }
@@ -6,12 +8,15 @@
 .address-form {
   margin: 14px 18px;
   padding: 16px;
-  border-radius: 18px;
-  background: #ffffff;
-  box-shadow: 0 8px 24px rgba(82, 69, 52, 0.06);
+  border: 1px solid $hairline;
+  border-radius: $cs-radius-lg;
+  background: $card;
+  box-shadow: 0 4px 20px rgba(58, 54, 48, 0.04);
 }
 
 .address-card__head,
+.address-card__who,
+.address-card__tags,
 .address-card__actions,
 .address-form__default,
 .address-form__buttons {
@@ -23,26 +28,52 @@
   justify-content: space-between;
 }
 
-.address-card__name,
-.address-form__title {
-  color: #1b1c1a;
+.address-card__who {
+  gap: 8px;
+  align-items: baseline;
+}
+
+.address-card__name {
+  color: $ink;
   font-size: 17px;
-  font-weight: 900;
+  font-weight: 700;
+}
+
+.address-card__phone {
+  color: $ink-soft;
+  font-size: 13px;
+}
+
+.address-card__edit {
+  color: $cinnabar;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.address-card__tags {
+  gap: 8px;
+  margin-top: 8px;
 }
 
 .address-card__tag {
-  padding: 4px 8px;
+  padding: 3px 8px;
+  border: 1px solid $hairline;
   border-radius: 999px;
-  background: #fff4db;
-  color: #835500;
-  font-size: 12px;
-  font-weight: 800;
+  color: $ink-soft;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.address-card__tag--default {
+  border-color: $cinnabar;
+  background: $cinnabar;
+  color: #ffffff;
 }
 
 .address-card__detail {
   display: block;
-  margin-top: 8px;
-  color: #524534;
+  margin-top: 10px;
+  color: $ink-soft;
   font-size: 14px;
   line-height: 22px;
 }
@@ -50,9 +81,11 @@
 .address-card__actions {
   gap: 18px;
   margin-top: 14px;
-  color: #835500;
+  padding-top: 12px;
+  border-top: 1px solid $hairline;
+  color: $tea-brown;
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .address-form {
@@ -63,31 +96,35 @@
 .address-form__title {
   display: block;
   margin-bottom: 4px;
+  color: $ink;
+  font-size: 17px;
+  font-weight: 700;
 }
 
-.address-form input {
+.address-form__input {
   padding: 12px;
-  border-radius: 12px;
-  background: #f5f3ef;
-  color: #333333;
+  border-radius: $cs-radius;
+  background: $card-warm;
+  color: $ink;
+  font-size: 14px;
 }
 
 .address-form__default {
   gap: 8px;
-  color: #524534;
+  color: $ink-soft;
   font-size: 14px;
 }
 
 .address-check {
   width: 18px;
   height: 18px;
-  border: 2px solid #d7c3ae;
+  border: 2px solid $hairline;
   border-radius: 999px;
 }
 
 .address-check--active {
-  border-color: #f5a623;
-  background: #f5a623;
+  border-color: $cinnabar;
+  background: $cinnabar;
 }
 
 .address-form__buttons {
@@ -97,10 +134,16 @@
 .address-form__buttons button {
   flex: 1;
   border-radius: 999px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.address-cancel {
+  border: 1px solid $hairline;
+  color: $ink-soft;
 }
 
 .address-submit {
-  background: #f5a623;
+  background: $cinnabar;
   color: #ffffff;
-  font-weight: 900;
 }
