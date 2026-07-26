@@ -21,6 +21,7 @@ export default function CartPage() {
   const stockWarnings = cartStore.getSelectedStockWarnings()
   const selectedItems = cartStore.getSelectedItems()
   const canCheckout = Boolean(selectedItems.length) && stockWarnings.length === 0
+  const showReservationNotice = cartStore.hasSelectedReservation()
 
   const checkout = () => {
     if (!selectedItems.length) {
@@ -37,14 +38,22 @@ export default function CartPage() {
 
   return (
     <View className="cakeshop-page cart-page">
-      <AppNavBar title="购物车" />
-      {!items.length ? <EmptyState title="购物车还是空的" description="先去挑几样美味甜品吧" /> : null}
+      <AppNavBar title="提篮" />
+      {showReservationNotice ? (
+        <View className="cart-notice">
+          <Text className="cart-notice__icon">◔</Text>
+          <Text className="cart-notice__text">本单含定制蛋糕，将整单按预约时段交付</Text>
+        </View>
+      ) : null}
+      {!items.length ? <EmptyState title="提篮还是空的" description="先去挑几样美味甜品吧" /> : null}
       {items.map((item) => {
         const product = catalogStore.findProduct(item.productId)
         if (!product) return null
         const invalid = !product.isActive || product.stock <= 0 || item.quantity > product.stock
+        const specName = product.specs.find((spec) => spec.id === item.specId)?.name
+        const flavorName = product.flavors.find((flavor) => flavor.id === item.flavorId)?.name
         return (
-          <View key={`${item.productId}-${item.flavorId}-${item.specId}`} className={`cart-item ${invalid ? 'cart-item--invalid' : ''}`}>
+          <View key={`${item.productId}-${item.flavorId}-${item.specId}-${item.plaqueText || ''}`} className={`cart-item ${invalid ? 'cart-item--invalid' : ''}`}>
             <View
               className={`cart-item__check ${item.selected ? 'cart-item__check--active' : ''}`}
               onClick={() => {
@@ -52,19 +61,26 @@ export default function CartPage() {
                   Taro.showToast({ title: product.stock <= 0 ? '商品已售罄' : '库存不足', icon: 'none' })
                   return
                 }
-                cartStore.toggle(item.productId, item.flavorId, item.specId).then(reload)
+                cartStore.toggle(item.productId, item.flavorId, item.specId, item.plaqueText).then(reload)
               }}
             />
             <Image className="cart-item__image" src={product.cover} mode="aspectFill" />
             <View className="cart-item__body">
               <Text className="cart-item__name">{product.name}</Text>
               <Text className="cart-item__sub">{invalid ? (product.stock <= 0 ? '已售罄，请移除后重新选择' : `库存仅剩 ${product.stock} 件`) : product.subtitle}</Text>
+              {specName || flavorName ? (
+                <View className="cart-item__tags">
+                  {specName ? <Text className="cart-item__tag">{specName}</Text> : null}
+                  {flavorName ? <Text className="cart-item__tag">{flavorName}</Text> : null}
+                </View>
+              ) : null}
+              {item.plaqueText ? <Text className="cart-item__plaque">贺牌：{item.plaqueText}</Text> : null}
               <View className="cart-item__foot">
                 <PriceText value={product.price} size="small" />
                 <View className="cart-item__stepper">
-                  <Button onClick={() => cartStore.setQuantity(item.productId, item.quantity - 1, item.flavorId, item.specId).then(reload).catch((error) => Taro.showToast({ title: error instanceof Error ? error.message : '调整失败', icon: 'none' }))}>-</Button>
+                  <Button onClick={() => cartStore.setQuantity(item.productId, item.quantity - 1, item.flavorId, item.specId, item.plaqueText).then(reload).catch((error) => Taro.showToast({ title: error instanceof Error ? error.message : '调整失败', icon: 'none' }))}>-</Button>
                   <Text>{item.quantity}</Text>
-                  <Button disabled={item.quantity >= product.stock} onClick={() => cartStore.setQuantity(item.productId, item.quantity + 1, item.flavorId, item.specId).then(reload).catch((error) => Taro.showToast({ title: error instanceof Error ? error.message : '调整失败', icon: 'none' }))}>+</Button>
+                  <Button disabled={item.quantity >= product.stock} onClick={() => cartStore.setQuantity(item.productId, item.quantity + 1, item.flavorId, item.specId, item.plaqueText).then(reload).catch((error) => Taro.showToast({ title: error instanceof Error ? error.message : '调整失败', icon: 'none' }))}>+</Button>
                 </View>
               </View>
             </View>
