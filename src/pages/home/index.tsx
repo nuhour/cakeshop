@@ -1,83 +1,105 @@
 import Taro, { useDidShow } from '@tarojs/taro'
-import { Button, Image, ScrollView, Text, View } from '@tarojs/components'
+import { Image, Input, Text, View } from '@tarojs/components'
 import { useState } from 'react'
 import type { CsHomePayload } from '@/types'
 import { catalogStore } from '@/store/catalog'
 import { cartStore } from '@/store/cart'
-import { userStore } from '@/store/user'
-import { shopStore } from '@/store/shop'
 import { demoHome } from '@/store/demo'
 import { AppNavBar } from '@/components/ui/AppNavBar'
 import { ProductCard } from '@/components/product/ProductCard'
-import { openShopContact } from '@/utils/service'
 import './index.scss'
+
+const CATEGORY_ICONS = ['🍰', '🧁', '🍵', '🎁']
 
 export default function HomePage() {
   const [home, setHome] = useState<CsHomePayload>(catalogStore.getHome() || demoHome)
-  const profile = userStore.getProfile()
+  const [keyword, setKeyword] = useState('')
 
   useDidShow(() => {
     catalogStore.loadHome().then(setHome)
-    shopStore.load()
   })
 
   const addProduct = async (productId: string) => {
-    await cartStore.add(productId)
-    Taro.showToast({ title: '已加入购物车', icon: 'success' })
+    try {
+      await cartStore.add(productId)
+      Taro.showToast({ title: '已加入购物车', icon: 'success' })
+    } catch (error) {
+      Taro.showToast({ title: error instanceof Error ? error.message : '加入失败', icon: 'none' })
+    }
   }
+
+  const goCategory = (params: Record<string, string> = {}) => {
+    const query = Object.entries(params)
+      .filter(([, value]) => !!value)
+      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+      .join('&')
+    Taro.switchTab({ url: query ? `/pages/category/index?${query}` : '/pages/category/index' })
+  }
+
+  const banner = home.banners[0]
 
   return (
     <View className="cakeshop-page home-page">
-      <AppNavBar title="如也甜品屋" />
-      <View className="home-member">
-        <View>
-          <Text className="home-member__hello">{profile?.nickname || '你好，甜品控'}</Text>
-          <View className="home-member__stats">
-            <Text>积分 {profile?.asset.points ?? 1280}</Text>
-            <Text>余额 ¥{(profile?.asset.balance ?? 86).toFixed(2)}</Text>
+      <AppNavBar title="如 也" />
+
+      <View className="home-brand">
+        <Text className="home-brand__slogan">甜品屋 · 一期一会</Text>
+        <Text className="cs-seal home-brand__seal">如也</Text>
+      </View>
+
+      <View className="home-search cs-hairline" onClick={() => goCategory({ keyword })}>
+        <Text className="home-search__icon">◎</Text>
+        <Input
+          className="home-search__input"
+          value={keyword}
+          placeholder="寻找心仪的甜点..."
+          confirmType="search"
+          onInput={(event) => setKeyword(String(event.detail.value || ''))}
+          onConfirm={() => goCategory({ keyword })}
+        />
+      </View>
+
+      {banner ? (
+        <View
+          className="home-banner cakeshop-card"
+          onClick={() => banner.linkUrl && Taro.navigateTo({ url: banner.linkUrl })}
+        >
+          <Text className="home-banner__badge">节气限定</Text>
+          <Image className="home-banner__image" src={banner.image} mode="aspectFill" />
+          <View className="home-banner__footer">
+            <Text className="home-banner__term">{banner.title}</Text>
+            <Text className="home-banner__name cs-serif">{banner.subtitle}</Text>
           </View>
         </View>
-        <Button className="home-member__login" onClick={() => userStore.requireLogin('请先登录如也甜品屋')}>登录</Button>
-      </View>
+      ) : null}
 
-      <View className="home-hero" onClick={() => Taro.navigateTo({ url: '/pages/category/index' })}>
-        <Image className="home-hero__image" src={home.banners[0]?.image || home.products[0]?.cover} mode="aspectFill" />
-        <View className="home-hero__content">
-          <Text className="home-hero__tag">今日新鲜出炉</Text>
-          <Text className="home-hero__title">{home.banners[0]?.title || '甜蜜新品上架'}</Text>
-          <Text className="home-hero__subtitle">{home.banners[0]?.subtitle || '预定下单，预约到店或配送'}</Text>
-        </View>
-      </View>
-
-      <View className="home-grid">
-        {[
-          ['生日蛋糕', '/pages/category/index'],
-          ['甜点点心', '/pages/category/index'],
-          ['饮品礼盒', '/pages/category/index'],
-          ['预约订单', '/pages/order/list/index'],
-          ['优惠券', '/pages/mine/index'],
-          ['收藏', '/pages/mine/index'],
-          ['门店', '/pages/checkout/index'],
-          ['客服', 'service']
-        ].map(([label, url]) => (
-          <View key={label} className="home-grid__item" onClick={() => url === 'service' ? openShopContact() : Taro.navigateTo({ url })}>
-            <Text className="home-grid__icon">✦</Text>
-            <Text>{label}</Text>
+      <View className="home-categories">
+        {home.categories.slice(0, 4).map((category, index) => (
+          <View
+            key={category.id}
+            className="home-categories__item"
+            onClick={() => goCategory({ categoryId: category.id })}
+          >
+            <Text className="home-categories__icon">{CATEGORY_ICONS[index] || '🍰'}</Text>
+            <Text className="home-categories__label">{category.name}</Text>
           </View>
         ))}
       </View>
 
       <View className="cakeshop-section-title">
-        <Text>今日特惠</Text>
-        <Text className="home-more" onClick={() => Taro.navigateTo({ url: '/pages/category/index' })}>查看全部</Text>
+        <Text className="cs-serif">今日推荐</Text>
       </View>
-      <ScrollView className="home-specials" scrollX>
+      <View className="home-recommend">
         {home.recommendedProducts.map((product) => (
-          <View key={product.id} className="home-specials__item">
-            <ProductCard product={product} onAdd={addProduct} />
-          </View>
+          <ProductCard
+            key={product.id}
+            product={product}
+            productType={product.productType}
+            leadTimeHours={product.leadTimeHours}
+            onAdd={addProduct}
+          />
         ))}
-      </ScrollView>
+      </View>
     </View>
   )
 }
