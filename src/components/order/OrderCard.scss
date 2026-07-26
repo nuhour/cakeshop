@@ -1,0 +1,66 @@
+.order-card {
+  margin: 14px 18px;
+  padding: 16px;
+  border: 1px solid rgba(133, 116, 98, 0.16);
+  border-radius: 18px;
+  background: #ffffff;
+}
+
+.order-card__head,
+.order-card__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.order-card__head {
+  color: #524534;
+  font-size: 13px;
+}
+
+.order-card__status {
+  color: #835500;
+  font-weight: 700;
+}
+
+.order-card__slot {
+  display: block;
+  margin-top: 12px;
+  color: #1b1c1a;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.order-card__items {
+  display: block;
+  margin-top: 6px;
+  color: #999999;
+  font-size: 13px;
+}
+
+.order-card__foot {
+  margin-top: 14px;
+}
+
+.order-card__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.order-card__ghost,
+.order-card__primary {
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+
+.order-card__ghost {
+  border: 1px solid #d7c3ae;
+  color: #524534;
+}
+
+.order-card__primary {
+  background: #f5a623;
+  color: #ffffff;
+}

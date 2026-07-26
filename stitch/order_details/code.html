@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>如也 - 订单详情</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts (Placeholder for Be Vietnam Pro & Noto Serif if needed, assuming they are loaded globally in real env, adding standard links for completeness based on config) -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&amp;family=Noto+Serif+SC:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#fff8f2",
+                        "on-secondary-container": "#795b3c",
+                        "on-secondary-fixed": "#2b1701",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed": "#ebe1d3",
+                        "on-primary-container": "#ffe9e6",
+                        "secondary-fixed-dim": "#e7bf9a",
+                        "on-primary-fixed": "#410000",
+                        "on-surface-variant": "#57423e",
+                        "tertiary-fixed-dim": "#cfc5b8",
+                        "tertiary-container": "#726b5f",
+                        "surface-tint": "#a33c2e",
+                        "tertiary": "#595348",
+                        "surface-container": "#f5ede4",
+                        "on-tertiary-fixed": "#201b12",
+                        "surface-dim": "#e1d9d0",
+                        "on-secondary-fixed-variant": "#5c4125",
+                        "primary-fixed": "#ffdad4",
+                        "error": "#ba1a1a",
+                        "surface-bright": "#fff8f2",
+                        "surface-variant": "#e9e1d8",
+                        "secondary-container": "#ffd5af",
+                        "on-error": "#ffffff",
+                        "secondary": "#77583a",
+                        "secondary-fixed": "#ffdcbd",
+                        "primary-container": "#b5493a",
+                        "on-tertiary-container": "#f7edde",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#fbf2e9",
+                        "inverse-primary": "#ffb4a8",
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#dec0bb",
+                        "on-secondary": "#ffffff",
+                        "surface": "#fff8f2",
+                        "inverse-on-surface": "#f8efe6",
+                        "surface-container-high": "#efe7de",
+                        "primary-fixed-dim": "#ffb4a8",
+                        "on-primary-fixed-variant": "#83251a",
+                        "primary": "#953225",
+                        "on-surface": "#1e1b16",
+                        "on-tertiary-fixed-variant": "#4c463c",
+                        "on-primary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-background": "#1e1b16",
+                        "surface-container-highest": "#e9e1d8",
+                        "outline": "#8a716d",
+                        "inverse-surface": "#34302a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "stack-md": "16px",
+                        "gutter": "16px",
+                        "stack-sm": "8px",
+                        "stack-lg": "32px",
+                        "unit": "4px",
+                        "margin-page": "24px",
+                        "safe": "env(safe-area-inset-bottom)"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["'Be Vietnam Pro'", "sans-serif"],
+                        "body-md": ["'Be Vietnam Pro'", "sans-serif"],
+                        "headline-sm": ["'Noto Serif SC'", "serif"],
+                        "body-lg": ["'Be Vietnam Pro'", "sans-serif"],
+                        "label-price": ["'Noto Serif SC'", "serif"],
+                        "display-lg": ["'Noto Serif SC'", "serif"],
+                        "display-md": ["'Noto Serif SC'", "serif"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-md": ["14px", { "lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "headline-sm": ["20px", { "lineHeight": "1.5", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "letterSpacing": "0.02em", "fontWeight": "400" }],
+                        "label-price": ["18px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "display-lg": ["32px", { "lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                        "display-md": ["24px", { "lineHeight": "1.4", "letterSpacing": "0.08em", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+        }
+        .seal-font {
+            font-family: 'Noto Serif SC', serif;
+        }
+        /* Custom scrollbar for a cleaner look */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #e1d9d0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col antialiased">
+<!-- Contextual Header (Suppressed global nav for transactional page) -->
+<header class="flex justify-between items-center px-margin-page py-4 sticky top-0 bg-background/90 backdrop-blur-md z-40 border-b border-surface-dim/50">
+<button class="material-symbols-outlined text-on-background hover:text-primary transition-colors cursor-pointer p-1 -ml-1">arrow_back_ios_new</button>
+<h1 class="font-headline-sm text-headline-sm text-on-background absolute left-1/2 transform -translate-x-1/2">订单详情</h1>
+<div class="w-6"></div> <!-- Spacer to center title -->
+</header>
+<main class="flex-1 pb-32 max-w-3xl mx-auto w-full">
+<!-- Status Area -->
+<section class="px-margin-page pt-stack-lg pb-stack-md flex flex-col items-center text-center">
+<h2 class="font-display-lg text-display-lg text-on-background tracking-[0.15em] ml-[0.15em]">待取货</h2>
+<div class="mt-stack-sm inline-flex items-center gap-2 bg-surface-container py-1.5 px-4 rounded-full border border-surface-dim">
+<span class="material-symbols-outlined text-secondary" style="font-size: 16px;">schedule</span>
+<p class="font-body-md text-body-md text-secondary">预约时段：10月25日 14:00-16:00</p>
+</div>
+</section>
+<!-- Core: Pickup Code Module -->
+<section class="mx-margin-page bg-surface-container-lowest rounded-xl p-8 relative overflow-hidden shadow-[0_8px_30px_rgba(58,54,48,0.04)] border border-surface-dim flex flex-col items-center group transition-transform duration-300 hover:-translate-y-1">
+<!-- Cinnabar Red Seal Watermark Background -->
+<div class="absolute -right-12 -top-12 text-primary opacity-[0.03] select-none pointer-events-none transform rotate-12 scale-150 transition-transform duration-700 group-hover:rotate-45">
+<span class="material-symbols-outlined" style="font-size: 240px; font-variation-settings: 'FILL' 1;">approval</span>
+</div>
+<span class="font-label-sm text-label-sm text-tertiary tracking-widest">取货码</span>
+<div class="font-display-md text-display-md text-primary tracking-[0.25em] mt-stack-sm mb-stack-lg relative z-10 seal-font">
+                8293 1104
+            </div>
+<!-- QR Code Container -->
+<div class="w-48 h-48 bg-surface rounded-lg flex items-center justify-center border border-surface-dim p-2 relative z-10 shadow-sm" data-alt="A clean, minimalist high-contrast QR code perfectly centered on a pristine white background, representing a digital pickup code. The aesthetic is sharp, technological, yet subtle enough to fit within a refined new Chinese style interface. Soft, bright lighting, maintaining a premium light mode feel." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCEnyP3pZrihCrZ1j_WlHTp73m_eZ0IDd47_F_JZYL4KFLrCw20lYnn4hHAjkiTv1BZMDju_qsq9rm-t1IdyWmT-aLE17qLCLKl3ea5FL1OyZy5p36UZ3YladtEABYYguFUDaNqV5xqiDfPNFzaW2uXJHrTc-4S7FQfSJsGjwUidyboXkQkELGUN1328FwAaR9vYQeO-yzN1vFPW8mr2gcxuvW3pRctwzqpnNI42vrdxHbgmUzpm4jg')">
+<!-- The background image handles the QR placeholder visually -->
+</div>
+<p class="mt-stack-md font-label-sm text-label-sm text-secondary bg-background/50 px-3 py-1 rounded-full backdrop-blur-sm relative z-10">
+                请向店员出示此二维码
+            </p>
+</section>
+<!-- Pickup Info -->
+<section class="mx-margin-page mt-stack-lg bg-surface-container-lowest rounded-xl p-5 border border-surface-dim shadow-[0_2px_10px_rgba(58,54,48,0.02)]">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" style="font-size: 18px;">storefront</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-on-background">如也·静安坊店</span>
+</div>
+<div class="flex gap-4 border-l border-surface-variant pl-4">
+<button class="material-symbols-outlined text-tertiary hover:text-primary transition-colors">location_on</button>
+<button class="material-symbols-outlined text-tertiary hover:text-primary transition-colors">phone_in_talk</button>
+</div>
+</div>
+<div class="mt-stack-sm pl-11">
+<p class="font-body-md text-body-md text-tertiary">上海市静安区愚园路1200号</p>
+<p class="font-label-sm text-label-sm text-tertiary-dim mt-1">营业时间：10:00 - 22:00</p>
+</div>
+</section>
+<!-- Product List & Message -->
+<section class="mx-margin-page mt-stack-md bg-surface-container-lowest rounded-xl p-5 border border-surface-dim shadow-[0_2px_10px_rgba(58,54,48,0.02)]">
+<h3 class="font-headline-sm text-headline-sm text-on-background mb-5 flex items-center gap-2">
+<span class="w-1 h-4 bg-primary rounded-full block"></span>
+                商品清单
+            </h3>
+<!-- Item -->
+<div class="flex gap-4 pb-5 border-b border-surface-variant border-dashed">
+<div class="w-24 h-24 rounded-lg overflow-hidden border border-surface-dim shrink-0 bg-surface">
+<div class="w-full h-full bg-cover bg-center" data-alt="A top-down view of a delicate, beautifully crafted traditional Chinese pastry, specifically a white osmanthus cake, resting on a minimalist white ceramic plate. The lighting is soft and natural, emphasizing the precise textures and pale colors of the dessert against the pristine background. The aesthetic is calm, highly refined, and evocative of ink-and-wash negative space." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBFEEPj1R-CgpUrFGz1rqq78psYOcfoPX4lN-PNaf-aNb2qfliXr_yvjs-uP3gVG2KOqAyo4apxUXJxLlG4kror_2ztT3DggKN4k_hjqKnn_ss1OGsHjnzcdMruWgWoDxEa6JiB-yK_ENt_b9kQXfhSVMrhKa8vvGICZviAnfqhjx00R0fzultc7IUio8Eqy1ena-8F6Bm_JB2HuhL_PbJamgjstpCTLsHQmsvANJQaJjAIGcYOBn4o')"></div>
+</div>
+<div class="flex-1 flex flex-col justify-between py-1">
+<div>
+<div class="flex justify-between items-start">
+<h4 class="font-body-lg text-body-lg text-on-background font-medium">桂花清露白玉糕</h4>
+<span class="font-label-price text-label-price text-on-background">¥128</span>
+</div>
+<div class="flex flex-wrap gap-2 mt-2">
+<span class="px-2 py-0.5 border border-outline-variant rounded font-label-sm text-label-sm text-tertiary">定制尺寸：6英寸</span>
+<span class="px-2 py-0.5 border border-outline-variant rounded font-label-sm text-label-sm text-tertiary">少糖</span>
+</div>
+</div>
+<div class="text-right font-body-md text-body-md text-tertiary mt-2">x1</div>
+</div>
+</div>
+<!-- Custom Message Box -->
+<div class="mt-5 bg-surface-container-low p-4 rounded-lg border border-surface-dim/50 relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-secondary-fixed-dim"></div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary mt-0.5" style="font-size: 20px;">edit_note</span>
+<div class="flex-1">
+<span class="font-label-sm text-label-sm text-tertiary block mb-2">定制贺卡留言</span>
+<p class="font-body-md text-body-md text-on-secondary-fixed-variant leading-relaxed font-medium seal-font">「岁岁常欢愉，万事皆胜意。母亲节快乐。」</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Order Summary & Details -->
+<section class="mx-margin-page mt-stack-md bg-surface-container-lowest rounded-xl p-5 border border-surface-dim shadow-[0_2px_10px_rgba(58,54,48,0.02)]">
+<!-- Summary -->
+<div class="space-y-3 pb-5 border-b border-surface-variant">
+<div class="flex justify-between font-body-md text-body-md text-secondary">
+<span>商品总价</span><span>¥128.00</span>
+</div>
+<div class="flex justify-between font-body-md text-body-md text-primary">
+<span>会员优惠</span><span>-¥12.80</span>
+</div>
+<div class="flex justify-between items-end pt-3">
+<span class="font-body-md text-body-md text-on-background font-medium">实付款</span>
+<span class="font-label-price text-label-price text-primary text-xl">¥115.20</span>
+</div>
+</div>
+<!-- Details -->
+<div class="pt-5 space-y-4">
+<div class="flex justify-between items-center font-label-sm text-label-sm text-tertiary">
+<span class="w-20">订单编号</span>
+<div class="flex items-center gap-2">
+<span class="tracking-wider">RY202310240001</span>
+<button class="material-symbols-outlined hover:text-primary transition-colors cursor-pointer text-outline" onclick="alert('订单号已复制')" style="font-size: 16px;">content_copy</button>
+</div>
+</div>
+<div class="flex justify-between font-label-sm text-label-sm text-tertiary">
+<span class="w-20">下单时间</span>
+<span class="tracking-wider">2023-10-24 09:30:21</span>
+</div>
+<div class="flex justify-between font-label-sm text-label-sm text-tertiary">
+<span class="w-20">支付方式</span>
+<span>微信支付</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Action Bar -->
+<div class="fixed bottom-0 left-0 w-full bg-surface-container-lowest/90 backdrop-blur-md border-t border-surface-dim p-4 pb-safe z-50 flex justify-end gap-3 shadow-[0_-4px_20px_rgba(58,54,48,0.03)] max-w-3xl mx-auto right-0">
+<button class="px-5 py-2.5 rounded border border-outline text-secondary font-label-sm text-label-sm hover:bg-surface transition-colors focus:ring-2 focus:ring-primary/20">联系客服</button>
+<button class="px-5 py-2.5 rounded border border-outline text-secondary font-label-sm text-label-sm hover:bg-surface transition-colors focus:ring-2 focus:ring-primary/20">取消订单</button>
+<button class="px-8 py-2.5 rounded bg-primary text-on-primary font-label-sm text-label-sm hover:bg-on-primary-fixed-variant transition-colors shadow-sm focus:ring-2 focus:ring-primary/50 flex items-center gap-2" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+<span class="material-symbols-outlined" style="font-size: 18px;">qr_code</span>
+            出示取货码
+        </button>
+</div>
+</body></html>

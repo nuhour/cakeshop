@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>结算 - 如也</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Noto Serif SC (Display) & Be Vietnam Pro (Body) -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&amp;family=Noto+Serif+SC:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Theme Config (Brand Anchors) -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error": "#ffffff",
+                    "on-surface-variant": "#57423e",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-container": "#795b3c",
+                    "primary": "#953225",
+                    "on-primary-fixed-variant": "#83251a",
+                    "secondary-fixed": "#ffdcbd",
+                    "surface": "#fff8f2",
+                    "surface-container-highest": "#e9e1d8",
+                    "error-container": "#ffdad6",
+                    "background": "#fff8f2",
+                    "tertiary-fixed": "#ebe1d3",
+                    "on-primary": "#ffffff",
+                    "surface-container-high": "#efe7de",
+                    "on-tertiary-fixed-variant": "#4c463c",
+                    "on-tertiary-fixed": "#201b12",
+                    "tertiary-fixed-dim": "#cfc5b8",
+                    "surface-container": "#f5ede4",
+                    "on-surface": "#1e1b16",
+                    "tertiary-container": "#726b5f",
+                    "surface-variant": "#e9e1d8",
+                    "on-error-container": "#93000a",
+                    "surface-tint": "#a33c2e",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-container": "#ffe9e6",
+                    "tertiary": "#595348",
+                    "surface-dim": "#e1d9d0",
+                    "outline-variant": "#dec0bb",
+                    "secondary-fixed-dim": "#e7bf9a",
+                    "inverse-on-surface": "#f8efe6",
+                    "surface-container-low": "#fbf2e9",
+                    "inverse-surface": "#34302a",
+                    "secondary": "#77583a",
+                    "on-background": "#1e1b16",
+                    "secondary-container": "#ffd5af",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed": "#2b1701",
+                    "inverse-primary": "#ffb4a8",
+                    "on-secondary-fixed-variant": "#5c4125",
+                    "primary-fixed-dim": "#ffb4a8",
+                    "surface-bright": "#fff8f2",
+                    "on-primary-fixed": "#410000",
+                    "primary-fixed": "#ffdad4",
+                    "outline": "#8a716d",
+                    "primary-container": "#b5493a",
+                    "error": "#ba1a1a",
+                    "on-tertiary-container": "#f7edde"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "gutter": "16px",
+                    "margin-page": "24px",
+                    "unit": "4px",
+                    "stack-sm": "8px",
+                    "stack-lg": "32px",
+                    "stack-md": "16px"
+            },
+            "fontFamily": {
+                    "body-md": ["'Be Vietnam Pro'", "sans-serif"],
+                    "display-lg": ["'Noto Serif SC'", "serif"],
+                    "headline-sm": ["'Noto Serif SC'", "serif"],
+                    "body-lg": ["'Be Vietnam Pro'", "sans-serif"],
+                    "label-sm": ["'Be Vietnam Pro'", "sans-serif"],
+                    "display-md": ["'Noto Serif SC'", "serif"],
+                    "label-price": ["'Noto Serif SC'", "serif"]
+            },
+            "fontSize": {
+                    "body-md": ["14px", { "lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400" }],
+                    "display-lg": ["32px", { "lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                    "headline-sm": ["20px", { "lineHeight": "1.5", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                    "body-lg": ["16px", { "lineHeight": "1.6", "letterSpacing": "0.02em", "fontWeight": "400" }],
+                    "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                    "display-md": ["24px", { "lineHeight": "1.4", "letterSpacing": "0.08em", "fontWeight": "500" }],
+                    "label-price": ["18px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600" }]
+            }
+          },
+        }
+      }
+    </script>
+<style>
+        /* Custom utilities for scrolling and typography */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* Ambient shadow simulation */
+        .ambient-shadow {
+            box-shadow: 0 4px 24px rgba(58, 54, 48, 0.04), 0 1px 3px rgba(58, 54, 48, 0.02);
+        }
+
+        /* Material Icons Baseline Alignment */
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface antialiased min-h-screen pb-32">
+<!-- Transactional Header (Suppressed Main Nav) -->
+<header class="sticky top-0 z-40 bg-surface/80 backdrop-blur-md h-14 flex items-center justify-between px-margin-page">
+<button class="flex items-center justify-center w-10 h-10 -ml-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-display-md">chevron_left</span>
+</button>
+<h1 class="absolute left-1/2 -translate-x-1/2 font-headline-sm text-headline-sm text-on-surface tracking-widest">确认订单</h1>
+<div class="w-10"></div> <!-- Spacer for centering -->
+</header>
+<main class="px-margin-page pt-4 space-y-stack-md max-w-2xl mx-auto">
+<!-- Section 1: Mode Toggle & Location -->
+<section class="bg-surface-container-lowest rounded-xl border border-outline-variant/30 ambient-shadow overflow-hidden">
+<!-- Tabs -->
+<div class="flex p-1 bg-surface-variant/30 border-b border-outline-variant/20">
+<button class="flex-1 py-2 text-center rounded-lg font-body-md text-body-md transition-all duration-300 bg-surface-container-lowest shadow-sm text-primary font-medium" id="tab-delivery" onclick="switchTab('delivery')">
+                    外卖配送
+                </button>
+<button class="flex-1 py-2 text-center rounded-lg font-body-md text-body-md transition-all duration-300 text-on-surface-variant hover:text-primary" id="tab-pickup" onclick="switchTab('pickup')">
+                    到店自提
+                </button>
+</div>
+<!-- Address Block (Delivery Context) -->
+<div class="p-4 flex items-center justify-between cursor-pointer group" id="panel-delivery">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined mt-1 text-on-surface-variant group-hover:text-primary transition-colors" style="font-variation-settings: 'FILL' 1;">location_on</span>
+<div class="flex flex-col gap-1">
+<span class="font-headline-sm text-headline-sm text-on-surface">北京市朝阳区建国路87号</span>
+<span class="font-body-md text-body-md text-on-surface-variant">李先生 · 138****8920</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline">chevron_right</span>
+</div>
+<!-- Store Block (Pickup Context - Hidden initially) -->
+<div class="p-4 items-center justify-between cursor-pointer group hidden" id="panel-pickup">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined mt-1 text-on-surface-variant group-hover:text-primary transition-colors" style="font-variation-settings: 'FILL' 1;">storefront</span>
+<div class="flex flex-col gap-1">
+<span class="font-headline-sm text-headline-sm text-on-surface">三里屯太古里店</span>
+<span class="font-body-md text-body-md text-on-surface-variant">距您 1.2km · 朝阳区三里屯路19号</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline">chevron_right</span>
+</div>
+</section>
+<!-- Section 2: Appointment (Date & Time) -->
+<section class="bg-surface-container-lowest rounded-xl border border-outline-variant/30 ambient-shadow p-4 space-y-4">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">配送时间</h2>
+<!-- Date Slider -->
+<div class="flex overflow-x-auto hide-scrollbar gap-6 border-b border-outline-variant/20 pb-2">
+<!-- Active Date -->
+<button class="relative flex-shrink-0 flex flex-col items-center gap-1 pb-2">
+<span class="font-body-md text-body-md text-primary font-medium">今天</span>
+<span class="font-label-sm text-label-sm text-primary">10/24</span>
+<div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-primary rounded-full"></div>
+</button>
+<!-- Inactive Dates -->
+<button class="relative flex-shrink-0 flex flex-col items-center gap-1 pb-2 opacity-60 hover:opacity-100 transition-opacity">
+<span class="font-body-md text-body-md text-on-surface-variant">明天</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">10/25</span>
+</button>
+<button class="relative flex-shrink-0 flex flex-col items-center gap-1 pb-2 opacity-60 hover:opacity-100 transition-opacity">
+<span class="font-body-md text-body-md text-on-surface-variant">后天</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">10/26</span>
+</button>
+<button class="relative flex-shrink-0 flex flex-col items-center gap-1 pb-2 opacity-60 hover:opacity-100 transition-opacity">
+<span class="font-body-md text-body-md text-on-surface-variant">周五</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">10/27</span>
+</button>
+</div>
+<!-- Time Slots Grid -->
+<div class="grid grid-cols-3 gap-3">
+<!-- Slot Full/Disabled -->
+<div class="flex flex-col items-center justify-center p-2 rounded-lg border border-outline-variant/20 bg-surface-variant/30 opacity-50">
+<span class="font-label-sm text-label-sm text-on-surface-variant">09:00-10:00</span>
+<span class="font-label-sm text-label-sm text-tertiary scale-90">已满</span>
+</div>
+<!-- Slot Available -->
+<div class="flex flex-col items-center justify-center p-2 rounded-lg border border-outline-variant/30 cursor-pointer hover:border-primary/50 transition-colors">
+<span class="font-label-sm text-label-sm text-on-surface">10:00-12:00</span>
+<span class="font-label-sm text-label-sm text-tertiary scale-90">余2</span>
+</div>
+<!-- Slot Active -->
+<div class="flex flex-col items-center justify-center p-2 rounded-lg border border-primary bg-primary-container/5 cursor-pointer">
+<span class="font-label-sm text-label-sm text-primary font-medium">14:00-16:00</span>
+<span class="font-label-sm text-label-sm text-primary scale-90">余5</span>
+</div>
+<!-- Slot Available -->
+<div class="flex flex-col items-center justify-center p-2 rounded-lg border border-outline-variant/30 cursor-pointer hover:border-primary/50 transition-colors">
+<span class="font-label-sm text-label-sm text-on-surface">16:00-18:00</span>
+<span class="font-label-sm text-label-sm text-tertiary scale-90">余8</span>
+</div>
+</div>
+</section>
+<!-- Section 3: Order Items -->
+<section class="bg-surface-container-lowest rounded-xl border border-outline-variant/30 ambient-shadow p-4 space-y-4">
+<!-- Item 1 -->
+<div class="flex gap-4">
+<div class="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border border-outline-variant/20 relative">
+<div class="bg-cover bg-center w-full h-full" data-alt="A top-down view of a delicate matcha green tea mousse cake on a minimalist matte ceramic plate, soft natural lighting highlighting the smooth texture, empty negative space surrounding the plate on a dark wooden table, highly detailed, serene new Chinese aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDRxu_WQDE86hlOFuNZjkIRSbOmDp0gh75y0PIHZ937hUm2Ac7u_oRAdVu9LjpRXtAa7ojJa6lwBbVJa5d1ziQ0RdAy_j6IKN_eGAtAS6__YhZn8pMXWLBWcRcAdmL24IKf9eD91xLz9lhTuihYrKFizhf-Or2kJ6GtI4lx2LET3OvhZ33vyaxgOUFDshDtDVzYMBUhKavY69JOy__t6zUNO_incOdeVHNub5WwaByxIwp2FOuJTTUw')"></div>
+</div>
+<div class="flex flex-col flex-1 py-1">
+<div class="flex justify-between items-start">
+<h3 class="font-body-lg text-body-lg text-on-surface font-medium">龙井青提慕斯</h3>
+<span class="font-label-price text-label-price text-on-surface">¥68</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-1">微糖 · 独立包装</span>
+<span class="font-body-md text-body-md text-tertiary mt-auto">x1</span>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex gap-4">
+<div class="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border border-outline-variant/20 relative">
+<div class="bg-cover bg-center w-full h-full" data-alt="A cup of Osmanthus latte artfully presented in a handmade stoneware cup, soft morning light, scattered dried osmanthus flowers on a woven bamboo mat, minimalist composition, shallow depth of field, poetic and zen atmosphere." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDlsjJ0mHWSX409Pi0-nWbQZ32-vvCLK6dL_WSyhbl3DJb5Kgw2ZVFf2J85Y6KO0pdq9F-9WFKvxjBDX4HCwGkcsSWw1Ke_5bVkLpEna8AAaVuFb5PAw8yiY0k4MbUzgpiVTpIkZJF0brft3aOgxzpkKm_OJurSLXvuQArQG9LelnLiNYZarvIRwyo0uWyx_3m5O-LRxyJ2yvMs8tdTxzuVM3GOFMQNK6Fhxy4TxoLbpF5y3sMECYAl')"></div>
+</div>
+<div class="flex flex-col flex-1 py-1">
+<div class="flex justify-between items-start">
+<h3 class="font-body-lg text-body-lg text-on-surface font-medium">桂花酒酿拿铁</h3>
+<span class="font-label-price text-label-price text-on-surface">¥38</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-1">热 · 标准糖</span>
+<span class="font-body-md text-body-md text-tertiary mt-auto">x2</span>
+</div>
+</div>
+</section>
+<!-- Section 4: Add-ons & Remarks -->
+<section class="bg-surface-container-lowest rounded-xl border border-outline-variant/30 ambient-shadow p-4 space-y-4">
+<!-- Cutlery -->
+<div class="flex items-center justify-between group cursor-pointer">
+<span class="font-body-md text-body-md text-on-surface">餐具份数</span>
+<div class="flex items-center gap-1 text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="font-body-md text-body-md">3份</span>
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</div>
+</div>
+<div class="w-full h-px bg-outline-variant/20"></div>
+<!-- Candles -->
+<div class="flex items-center justify-between group cursor-pointer">
+<span class="font-body-md text-body-md text-on-surface">蜡烛</span>
+<div class="flex items-center gap-1 text-tertiary group-hover:text-primary transition-colors">
+<span class="font-body-md text-body-md">不需要</span>
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</div>
+</div>
+<div class="w-full h-px bg-outline-variant/20"></div>
+<!-- Remarks -->
+<div class="flex items-center justify-between group cursor-pointer">
+<span class="font-body-md text-body-md text-on-surface">订单备注</span>
+<div class="flex items-center gap-1 text-tertiary group-hover:text-primary transition-colors">
+<span class="font-body-md text-body-md max-w-[150px] truncate">无接触配送，放门口...</span>
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</div>
+</div>
+</section>
+<!-- Section 5: Payment Details -->
+<section class="bg-surface-container-lowest rounded-xl border border-outline-variant/30 ambient-shadow p-4 space-y-3">
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-surface-variant">商品总价</span>
+<span class="font-body-md text-body-md text-on-surface">¥ 144.00</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-surface-variant">配送费</span>
+<span class="font-body-md text-body-md text-on-surface">¥ 8.00</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-surface-variant">包装费</span>
+<span class="font-body-md text-body-md text-on-surface">¥ 3.00</span>
+</div>
+<div class="flex justify-between items-center group cursor-pointer pt-1">
+<div class="flex items-center gap-2">
+<span class="font-body-md text-body-md text-on-surface">优惠券</span>
+<span class="px-2 py-0.5 rounded border border-primary/30 text-primary font-label-sm text-label-sm">1张可用</span>
+</div>
+<div class="flex items-center gap-1 text-primary">
+<span class="font-body-md text-body-md">- ¥ 10.00</span>
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</div>
+</div>
+<div class="w-full h-px bg-outline-variant/20 my-2"></div>
+<div class="flex justify-end items-end gap-3 pt-2">
+<span class="font-body-md text-body-md text-on-surface-variant mb-0.5">已优惠 ¥ 10.00</span>
+<div class="flex items-baseline gap-1">
+<span class="font-body-md text-body-md text-on-surface">小计</span>
+<span class="font-label-price text-label-price text-primary text-[22px]">¥ 145.00</span>
+</div>
+</div>
+</section>
+<!-- Bottom spacing for fixed bar -->
+<div class="h-6"></div>
+</main>
+<!-- Bottom Action Bar (Fixed) -->
+<div class="fixed bottom-0 left-0 w-full bg-surface-container-lowest/90 backdrop-blur-md border-t border-outline-variant/30 pb-safe z-50">
+<div class="flex justify-between items-center px-margin-page py-3 max-w-2xl mx-auto">
+<div class="flex flex-col">
+<div class="flex items-baseline gap-1 text-primary">
+<span class="font-body-md text-body-md">合计</span>
+<span class="font-label-price text-label-price text-[24px]">¥ 145.00</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">包含配送费、包装费</span>
+</div>
+<button class="bg-primary-container hover:bg-primary transition-colors text-on-primary-container px-8 py-3 rounded-xl flex items-center justify-center gap-2 shadow-sm active:scale-95 duration-200">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">chat_bubble</span>
+<span class="font-headline-sm text-headline-sm text-[16px] tracking-widest">微信支付</span>
+</button>
+</div>
+</div>
+<!-- Micro-interaction Scripts -->
+<script>
+        function switchTab(mode) {
+            const tabDelivery = document.getElementById('tab-delivery');
+            const tabPickup = document.getElementById('tab-pickup');
+            const panelDelivery = document.getElementById('panel-delivery');
+            const panelPickup = document.getElementById('panel-pickup');
+
+            // Reset classes
+            const inactiveClasses = ['text-on-surface-variant', 'hover:text-primary'];
+            const activeClasses = ['bg-surface-container-lowest', 'shadow-sm', 'text-primary', 'font-medium'];
+
+            if (mode === 'delivery') {
+                // Update Tabs
+                tabPickup.classList.remove(...activeClasses);
+                tabPickup.classList.add(...inactiveClasses);
+                tabDelivery.classList.remove(...inactiveClasses);
+                tabDelivery.classList.add(...activeClasses);
+                
+                // Update Panels
+                panelDelivery.classList.remove('hidden');
+                panelDelivery.classList.add('flex');
+                panelPickup.classList.add('hidden');
+                panelPickup.classList.remove('flex');
+            } else {
+                // Update Tabs
+                tabDelivery.classList.remove(...activeClasses);
+                tabDelivery.classList.add(...inactiveClasses);
+                tabPickup.classList.remove(...inactiveClasses);
+                tabPickup.classList.add(...activeClasses);
+                
+                // Update Panels
+                panelPickup.classList.remove('hidden');
+                panelPickup.classList.add('flex');
+                panelDelivery.classList.add('hidden');
+                panelDelivery.classList.remove('flex');
+            }
+        }
+    </script>
+</body></html>

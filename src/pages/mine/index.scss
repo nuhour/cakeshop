@@ -1,0 +1,121 @@
+.mine-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 18px;
+  padding: 22px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #8b5a2b, #6f411a);
+  color: #ffffff;
+}
+
+.mine-name,
+.mine-level {
+  display: block;
+}
+
+.mine-name {
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.mine-level {
+  margin-top: 8px;
+  color: #f1deb3;
+  font-size: 14px;
+}
+
+.mine-login {
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: #f5a623;
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.mine-assets,
+.mine-section,
+.mine-menu {
+  margin: 14px 18px;
+  border-radius: 18px;
+  background: #ffffff;
+}
+
+.mine-assets {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 18px;
+  color: #524534;
+  text-align: center;
+  font-size: 13px;
+}
+
+.mine-assets__value {
+  display: block;
+  margin-bottom: 6px;
+  color: #835500;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.mine-section {
+  padding: 18px;
+}
+
+.mine-section__head {
+  display: flex;
+  justify-content: space-between;
+  color: #1b1c1a;
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.mine-section__head text:last-child {
+  color: #835500;
+  font-size: 13px;
+}
+
+.mine-order-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 18px;
+  color: #524534;
+  text-align: center;
+  font-size: 13px;
+}
+
+.mine-order-grid__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+}
+
+.mine-order-grid__badge {
+  position: absolute;
+  top: -7px;
+  right: 12px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: #d9532b;
+  color: #ffffff;
+  font-size: 11px;
+  line-height: 17px;
+}
+
+.mine-menu {
+  overflow: hidden;
+}
+
+.mine-menu__item {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 18px;
+  border-bottom: 1px solid rgba(133, 116, 98, 0.12);
+  color: #524534;
+  font-size: 16px;
+}

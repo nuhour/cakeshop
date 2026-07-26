@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>如也 - 订单列表</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#fff8f2",
+                        "on-secondary-container": "#795b3c",
+                        "on-secondary-fixed": "#2b1701",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed": "#ebe1d3",
+                        "on-primary-container": "#ffe9e6",
+                        "secondary-fixed-dim": "#e7bf9a",
+                        "on-primary-fixed": "#410000",
+                        "on-surface-variant": "#57423e",
+                        "tertiary-fixed-dim": "#cfc5b8",
+                        "tertiary-container": "#726b5f",
+                        "surface-tint": "#a33c2e",
+                        "tertiary": "#595348",
+                        "surface-container": "#f5ede4",
+                        "on-tertiary-fixed": "#201b12",
+                        "surface-dim": "#e1d9d0",
+                        "on-secondary-fixed-variant": "#5c4125",
+                        "primary-fixed": "#ffdad4",
+                        "error": "#ba1a1a",
+                        "surface-bright": "#fff8f2",
+                        "surface-variant": "#e9e1d8",
+                        "secondary-container": "#ffd5af",
+                        "on-error": "#ffffff",
+                        "secondary": "#77583a",
+                        "secondary-fixed": "#ffdcbd",
+                        "primary-container": "#b5493a",
+                        "on-tertiary-container": "#f7edde",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#fbf2e9",
+                        "inverse-primary": "#ffb4a8",
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#dec0bb",
+                        "on-secondary": "#ffffff",
+                        "surface": "#fff8f2",
+                        "inverse-on-surface": "#f8efe6",
+                        "surface-container-high": "#efe7de",
+                        "primary-fixed-dim": "#ffb4a8",
+                        "on-primary-fixed-variant": "#83251a",
+                        "primary": "#953225",
+                        "on-surface": "#1e1b16",
+                        "on-tertiary-fixed-variant": "#4c463c",
+                        "on-primary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-background": "#1e1b16",
+                        "surface-container-highest": "#e9e1d8",
+                        "outline": "#8a716d",
+                        "inverse-surface": "#34302a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "stack-md": "16px",
+                        "gutter": "16px",
+                        "stack-sm": "8px",
+                        "stack-lg": "32px",
+                        "unit": "4px",
+                        "margin-page": "24px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["beVietnamPro", "sans-serif"],
+                        "body-md": ["beVietnamPro", "sans-serif"],
+                        "headline-sm": ["notoSerif", "serif"],
+                        "body-lg": ["beVietnamPro", "sans-serif"],
+                        "label-price": ["notoSerif", "serif"],
+                        "display-lg": ["notoSerif", "serif"],
+                        "display-md": ["notoSerif", "serif"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-md": ["14px", { "lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "headline-sm": ["20px", { "lineHeight": "1.5", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "letterSpacing": "0.02em", "fontWeight": "400" }],
+                        "label-price": ["18px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "display-lg": ["32px", { "lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                        "display-md": ["24px", { "lineHeight": "1.4", "letterSpacing": "0.08em", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.surface');
+            -webkit-font-smoothing: antialiased;
+        }
+        /* Silk card subtle shadow */
+        .shadow-silk {
+            box-shadow: 0 4px 20px rgba(58, 54, 48, 0.03);
+        }
+    </style>
+</head>
+<body class="pb-24">
+<!-- TopAppBar -->
+<header class="bg-surface/80 dark:bg-surface/80 backdrop-blur-md sticky top-0 z-50 border-b border-outline-variant/30 flex justify-between items-center w-full px-margin-page py-4 max-w-7xl mx-auto">
+<button class="text-on-surface-variant hover:opacity-80 transition-opacity active:scale-95 duration-200 p-2 -ml-2 rounded-full">
+<span class="material-symbols-outlined text-[24px]">menu</span>
+</button>
+<h1 class="font-display-lg text-display-lg tracking-widest text-primary">如 也</h1>
+<button class="text-on-surface-variant hover:opacity-80 transition-opacity active:scale-95 duration-200 p-2 -mr-2 rounded-full">
+<span class="material-symbols-outlined text-[24px]">search</span>
+</button>
+</header>
+<!-- Main Content -->
+<main class="max-w-2xl mx-auto min-h-screen">
+<!-- Tabs -->
+<nav class="flex px-margin-page border-b border-outline-variant/20 pt-stack-sm sticky top-[73px] bg-surface/90 backdrop-blur-sm z-40">
+<button class="flex-1 pb-3 relative text-center">
+<span class="font-headline-sm text-headline-sm text-primary">全部</span>
+<div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-[2px] bg-primary"></div>
+</button>
+<button class="flex-1 pb-3 relative text-center group">
+<span class="font-headline-sm text-headline-sm text-on-surface-variant group-hover:text-primary transition-colors">进行中</span>
+</button>
+<button class="flex-1 pb-3 relative text-center group">
+<span class="font-headline-sm text-headline-sm text-on-surface-variant group-hover:text-primary transition-colors">已完成</span>
+</button>
+</nav>
+<!-- Order List Container -->
+<div class="flex flex-col gap-stack-lg p-margin-page mt-stack-md">
+<!-- Order Card 1: In Progress -->
+<article class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-stack-md shadow-silk flex flex-col gap-stack-sm relative overflow-hidden group hover:shadow-[0_8px_30px_rgba(58,54,48,0.05)] transition-shadow duration-300">
+<!-- Header -->
+<div class="flex justify-between items-start pb-stack-sm border-b border-outline-variant/20">
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">订单编号 RY-20231024-88A</span>
+<span class="text-[10px] text-tertiary-container tracking-wider">2023.10.24 14:30</span>
+</div>
+<span class="font-headline-sm text-[16px] text-primary tracking-widest">待取货</span>
+</div>
+<!-- Product Summary -->
+<div class="flex gap-stack-md items-center py-stack-sm">
+<div class="w-20 h-20 rounded-lg overflow-hidden bg-surface-variant shrink-0 relative" data-alt="A meticulously crafted traditional Chinese dessert, shaped like a delicate lotus flower, resting on a textured, matte celadon ceramic plate. Warm, soft directional lighting highlights the smooth, slightly translucent texture of the pale green pastry. The minimalist background features subtle ink-wash inspired shadows, exuding a sense of premium quality, poetic zen, and quiet elegance. Color palette emphasizes soft silk whites and muted tea greens." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBI4Px3L82xTt_dQEtm-3mAlFkTIFyC7BvrFnEXp19PHXSOvfRbuL1MKBobh2dhesfr_zxvovWts7bl-RA-1dLL7tMlUbC4djnpXQMsCskq89GIqIih67AOycFaRf0Ui1MXdnkE-JrI15HCkFBKFIQxWT53zeS_oxQlrGnGhmuBa6UMRu60Zw96ATr6fI350PSSDMORkG59DjeWs4GQUjLjFAPJplLkHSBp1MYCXL4DTnFCM3e6I4DB')">
+<div class="absolute inset-0 bg-black/5"></div>
+</div>
+<div class="flex-1 flex flex-col justify-center gap-1">
+<h3 class="font-display-md text-[18px] text-on-surface tracking-wide">雨前龙井绿豆冰糕</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">春季限定 · 4枚装装</p>
+</div>
+<div class="text-right flex flex-col justify-center">
+<span class="font-label-price text-label-price text-on-surface block">¥ 68</span>
+<span class="font-body-md text-body-md text-tertiary-container mt-1">x 1</span>
+</div>
+</div>
+<!-- Total Amount -->
+<div class="flex justify-end items-end pt-stack-sm gap-2">
+<span class="font-body-md text-body-md text-on-surface-variant mb-[3px]">实付金额</span>
+<span class="font-display-md text-display-md text-on-surface tracking-widest">¥ 68.00</span>
+</div>
+<!-- Actions -->
+<div class="flex justify-end gap-stack-md pt-stack-md mt-stack-sm border-t border-outline-variant/10">
+<button class="px-6 py-2 border border-outline/50 text-on-surface rounded-lg font-label-sm text-label-sm hover:bg-surface transition-colors active:scale-95 duration-200">
+                        查看详情
+                    </button>
+<button class="px-6 py-2 bg-primary-container text-on-primary-container rounded-lg font-label-sm text-label-sm hover:opacity-90 transition-opacity shadow-sm active:scale-95 duration-200">
+                        出示取货码
+                    </button>
+</div>
+</article>
+<!-- Order Card 2: Completed -->
+<article class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-stack-md shadow-silk flex flex-col gap-stack-sm relative overflow-hidden group hover:shadow-[0_8px_30px_rgba(58,54,48,0.05)] transition-shadow duration-300">
+<!-- Header -->
+<div class="flex justify-between items-start pb-stack-sm border-b border-outline-variant/20">
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">订单编号 RY-20231018-42B</span>
+<span class="text-[10px] text-tertiary-container tracking-wider">2023.10.18 10:15</span>
+</div>
+<span class="font-headline-sm text-[16px] text-tertiary-container tracking-widest">已完成</span>
+</div>
+<!-- Product Summary -->
+<div class="flex gap-stack-md items-center py-stack-sm">
+<div class="w-20 h-20 rounded-lg overflow-hidden bg-surface-variant shrink-0 relative opacity-90" data-alt="Two piece set of rich, dark amber colored date and walnut traditional cakes, presented on a piece of textured white Xuan paper. The top-down view emphasizes the precise rectangular cuts and the dense, premium ingredients. Soft, diffused lighting creates gentle highlights on the glossy surface of the dates. The overall mood is warm, traditional, and subtly opulent, utilizing a palette of deep browns, taupes, and pristine white." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDbjmF1OrAL3Ak6cooidnlH4hmifdihQ14HMr1eHOjuOF2QaMrYeyEEdUeggNumL2v1oD73JLcLJlDNnkhL0MsyE1NLaTauywIZoOz09jAVE_DxpXFwyIjhC132qy0F6R0ovKNIldXmnuHMWlsbpLLQJvJK1Knm7HE_agds5TjoRoKXzNMwlbmxkO-D8m03zZByHLLhb7arkksVMqa29zKELAhlfbynduiDpQg964KqjTlOgH23AKOT')">
+<div class="absolute inset-0 bg-black/5"></div>
+</div>
+<div class="flex-1 flex flex-col justify-center gap-1">
+<h3 class="font-display-md text-[18px] text-on-surface tracking-wide">古法核桃南枣糕</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">经典手作 · 250g/盒</p>
+</div>
+<div class="text-right flex flex-col justify-center">
+<span class="font-label-price text-label-price text-on-surface block">¥ 128</span>
+<span class="font-body-md text-body-md text-tertiary-container mt-1">x 2</span>
+</div>
+</div>
+<!-- Total Amount -->
+<div class="flex justify-end items-end pt-stack-sm gap-2">
+<span class="font-body-md text-body-md text-on-surface-variant mb-[3px]">实付金额</span>
+<span class="font-display-md text-display-md text-on-surface tracking-widest">¥ 256.00</span>
+</div>
+<!-- Actions -->
+<div class="flex justify-end gap-stack-md pt-stack-md mt-stack-sm border-t border-outline-variant/10">
+<button class="px-6 py-2 border border-outline/50 text-on-surface rounded-lg font-label-sm text-label-sm hover:bg-surface transition-colors active:scale-95 duration-200">
+                        查看详情
+                    </button>
+<button class="px-6 py-2 border border-primary text-primary rounded-lg font-label-sm text-label-sm hover:bg-primary-container/5 transition-colors active:scale-95 duration-200">
+                        再来一单
+                    </button>
+</div>
+</article>
+<!-- Bottom Spacer for Nav -->
+<div class="h-10"></div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="bg-surface dark:bg-surface-dim docked full-width bottom-0 border-t border-outline-variant/20 shadow-[0_-2px_10px_rgba(58,54,48,0.03)] fixed left-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe md:hidden">
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-tertiary hover:text-primary dark:hover:text-inverse-primary transition-colors group">
+<span class="material-symbols-outlined text-[24px] mb-1 group-active:scale-95 duration-200">home</span>
+<span class="font-label-sm text-label-sm">首页</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-tertiary hover:text-primary dark:hover:text-inverse-primary transition-colors group">
+<span class="material-symbols-outlined text-[24px] mb-1 group-active:scale-95 duration-200">category</span>
+<span class="font-label-sm text-label-sm">分类</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-tertiary hover:text-primary dark:hover:text-inverse-primary transition-colors group">
+<span class="material-symbols-outlined text-[24px] mb-1 group-active:scale-95 duration-200">shopping_basket</span>
+<span class="font-label-sm text-label-sm">提篮</span>
+</button>
+<!-- Active Tab: 我的 (My) as Order List usually belongs here -->
+<button class="flex flex-col items-center justify-center text-primary dark:text-inverse-primary bg-primary-container/10 rounded-full py-1 px-4 translate-y-[-2px] duration-300 ease-out">
+<span class="material-symbols-outlined text-[24px] mb-1" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-sm text-label-sm">我的</span>
+</button>
+</nav>
+</body></html>

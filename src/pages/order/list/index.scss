@@ -1,0 +1,37 @@
+.order-tabs {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  margin: 14px 18px;
+  white-space: nowrap;
+}
+
+.order-tabs__item {
+  position: relative;
+  padding: 9px 15px;
+  border-radius: 999px;
+  background: #efeeea;
+  color: #524534;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.order-tabs__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 17px;
+  height: 17px;
+  margin-left: 5px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: #d9532b;
+  color: #ffffff;
+  font-size: 11px;
+  line-height: 17px;
+}
+
+.order-tabs__item--active {
+  background: #f5a623;
+  color: #ffffff;
+}

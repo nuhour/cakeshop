@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>我的积分 - 如也</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&amp;family=Noto+Serif:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#795b3c",
+                        "surface-tint": "#a33c2e",
+                        "surface-dim": "#e1d9d0",
+                        "inverse-surface": "#34302a",
+                        "primary-fixed": "#ffdad4",
+                        "secondary-container": "#ffd5af",
+                        "on-tertiary-fixed": "#201b12",
+                        "on-tertiary-container": "#f7edde",
+                        "outline": "#8a716d",
+                        "surface-variant": "#e9e1d8",
+                        "on-secondary-fixed-variant": "#5c4125",
+                        "surface-container": "#f5ede4",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#77583a",
+                        "tertiary-container": "#726b5f",
+                        "on-primary-fixed-variant": "#83251a",
+                        "secondary-fixed": "#ffdcbd",
+                        "on-surface-variant": "#57423e",
+                        "on-secondary-fixed": "#2b1701",
+                        "tertiary-fixed": "#ebe1d3",
+                        "surface": "#fff8f2",
+                        "inverse-on-surface": "#f8efe6",
+                        "surface-container-highest": "#e9e1d8",
+                        "secondary-fixed-dim": "#e7bf9a",
+                        "on-surface": "#1e1b16",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-container": "#ffe9e6",
+                        "tertiary-fixed-dim": "#cfc5b8",
+                        "background": "#fff8f2",
+                        "on-tertiary-fixed-variant": "#4c463c",
+                        "inverse-primary": "#ffb4a8",
+                        "primary-container": "#b5493a",
+                        "on-secondary": "#ffffff",
+                        "on-background": "#1e1b16",
+                        "error": "#ba1a1a",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed": "#410000",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#ffb4a8",
+                        "outline-variant": "#dec0bb",
+                        "error-container": "#ffdad6",
+                        "primary": "#953225",
+                        "tertiary": "#595348",
+                        "surface-bright": "#fff8f2",
+                        "surface-container-high": "#efe7de",
+                        "surface-container-low": "#fbf2e9"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "unit": "4px",
+                        "stack-lg": "32px",
+                        "gutter": "16px",
+                        "stack-md": "16px",
+                        "margin-page": "24px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["beVietnamPro"],
+                        "label-price": ["notoSerif"],
+                        "display-md": ["notoSerif"],
+                        "body-lg": ["beVietnamPro"],
+                        "headline-sm": ["notoSerif"],
+                        "body-md": ["beVietnamPro"],
+                        "display-lg": ["notoSerif"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "label-price": ["18px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "display-md": ["24px", { "lineHeight": "1.4", "letterSpacing": "0.08em", "fontWeight": "500" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "letterSpacing": "0.02em", "fontWeight": "400" }],
+                        "headline-sm": ["20px", { "lineHeight": "1.5", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-md": ["14px", { "lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "display-lg": ["32px", { "lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "600" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+        }
+        .texture-bg {
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+        }
+        .xuan-paper-card {
+            background-color: theme('colors.surface-container-lowest');
+            border: 1px solid theme('colors.surface-variant');
+            box-shadow: 0 4px 20px -2px rgba(58,54,48,0.03);
+        }
+    </style>
+</head>
+<body class="antialiased texture-bg min-h-screen pb-24">
+<!-- Top Navigation Placeholder (Suppressed per logic for sub-page) -->
+<header class="sticky top-0 z-40 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 px-margin-page py-4 flex items-center justify-between">
+<button aria-label="返回" class="text-on-surface hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="font-headline-sm text-headline-sm text-on-surface">我的积分</h1>
+<div class="w-6"></div> <!-- Spacer for balance -->
+</header>
+<main class="max-w-3xl mx-auto px-margin-page pt-stack-md space-y-stack-lg">
+<!-- Points Overview Card -->
+<section class="xuan-paper-card rounded-xl p-8 relative overflow-hidden flex flex-col items-center text-center">
+<!-- Decorative Seal Background Element -->
+<div class="absolute -top-10 -right-10 opacity-5">
+<span class="material-symbols-outlined text-[120px] text-primary">spa</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-2">可用积分</p>
+<div class="flex items-baseline justify-center gap-2 mb-6">
+<span class="font-display-lg text-[48px] leading-none text-primary">3,250</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">分</span>
+</div>
+<div class="flex gap-4 w-full">
+<button class="flex-1 bg-primary text-on-primary rounded-lg py-3 font-body-md text-body-md hover:bg-primary-container transition-colors">
+                    积分兑换
+                </button>
+<button class="flex-1 bg-surface-container border border-outline-variant text-on-surface rounded-lg py-3 font-body-md text-body-md hover:bg-surface-container-highest transition-colors">
+                    赚取积分
+                </button>
+</div>
+</section>
+<!-- Exchange Section -->
+<section>
+<div class="flex items-center justify-between mb-stack-md">
+<h2 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2">
+<span class="w-1 h-4 bg-primary rounded-full"></span>
+                    积分兑换
+                </h2>
+<a class="font-label-sm text-label-sm text-primary flex items-center hover:opacity-80" href="#">
+                    查看全部 <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</a>
+</div>
+<div class="grid grid-cols-2 gap-gutter">
+<!-- Item 1 -->
+<div class="xuan-paper-card rounded-lg overflow-hidden group cursor-pointer">
+<div class="aspect-square relative overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A beautifully crafted ceramic tea cup sitting on a bamboo mat, soft natural lighting highlighting the subtle glaze textures. The aesthetic is minimalist, modern Chinese style with warm taupe and soft white tones, perfect for a high-end dessert and tea brand. 8k resolution, photorealistic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0xLukmL2iOWOLmUWZD7iFsJjW4iOY6ymHjR6-M97u6hM-y6sg56HXoeZeMHHpm5f12SyKNrTnNbCcloLmeZr9UIryE1vdEsjIPEzX3WYuk5U5iCsw6e1cRk64bPKbnXPWC_lkR68vtgAdmDhPhVGhxuCX-08Psc95gBEXD1H0ePA-6SZO1CLYhLPK5jaVesMb3pRMlkjyYnfExqH5-CNerXsyUULquenNrJpOIZZudAovfbDwSdgw"/>
+</div>
+<div class="p-4">
+<h3 class="font-body-md text-body-md text-on-surface mb-1 truncate">青瓷雅韵茶盏</h3>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[14px]">stars</span>
+<span class="font-label-price text-label-price">1,500</span>
+</div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="xuan-paper-card rounded-lg overflow-hidden group cursor-pointer">
+<div class="aspect-square relative overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A minimal white gift card with elegant red calligraphy style branding, resting on textured Xuan paper. Soft ambient shadows create depth. The aesthetic aligns with a premium, slow-living Chinese tea and pastry brand. Light mode, clean composition." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLw8VWXSIYxpGaCEJ-cetzPcILag-xE9Bu_oY-SAb7WSKJjcl-VuOtcxOdF1U-iXnrKSrYff-AuPCjZdjYXnk7XiEx-iW8q8fZK1gAPzED1yPXAhVIxcWkt_gHraKkfVe7kjDAvG0Fa9xFf9S8nXY6XMd5daRDBMVn0hcshZjwI8RcYzwp5Y3xk5pI9wnTnWghsz7w90cTt7oSJadVb_XuyN9fvaYMbDFnArFKZMG_4N96jel2_jyT"/>
+</div>
+<div class="p-4">
+<h3 class="font-body-md text-body-md text-on-surface mb-1 truncate">50元无门槛券</h3>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[14px]">stars</span>
+<span class="font-label-price text-label-price">500</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Points History Section -->
+<section>
+<h2 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2 mb-stack-md">
+<span class="w-1 h-4 bg-primary rounded-full"></span>
+                积分明细
+            </h2>
+<div class="xuan-paper-card rounded-xl overflow-hidden divide-y divide-surface-variant">
+<!-- Record 1 -->
+<div class="p-4 flex items-center justify-between hover:bg-surface-container/50 transition-colors">
+<div>
+<p class="font-body-md text-body-md text-on-surface mb-1">购买「春日限定茶点套餐」</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">2023-10-25 14:30</p>
+</div>
+<div class="text-right">
+<span class="font-label-price text-label-price text-primary">+120</span>
+</div>
+</div>
+<!-- Record 2 -->
+<div class="p-4 flex items-center justify-between hover:bg-surface-container/50 transition-colors">
+<div>
+<p class="font-body-md text-body-md text-on-surface mb-1">兑换「青瓷雅韵茶盏」</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">2023-10-20 09:15</p>
+</div>
+<div class="text-right">
+<span class="font-label-price text-label-price text-on-surface">-1500</span>
+</div>
+</div>
+<!-- Record 3 -->
+<div class="p-4 flex items-center justify-between hover:bg-surface-container/50 transition-colors">
+<div>
+<p class="font-body-md text-body-md text-on-surface mb-1">签到奖励</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">2023-10-19 08:00</p>
+</div>
+<div class="text-right">
+<span class="font-label-price text-label-price text-primary">+10</span>
+</div>
+</div>
+</div>
+<div class="mt-4 text-center">
+<p class="font-label-sm text-label-sm text-on-surface-variant">已显示最近30天记录</p>
+</div>
+</section>
+</main>
+</body></html>

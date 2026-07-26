@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>如也 - 提篮</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&amp;family=Noto+Serif+SC:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#57423e",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-container": "#795b3c",
+                        "primary": "#953225",
+                        "on-primary-fixed-variant": "#83251a",
+                        "secondary-fixed": "#ffdcbd",
+                        "surface": "#fff8f2",
+                        "surface-container-highest": "#e9e1d8",
+                        "error-container": "#ffdad6",
+                        "background": "#fff8f2",
+                        "tertiary-fixed": "#ebe1d3",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#efe7de",
+                        "on-tertiary-fixed-variant": "#4c463c",
+                        "on-tertiary-fixed": "#201b12",
+                        "tertiary-fixed-dim": "#cfc5b8",
+                        "surface-container": "#f5ede4",
+                        "on-surface": "#1e1b16",
+                        "tertiary-container": "#726b5f",
+                        "surface-variant": "#e9e1d8",
+                        "on-error-container": "#93000a",
+                        "surface-tint": "#a33c2e",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-container": "#ffe9e6",
+                        "tertiary": "#595348",
+                        "surface-dim": "#e1d9d0",
+                        "outline-variant": "#dec0bb",
+                        "secondary-fixed-dim": "#e7bf9a",
+                        "inverse-on-surface": "#f8efe6",
+                        "surface-container-low": "#fbf2e9",
+                        "inverse-surface": "#34302a",
+                        "secondary": "#77583a",
+                        "on-background": "#1e1b16",
+                        "secondary-container": "#ffd5af",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed": "#2b1701",
+                        "inverse-primary": "#ffb4a8",
+                        "on-secondary-fixed-variant": "#5c4125",
+                        "primary-fixed-dim": "#ffb4a8",
+                        "surface-bright": "#fff8f2",
+                        "on-primary-fixed": "#410000",
+                        "primary-fixed": "#ffdad4",
+                        "outline": "#8a716d",
+                        "primary-container": "#b5493a",
+                        "error": "#ba1a1a",
+                        "on-tertiary-container": "#f7edde"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    spacing: {
+                        "gutter": "16px",
+                        "margin-page": "24px",
+                        "unit": "4px",
+                        "stack-sm": "8px",
+                        "stack-lg": "32px",
+                        "stack-md": "16px"
+                    },
+                    fontFamily: {
+                        "body-md": ["'Be Vietnam Pro'", "sans-serif"],
+                        "display-lg": ["'Noto Serif SC'", "serif"],
+                        "headline-sm": ["'Noto Serif SC'", "serif"],
+                        "body-lg": ["'Be Vietnam Pro'", "sans-serif"],
+                        "label-sm": ["'Be Vietnam Pro'", "sans-serif"],
+                        "display-md": ["'Noto Serif SC'", "serif"],
+                        "label-price": ["'Noto Serif SC'", "serif"]
+                    },
+                    fontSize: {
+                        "body-md": ["14px", { lineHeight: "1.6", letterSpacing: "0em", fontWeight: "400" }],
+                        "display-lg": ["32px", { lineHeight: "1.4", letterSpacing: "0.1em", fontWeight: "600" }],
+                        "headline-sm": ["20px", { lineHeight: "1.5", letterSpacing: "0.05em", fontWeight: "500" }],
+                        "body-lg": ["16px", { lineHeight: "1.6", letterSpacing: "0.02em", fontWeight: "400" }],
+                        "label-sm": ["12px", { lineHeight: "1", letterSpacing: "0.05em", fontWeight: "500" }],
+                        "display-md": ["24px", { lineHeight: "1.4", letterSpacing: "0.08em", fontWeight: "500" }],
+                        "label-price": ["18px", { lineHeight: "1.2", letterSpacing: "0.02em", fontWeight: "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Be Vietnam Pro', sans-serif; }
+        .font-serif-sc { font-family: 'Noto Serif SC', serif; }
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 flex justify-between items-center px-margin-page py-4 max-w-7xl mx-auto transition-transform">
+<button class="text-primary dark:text-inverse-primary hover:opacity-80 transition-opacity active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<h1 class="font-display-md text-display-md tracking-widest text-primary dark:text-on-primary-fixed-variant">如也</h1>
+<button class="text-primary dark:text-inverse-primary hover:opacity-80 transition-opacity active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+</header>
+<!-- Main Content -->
+<main class="flex-1 pt-[72px] pb-[160px] max-w-3xl mx-auto w-full">
+<!-- Notification Banner -->
+<div class="bg-primary-container/10 px-margin-page py-3 flex items-start gap-3 mt-4">
+<span class="material-symbols-outlined text-primary text-lg mt-0.5" data-icon="info">info</span>
+<p class="font-body-md text-body-md text-primary pt-0.5">本单含定制蛋糕，将整单按预约时段交付</p>
+</div>
+<div class="px-margin-page py-8">
+<h2 class="font-display-md text-display-md text-on-surface mb-6 font-serif-sc">提篮</h2>
+<!-- Item List -->
+<div class="flex flex-col gap-6">
+<!-- Cart Item 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-4 flex gap-4 shadow-[0_2px_10px_rgba(58,54,48,0.02)]">
+<div class="w-24 h-24 shrink-0 rounded-lg overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A top-down view of a delicate, sophisticated matcha crepe cake on a minimalist matte ceramic plate. The lighting is soft and natural, emphasizing the fine layers and vibrant green tea dust on top. The setting suggests a high-end, serene tea house with a New Chinese aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_QC5ZYB7t-4BWzNPTjYJB582keWJQzkmWLthsTmzkjCU2OlaqlYZEsh0TJuVylHY28H0LwBh74rYlnnpmJZPQJfwNB94rQK5SArI4hruUFhuPaQJ3uxutEkq1Jd5Qx3NvQa21ssBDLkTSk4Ka5l0y5NPTexBDTFq0r0zJWir2Fw2Ybq0BAoGXxr-LWtqOegbET18mDTR8M6UIRl-dFPRfcjAz-EukV0RpD8jygDdaspsrvWRyaX3b"/>
+</div>
+<div class="flex-1 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-serif-sc">春日抹茶千层</h3>
+<button class="text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined text-sm" data-icon="close">close</span></button>
+</div>
+<div class="mt-2 flex flex-wrap gap-2">
+<span class="px-2 py-1 border border-secondary/30 rounded text-tertiary font-label-sm text-label-sm">8寸</span>
+<span class="px-2 py-1 border border-secondary/30 rounded text-tertiary font-label-sm text-label-sm">原味</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2 text-xs">留言: 生日快乐</p>
+</div>
+<div class="flex justify-between items-end mt-4">
+<span class="font-label-price text-label-price text-on-surface font-serif-sc">¥ 288</span>
+<!-- Stepper -->
+<div class="flex items-center gap-3">
+<button class="w-7 h-7 rounded-full border border-outline-variant text-on-surface flex items-center justify-center hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-sm">remove</span>
+</button>
+<span class="font-body-md text-body-md w-4 text-center">1</span>
+<button class="w-7 h-7 rounded-full bg-surface-container-highest text-on-surface flex items-center justify-center hover:bg-surface-dim transition-colors">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Cart Item 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-4 flex gap-4 shadow-[0_2px_10px_rgba(58,54,48,0.02)]">
+<div class="w-24 h-24 shrink-0 rounded-lg overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A close-up shot of elegant, translucent white peach oolong tea jelly desserts in small, refined glass bowls. The background is a clean, textured Xuan paper-like surface with gentle, diffused lighting creating a calm, zen-like atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBK4vwwIv5ex_JcJTuOaO9F3QTx9vsccMXlfOCGRSwVvKBa1h68WosI2UZj3U07c_MZvf_5oo95E6L2dk2xhhTGlgQ6_vwU9V8bvKhlXdf_cFk1ZLI5zGFJq1XVDHLAcwXGN2uiaaodxqH5xCo7XTP3TeWrGMo7b4YoomXJh5UvTkYbVklrOBVZx73cYWwxCCcW0uk_whZbFntOqa7iBBmpFn-18DciII92SQ4D2W7-pLnzcx3ZZ2lS"/>
+</div>
+<div class="flex-1 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-serif-sc">白桃乌龙茶冻</h3>
+<button class="text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined text-sm" data-icon="close">close</span></button>
+</div>
+<div class="mt-2 flex flex-wrap gap-2">
+<span class="px-2 py-1 border border-secondary/30 rounded text-tertiary font-label-sm text-label-sm">时令限定</span>
+</div>
+</div>
+<div class="flex justify-between items-end mt-4">
+<span class="font-label-price text-label-price text-on-surface font-serif-sc">¥ 68</span>
+<!-- Stepper -->
+<div class="flex items-center gap-3">
+<button class="w-7 h-7 rounded-full border border-outline-variant text-on-surface flex items-center justify-center hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-sm">remove</span>
+</button>
+<span class="font-body-md text-body-md w-4 text-center">1</span>
+<button class="w-7 h-7 rounded-full bg-surface-container-highest text-on-surface flex items-center justify-center hover:bg-surface-dim transition-colors">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Checkout Bar -->
+<div class="fixed bottom-[80px] left-0 w-full bg-surface-container-lowest border-t border-outline-variant/20 px-margin-page py-4 z-40 shadow-[0_-4px_20px_rgba(58,54,48,0.04)]">
+<div class="max-w-3xl mx-auto flex justify-between items-center w-full">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant mb-1">合计</span>
+<span class="font-label-price text-label-price text-secondary font-serif-sc">¥ 356</span>
+</div>
+<button class="bg-primary-container text-on-primary-container px-8 py-3 rounded-lg font-body-md text-body-md tracking-widest hover:opacity-90 transition-opacity shadow-sm">
+                结算
+            </button>
+</div>
+</div>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe bg-surface dark:bg-surface-dim border-t border-outline-variant/20 shadow-[0_-2px_10px_rgba(58,54,48,0.03)] md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-tertiary hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm">首页</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-tertiary hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="category">category</span>
+<span class="font-label-sm text-label-sm">分类</span>
+</a>
+<!-- Active Tab: 提篮 -->
+<a class="flex flex-col items-center justify-center text-primary dark:text-inverse-primary bg-primary-container/10 rounded-full py-1 px-4 translate-y-[-2px] duration-300 ease-out" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="shopping_basket" style="font-variation-settings: 'FILL' 1;">shopping_basket</span>
+<span class="font-label-sm text-label-sm">提篮</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-tertiary hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm">我的</span>
+</a>
+</nav>
+</body></html>

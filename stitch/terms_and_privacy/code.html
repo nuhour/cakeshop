@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>条款与隐私 - 如也</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Noto Serif SC & Be Vietnam Pro -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;family=Noto+Serif+SC:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS Setup -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-low": "#fbf2e9",
+                        "primary-fixed": "#ffdad4",
+                        "surface": "#fff8f2",
+                        "on-surface": "#1e1b16",
+                        "surface-bright": "#fff8f2",
+                        "inverse-on-surface": "#f8efe6",
+                        "secondary": "#77583a",
+                        "on-tertiary-fixed-variant": "#4c463c",
+                        "tertiary-fixed-dim": "#cfc5b8",
+                        "on-secondary-container": "#795b3c",
+                        "surface-container": "#f5ede4",
+                        "primary-fixed-dim": "#ffb4a8",
+                        "secondary-fixed-dim": "#e7bf9a",
+                        "tertiary-fixed": "#ebe1d3",
+                        "on-secondary": "#ffffff",
+                        "primary": "#953225",
+                        "on-tertiary": "#ffffff",
+                        "inverse-primary": "#ffb4a8",
+                        "secondary-fixed": "#ffdcbd",
+                        "on-background": "#1e1b16",
+                        "on-secondary-fixed-variant": "#5c4125",
+                        "surface-tint": "#a33c2e",
+                        "on-primary-fixed": "#410000",
+                        "on-error-container": "#93000a",
+                        "on-primary-container": "#ffe9e6",
+                        "tertiary-container": "#726b5f",
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#dec0bb",
+                        "on-secondary-fixed": "#2b1701",
+                        "error": "#ba1a1a",
+                        "tertiary": "#595348",
+                        "on-surface-variant": "#57423e",
+                        "error-container": "#ffdad6",
+                        "surface-variant": "#e9e1d8",
+                        "surface-container-highest": "#e9e1d8",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#e1d9d0",
+                        "on-tertiary-container": "#f7edde",
+                        "outline": "#8a716d",
+                        "on-tertiary-fixed": "#201b12",
+                        "background": "#fff8f2",
+                        "inverse-surface": "#34302a",
+                        "secondary-container": "#ffd5af",
+                        "primary-container": "#b5493a",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#efe7de",
+                        "on-primary-fixed-variant": "#83251a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "stack-md": "16px",
+                        "gutter": "16px",
+                        "unit": "4px",
+                        "stack-lg": "32px",
+                        "margin-page": "24px",
+                        "stack-sm": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-sm": ["'Noto Serif SC'", "serif"],
+                        "display-md": ["'Noto Serif SC'", "serif"],
+                        "label-sm": ["'Be Vietnam Pro'", "sans-serif"],
+                        "label-price": ["'Noto Serif SC'", "serif"],
+                        "body-md": ["'Be Vietnam Pro'", "sans-serif"],
+                        "display-lg": ["'Noto Serif SC'", "serif"],
+                        "body-lg": ["'Be Vietnam Pro'", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "headline-sm": ["20px", { "lineHeight": "1.5", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "display-md": ["24px", { "lineHeight": "1.4", "letterSpacing": "0.08em", "fontWeight": "500" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "label-price": ["18px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "display-lg": ["32px", { "lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "letterSpacing": "0.02em", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            /* Simulating Rice Paper White #F6F2EA via nearest config token or manual blend, using surface */
+            background-color: theme('colors.surface');
+            color: theme('colors.on-surface');
+            font-feature-settings: "palt";
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .divider-dot {
+            display: inline-block;
+            margin: 0 0.5rem;
+            color: theme('colors.outline-variant');
+        }
+
+        .ambient-shadow {
+            box-shadow: 0 4px 20px rgba(58, 54, 48, 0.04);
+        }
+        
+        /* Smooth scrolling for anchor links */
+        html { scroll-behavior: smooth; }
+        
+        /* Subtle text selection color */
+        ::selection {
+            background: theme('colors.primary-container');
+            color: theme('colors.on-primary');
+        }
+    </style>
+</head>
+<body class="bg-surface min-h-screen flex flex-col font-body-md text-body-md text-on-surface-variant antialiased">
+<!-- TopAppBar -->
+<!-- Context: Task-focused page, no global navigation, simple back action -->
+<header class="bg-surface/80 dark:bg-surface/80 backdrop-blur-md sticky top-0 z-50 border-b border-outline-variant/30 flex justify-between items-center w-full px-margin-page py-4 max-w-7xl mx-auto flat no shadows">
+<button aria-label="Go back" class="text-primary dark:text-inverse-primary hover:opacity-80 transition-opacity flex items-center justify-center p-2 rounded-full active:scale-95 duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">arrow_back</span>
+</button>
+<h1 class="font-display-md text-display-md text-primary dark:text-inverse-primary tracking-widest text-center flex-1">
+            条款与隐私
+        </h1>
+<!-- Empty div to balance flex layout -->
+<div class="w-10"></div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 max-w-3xl mx-auto w-full px-margin-page py-stack-lg flex flex-col md:flex-row gap-stack-lg relative">
+<!-- Sidebar Navigation (Desktop Sticky) -->
+<aside class="hidden md:block w-48 shrink-0">
+<nav class="sticky top-24 flex flex-col gap-stack-sm border-l border-outline-variant/30 pl-4 py-2">
+<a class="font-label-sm text-label-sm text-primary transition-colors py-1 relative before:absolute before:-left-[17px] before:top-1/2 before:-translate-y-1/2 before:w-[2px] before:h-full before:bg-primary" href="#terms">用户服务协议</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors py-1" href="#privacy">隐私政策</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors py-1" href="#cookies">Cookie 说明</a>
+</nav>
+</aside>
+<!-- Document Content -->
+<article class="flex-1 bg-surface-container-lowest rounded-lg p-margin-page ambient-shadow border border-outline-variant/20">
+<!-- Section: Terms of Service -->
+<section class="mb-stack-lg scroll-mt-24" id="terms">
+<header class="mb-stack-md flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings: 'FILL' 1;">description</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">用户服务协议</h2>
+</header>
+<p class="font-label-sm text-label-sm text-tertiary mb-stack-sm">最后更新日期：2023年10月24日</p>
+<div class="space-y-4 text-on-surface-variant font-body-md text-body-md leading-relaxed">
+<p>欢迎您使用「如也」甜品屋提供的服务。在开始这段寻味之旅前，请仔细阅读本协议。我们崇尚自然、节制的美学，同样希望在服务条款中保持清晰与坦诚。</p>
+<h3 class="font-body-lg text-body-lg text-on-surface font-semibold mt-6 mb-2">1. 服务的接受与修改</h3>
+<p>当您使用我们的应用程序、网站或进入实体门店点单时，即表示您已阅读并同意本协议的全部内容。如也保留随时基于业务需要修改本协议的权利，修改后的内容将通过官方渠道公布。</p>
+<h3 class="font-body-lg text-body-lg text-on-surface font-semibold mt-6 mb-2">2. 账号注册与使用</h3>
+<ul class="list-none space-y-2 pl-2 border-l-2 border-outline-variant/30">
+<li class="flex items-start">
+<span class="divider-dot mt-1">·</span>
+<span>您需要提供真实、准确的个人资料完成注册。</span>
+</li>
+<li class="flex items-start">
+<span class="divider-dot mt-1">·</span>
+<span>请妥善保管您的账号密码，因保管不善造成的损失由用户自行承担。</span>
+</li>
+<li class="flex items-start">
+<span class="divider-dot mt-1">·</span>
+<span>如也积分（雅集点）仅限本人使用，不得转让或售卖。</span>
+</li>
+</ul>
+<h3 class="font-body-lg text-body-lg text-on-surface font-semibold mt-6 mb-2">3. 订单与支付</h3>
+<p>我们的产品多采用应季鲜材，部分限量供应。订单一经确认，除不可抗力外，原则上不支持无理由取消。请在点单前仔细核对商品信息及取餐时间。</p>
+</div>
+<div class="h-px bg-outline-variant/30 w-full my-stack-lg"></div>
+</section>
+<!-- Section: Privacy Policy -->
+<section class="mb-stack-lg scroll-mt-24" id="privacy">
+<header class="mb-stack-md flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings: 'FILL' 1;">shield_lock</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">隐私政策</h2>
+</header>
+<p class="font-label-sm text-label-sm text-tertiary mb-stack-sm">最后更新日期：2023年10月24日</p>
+<div class="space-y-4 text-on-surface-variant font-body-md text-body-md leading-relaxed">
+<p>在如也，我们尊重留白——不仅在设计与口味上，也在您的数字生活里。我们承诺仅收集为您提供优质服务所必需的信息，并妥善保护您的隐私安全。</p>
+<h3 class="font-body-lg text-body-lg text-on-surface font-semibold mt-6 mb-2">1. 我们收集的信息</h3>
+<p>为了完成订单配送、积分累积及个性化推荐，我们可能会收集您的：</p>
+<ul class="list-none space-y-2 pl-2 border-l-2 border-outline-variant/30">
+<li class="flex items-start">
+<span class="divider-dot mt-1">·</span>
+<span>基础信息（如手机号码、昵称）。</span>
+</li>
+<li class="flex items-start">
+<span class="divider-dot mt-1">·</span>
+<span>交易信息（如订单历史、偏好口味）。</span>
+</li>
+<li class="flex items-start">
+<span class="divider-dot mt-1">·</span>
+<span>设备信息（如操作系统版本），仅用于改善应用体验。</span>
+</li>
+</ul>
+<h3 class="font-body-lg text-body-lg text-on-surface font-semibold mt-6 mb-2">2. 信息的存储与保护</h3>
+<p>您的数据存储于安全的加密服务器中。我们采用符合行业标准的安全技术防止信息丢失、不当使用或未经授权的访问。我们绝对不会将您的个人信息出售给第三方机构。</p>
+<h3 class="font-body-lg text-body-lg text-on-surface font-semibold mt-6 mb-2">3. 您的权利</h3>
+<p>您随时可以在应用内查看、修改您的个人信息，或联系客服申请注销账号。账号注销后，除法律法规要求保留的交易记录外，其余个人数据将被彻底清除。</p>
+</div>
+</section>
+<div class="text-center pt-stack-md mt-stack-lg border-t border-outline-variant/20">
+<p class="font-label-sm text-label-sm text-tertiary">如有任何疑问，请联系 <a class="text-primary hover:underline underline-offset-4" href="mailto:contact@ruye.com">contact@ruye.com</a></p>
+<div class="mt-4 flex justify-center opacity-50">
+<!-- Minimal brand seal graphic representation -->
+<div class="w-8 h-8 border border-primary text-primary flex items-center justify-center font-display-md text-sm transform -rotate-6">如也</div>
+</div>
+</div>
+</article>
+</main>
+<!-- Mobile Bottom Floating Navigation (Sticky Section Switcher) -->
+<div class="md:hidden fixed bottom-0 left-0 w-full bg-surface-container-highest/90 backdrop-blur-md border-t border-outline-variant/20 z-40 px-4 py-3 pb-safe shadow-[0_-4px_15px_rgba(58,54,48,0.05)]">
+<div class="flex justify-around items-center max-w-sm mx-auto">
+<a class="flex flex-col items-center justify-center text-primary font-medium text-xs gap-1" href="#terms">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 0;">article</span>
+<span>服务协议</span>
+</a>
+<div class="w-px h-6 bg-outline-variant/40"></div>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors font-medium text-xs gap-1" href="#privacy">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 0;">security</span>
+<span>隐私政策</span>
+</a>
+</div>
+</div>
+<!-- Script for basic interaction -->
+<script>
+        // Simple scroll spy for desktop sidebar
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('aside nav a');
+            
+            // Only run on desktop where sidebar is visible
+            if (window.innerWidth >= 768) {
+                window.addEventListener('scroll', () => {
+                    let current = '';
+                    sections.forEach(section => {
+                        const sectionTop = section.offsetTop;
+                        const sectionHeight = section.clientHeight;
+                        if (scrollY >= (sectionTop - 150)) {
+                            current = section.getAttribute('id');
+                        }
+                    });
+
+                    navLinks.forEach(link => {
+                        link.classList.remove('text-primary', 'before:bg-primary');
+                        link.classList.add('text-on-surface-variant');
+                        if (link.getAttribute('href').includes(current) && current !== '') {
+                            link.classList.add('text-primary');
+                            link.classList.remove('text-on-surface-variant');
+                            // Handle the pseudo-element indicator via a style class mapping if needed, or inline
+                        }
+                    });
+                });
+            }
+        });
+    </script>
+</body></html>

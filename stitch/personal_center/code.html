@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>个人中心 - 如也</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Smooth scrolling and hide scrollbar for horizontal lists if any */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#fff8f2",
+                        "on-secondary-container": "#795b3c",
+                        "on-secondary-fixed": "#2b1701",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed": "#ebe1d3",
+                        "on-primary-container": "#ffe9e6",
+                        "secondary-fixed-dim": "#e7bf9a",
+                        "on-primary-fixed": "#410000",
+                        "on-surface-variant": "#57423e",
+                        "tertiary-fixed-dim": "#cfc5b8",
+                        "tertiary-container": "#726b5f",
+                        "surface-tint": "#a33c2e",
+                        "tertiary": "#595348",
+                        "surface-container": "#f5ede4",
+                        "on-tertiary-fixed": "#201b12",
+                        "surface-dim": "#e1d9d0",
+                        "on-secondary-fixed-variant": "#5c4125",
+                        "primary-fixed": "#ffdad4",
+                        "error": "#ba1a1a",
+                        "surface-bright": "#fff8f2",
+                        "surface-variant": "#e9e1d8",
+                        "secondary-container": "#ffd5af",
+                        "on-error": "#ffffff",
+                        "secondary": "#77583a",
+                        "secondary-fixed": "#ffdcbd",
+                        "primary-container": "#b5493a",
+                        "on-tertiary-container": "#f7edde",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#fbf2e9",
+                        "inverse-primary": "#ffb4a8",
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#dec0bb",
+                        "on-secondary": "#ffffff",
+                        "surface": "#fff8f2",
+                        "inverse-on-surface": "#f8efe6",
+                        "surface-container-high": "#efe7de",
+                        "primary-fixed-dim": "#ffb4a8",
+                        "on-primary-fixed-variant": "#83251a",
+                        "primary": "#953225",
+                        "on-surface": "#1e1b16",
+                        "on-tertiary-fixed-variant": "#4c463c",
+                        "on-primary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-background": "#1e1b16",
+                        "surface-container-highest": "#e9e1d8",
+                        "outline": "#8a716d",
+                        "inverse-surface": "#34302a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "stack-md": "16px",
+                        "gutter": "16px",
+                        "stack-sm": "8px",
+                        "stack-lg": "32px",
+                        "unit": "4px",
+                        "margin-page": "24px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["beVietnamPro", "sans-serif"],
+                        "body-md": ["beVietnamPro", "sans-serif"],
+                        "headline-sm": ["notoSerif", "serif"],
+                        "body-lg": ["beVietnamPro", "sans-serif"],
+                        "label-price": ["notoSerif", "serif"],
+                        "display-lg": ["notoSerif", "serif"],
+                        "display-md": ["notoSerif", "serif"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-md": ["14px", { "lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "headline-sm": ["20px", { "lineHeight": "1.5", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "letterSpacing": "0.02em", "fontWeight": "400" }],
+                        "label-price": ["18px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "display-lg": ["32px", { "lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                        "display-md": ["24px", { "lineHeight": "1.4", "letterSpacing": "0.08em", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased min-h-screen relative pb-24">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-md border-b border-outline-variant/30">
+<div class="flex justify-between items-center w-full px-margin-page py-4 max-w-7xl mx-auto">
+<button class="text-on-surface-variant hover:opacity-80 transition-opacity active:scale-95 duration-200">
+<span class="material-symbols-outlined text-display-md">menu</span>
+</button>
+<h1 class="font-display-md text-display-md tracking-widest text-primary dark:text-on-primary-fixed-variant">如 也</h1>
+<button class="text-on-surface-variant hover:opacity-80 transition-opacity active:scale-95 duration-200">
+<span class="material-symbols-outlined text-display-md">search</span>
+</button>
+</div>
+</header>
+<main class="pt-24 px-margin-page max-w-3xl mx-auto space-y-stack-lg">
+<!-- Profile Header -->
+<section class="flex items-center space-x-6 py-4">
+<div class="relative flex-shrink-0">
+<div class="w-20 h-20 rounded-full border border-[#E8E0D0] bg-surface-container-lowest overflow-hidden shadow-[0_4px_20px_rgba(58,54,48,0.05)] p-1">
+<img class="w-full h-full object-cover rounded-full" data-alt="A refined, minimalist portrait of a sophisticated individual in a calm, light-filled environment. The lighting is soft and high-key, emphasizing a serene 'New Chinese Aesthetic' with subtle warm tones, pristine clarity, and an overarching mood of quiet elegance and mindful living. High-end photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTSe5A8OhxK7yQZkGHdi4WbXz3N4WqsxU6kF9Yvhc4F7K6BpI4H7RqYymuglN7vMKyjOTAwszbuNPJrtzV3r3nuTGlUa7mRlU65SxTvQfeoRMfwAzOKRdODYQkhXCwZb00-FSiECSsGDf600m65iDYFGREFjUdm1SD8j6SOLEYzJ45tLsT-aNU5JoQgPDSXhiwCdPVJJFfr5-mGnzk8j0PK_69O5WipzTHrHAYVClf1n8td8AbIwh4"/>
+</div>
+</div>
+<div class="flex flex-col space-y-1">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">李先生</h2>
+<p class="font-body-md text-body-md text-on-surface-variant/70 tracking-wider">138 **** 8888</p>
+</div>
+</section>
+<!-- My Orders Bento Card -->
+<section class="bg-surface-container-lowest rounded-xl shadow-[0_2px_12px_rgba(58,54,48,0.03)] border border-outline-variant/20 overflow-hidden">
+<div class="px-6 py-5 flex justify-between items-center border-b border-outline-variant/10">
+<h3 class="font-body-lg text-body-lg font-medium text-on-surface">我的订单</h3>
+<a class="font-label-sm text-label-sm text-on-surface-variant flex items-center hover:text-primary transition-colors" href="#">
+                    查看全部
+                    <span class="material-symbols-outlined text-[16px] ml-1">chevron_right</span>
+</a>
+</div>
+<div class="grid grid-cols-4 gap-4 px-4 py-6">
+<a class="flex flex-col items-center space-y-2 group" href="#">
+<div class="relative">
+<span class="material-symbols-outlined text-[28px] text-tertiary group-hover:text-primary transition-colors duration-300">account_balance_wallet</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant group-hover:text-on-surface transition-colors">待付款</span>
+</a>
+<a class="flex flex-col items-center space-y-2 group" href="#">
+<div class="relative">
+<span class="material-symbols-outlined text-[28px] text-tertiary group-hover:text-primary transition-colors duration-300">inventory_2</span>
+<span class="absolute -top-1 -right-2 bg-primary-container text-on-primary-container font-label-sm text-[10px] px-1.5 py-0.5 rounded-full min-w-[16px] text-center">2</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant group-hover:text-on-surface transition-colors">待收/取货</span>
+</a>
+<a class="flex flex-col items-center space-y-2 group" href="#">
+<span class="material-symbols-outlined text-[28px] text-tertiary group-hover:text-primary transition-colors duration-300">task_alt</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant group-hover:text-on-surface transition-colors">已完成</span>
+</a>
+<a class="flex flex-col items-center space-y-2 group" href="#">
+<span class="material-symbols-outlined text-[28px] text-tertiary group-hover:text-primary transition-colors duration-300">support_agent</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant group-hover:text-on-surface transition-colors">退款/售后</span>
+</a>
+</div>
+</section>
+<!-- Common Functions List -->
+<section class="bg-surface-container-lowest rounded-xl shadow-[0_2px_12px_rgba(58,54,48,0.03)] border border-outline-variant/20 overflow-hidden">
+<h3 class="font-body-lg text-body-lg font-medium text-on-surface px-6 py-5 border-b border-outline-variant/10">常用功能</h3>
+<ul class="flex flex-col">
+<li>
+<a class="flex items-center px-6 py-4 hover:bg-surface/50 transition-colors group active:scale-[0.99] duration-200" href="#">
+<span class="material-symbols-outlined text-[24px] text-tertiary group-hover:text-primary transition-colors mr-4">location_on</span>
+<span class="font-body-md text-body-md text-on-surface flex-1">地址管理</span>
+<span class="material-symbols-outlined text-on-surface-variant/50">chevron_right</span>
+</a>
+</li>
+<li class="border-t border-outline-variant/10 ml-14"></li>
+<li>
+<a class="flex items-center px-6 py-4 hover:bg-surface/50 transition-colors group active:scale-[0.99] duration-200" href="#">
+<span class="material-symbols-outlined text-[24px] text-tertiary group-hover:text-primary transition-colors mr-4">confirmation_number</span>
+<span class="font-body-md text-body-md text-on-surface flex-1">优惠券</span>
+<span class="font-label-sm text-label-sm text-primary bg-primary-container/10 px-2 py-0.5 rounded mr-3">3张可用</span>
+<span class="material-symbols-outlined text-on-surface-variant/50">chevron_right</span>
+</a>
+</li>
+<li class="border-t border-outline-variant/10 ml-14"></li>
+<li>
+<a class="flex items-center px-6 py-4 hover:bg-surface/50 transition-colors group active:scale-[0.99] duration-200" href="#">
+<span class="material-symbols-outlined text-[24px] text-tertiary group-hover:text-primary transition-colors mr-4">favorite</span>
+<span class="font-body-md text-body-md text-on-surface flex-1">我的收藏</span>
+<span class="material-symbols-outlined text-on-surface-variant/50">chevron_right</span>
+</a>
+</li>
+<li class="border-t border-outline-variant/10 ml-14"></li>
+<li>
+<a class="flex items-center px-6 py-4 hover:bg-surface/50 transition-colors group active:scale-[0.99] duration-200" href="#">
+<span class="material-symbols-outlined text-[24px] text-tertiary group-hover:text-primary transition-colors mr-4">headset_mic</span>
+<span class="font-body-md text-body-md text-on-surface flex-1">联系客服</span>
+<span class="material-symbols-outlined text-on-surface-variant/50">chevron_right</span>
+</a>
+</li>
+<li class="border-t border-outline-variant/10 ml-14"></li>
+<li>
+<a class="flex items-center px-6 py-4 hover:bg-surface/50 transition-colors group active:scale-[0.99] duration-200" href="#">
+<span class="material-symbols-outlined text-[24px] text-tertiary group-hover:text-primary transition-colors mr-4">info</span>
+<span class="font-body-md text-body-md text-on-surface flex-1">关于如也</span>
+<span class="material-symbols-outlined text-on-surface-variant/50">chevron_right</span>
+</a>
+</li>
+</ul>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe bg-surface dark:bg-surface-dim border-t border-outline-variant/20 shadow-[0_-2px_10px_rgba(58,54,48,0.03)] md:hidden">
+<!-- 首页 (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-tertiary hover:text-primary dark:hover:text-inverse-primary transition-colors w-16 h-14" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1">home</span>
+<span class="font-label-sm text-label-sm">首页</span>
+</a>
+<!-- 分类 (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-tertiary hover:text-primary dark:hover:text-inverse-primary transition-colors w-16 h-14" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1">category</span>
+<span class="font-label-sm text-label-sm">分类</span>
+</a>
+<!-- 提篮 (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-tertiary hover:text-primary dark:hover:text-inverse-primary transition-colors w-16 h-14 relative" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1">shopping_basket</span>
+<span class="font-label-sm text-label-sm">提篮</span>
+</a>
+<!-- 我的 (Active) -->
+<a class="flex flex-col items-center justify-center text-primary dark:text-inverse-primary bg-primary-container/10 rounded-full py-1 px-4 w-16 h-14 translate-y-[-2px] duration-300 ease-out" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1 icon-fill">person</span>
+<span class="font-label-sm text-label-sm font-medium">我的</span>
+</a>
+</nav>
+<!-- Desktop spacing for global nav (hidden on mobile, visible on md if implemented, though this prompt leans mobile) -->
+<div class="hidden md:block h-24"></div>
+</body></html>

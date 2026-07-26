@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>如也 甜品屋 - 首页</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&amp;family=Noto+Serif:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#57423e",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-container": "#795b3c",
+                        "primary": "#953225",
+                        "on-primary-fixed-variant": "#83251a",
+                        "secondary-fixed": "#ffdcbd",
+                        "surface": "#fff8f2",
+                        "surface-container-highest": "#e9e1d8",
+                        "error-container": "#ffdad6",
+                        "background": "#fff8f2",
+                        "tertiary-fixed": "#ebe1d3",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#efe7de",
+                        "on-tertiary-fixed-variant": "#4c463c",
+                        "on-tertiary-fixed": "#201b12",
+                        "tertiary-fixed-dim": "#cfc5b8",
+                        "surface-container": "#f5ede4",
+                        "on-surface": "#1e1b16",
+                        "tertiary-container": "#726b5f",
+                        "surface-variant": "#e9e1d8",
+                        "on-error-container": "#93000a",
+                        "surface-tint": "#a33c2e",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-container": "#ffe9e6",
+                        "tertiary": "#595348",
+                        "surface-dim": "#e1d9d0",
+                        "outline-variant": "#dec0bb",
+                        "secondary-fixed-dim": "#e7bf9a",
+                        "inverse-on-surface": "#f8efe6",
+                        "surface-container-low": "#fbf2e9",
+                        "inverse-surface": "#34302a",
+                        "secondary": "#77583a",
+                        "on-background": "#1e1b16",
+                        "secondary-container": "#ffd5af",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed": "#2b1701",
+                        "inverse-primary": "#ffb4a8",
+                        "on-secondary-fixed-variant": "#5c4125",
+                        "primary-fixed-dim": "#ffb4a8",
+                        "surface-bright": "#fff8f2",
+                        "on-primary-fixed": "#410000",
+                        "primary-fixed": "#ffdad4",
+                        "outline": "#8a716d",
+                        "primary-container": "#b5493a",
+                        "error": "#ba1a1a",
+                        "on-tertiary-container": "#f7edde"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    spacing: {
+                        "gutter": "16px",
+                        "margin-page": "24px",
+                        "unit": "4px",
+                        "stack-sm": "8px",
+                        "stack-lg": "32px",
+                        "stack-md": "16px"
+                    },
+                    fontFamily: {
+                        "body-md": ["Be Vietnam Pro", "sans-serif"],
+                        "display-lg": ["Noto Serif", "serif"],
+                        "headline-sm": ["Noto Serif", "serif"],
+                        "body-lg": ["Be Vietnam Pro", "sans-serif"],
+                        "label-sm": ["Be Vietnam Pro", "sans-serif"],
+                        "display-md": ["Noto Serif", "serif"],
+                        "label-price": ["Noto Serif", "serif"]
+                    },
+                    fontSize: {
+                        "body-md": ["14px", { lineHeight: "1.6", letterSpacing: "0em", fontWeight: "400" }],
+                        "display-lg": ["32px", { lineHeight: "1.4", letterSpacing: "0.1em", fontWeight: "600" }],
+                        "headline-sm": ["20px", { lineHeight: "1.5", letterSpacing: "0.05em", fontWeight: "500" }],
+                        "body-lg": ["16px", { lineHeight: "1.6", letterSpacing: "0.02em", fontWeight: "400" }],
+                        "label-sm": ["12px", { lineHeight: "1", letterSpacing: "0.05em", fontWeight: "500" }],
+                        "display-md": ["24px", { lineHeight: "1.4", letterSpacing: "0.08em", fontWeight: "500" }],
+                        "label-price": ["18px", { lineHeight: "1.2", letterSpacing: "0.02em", fontWeight: "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+        }
+        .xuan-texture {
+            background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.03"/%3E%3C/svg%3E');
+        }
+        .silk-card {
+            background-color: theme('colors.surface-container-lowest');
+            border: 1px solid theme('colors.surface-variant');
+        }
+        .ambient-shadow {
+            box-shadow: 0 4px 20px rgba(58, 54, 48, 0.04);
+        }
+    </style>
+</head>
+<body class="xuan-texture min-h-screen pb-[80px]">
+<!-- TopAppBar -->
+<header class="bg-surface/80 dark:bg-surface/80 backdrop-blur-md docked full-width top-0 border-b border-outline-variant/30 flat no shadows sticky z-40">
+<div class="flex justify-between items-center w-full px-margin-page py-4 max-w-7xl mx-auto">
+<button class="text-primary dark:text-inverse-primary hover:opacity-80 transition-opacity active:scale-95 duration-200">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-display-lg text-display-lg tracking-widest text-primary dark:text-on-primary-fixed-variant">
+                如 也
+            </h1>
+<button class="text-primary dark:text-inverse-primary hover:opacity-80 transition-opacity active:scale-95 duration-200">
+<span class="material-symbols-outlined">search</span>
+</button>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-margin-page pt-stack-md pb-stack-lg flex flex-col gap-stack-lg">
+<!-- Brand Slogan Area -->
+<section class="flex flex-col items-center justify-center py-stack-md text-center">
+<div class="flex items-center gap-unit mb-2">
+<span class="font-body-md text-body-md text-tertiary">甜品屋 · 一期一会</span>
+<div class="w-6 h-6 bg-primary flex items-center justify-center rounded-sm">
+<span class="font-display-md text-[10px] text-white vertical-rl" style="writing-mode: vertical-rl;">如也</span>
+</div>
+</div>
+</section>
+<!-- Search Bar -->
+<section class="w-full">
+<div class="flex items-center border-b border-outline pb-2">
+<span class="material-symbols-outlined text-outline mr-2">search</span>
+<input class="w-full bg-transparent border-none outline-none font-body-md text-body-md text-on-surface placeholder:text-outline-variant focus:ring-0 px-0" placeholder="寻找心仪的甜点..." type="text"/>
+</div>
+</section>
+<!-- Seasonal Banner -->
+<section class="silk-card rounded-lg overflow-hidden ambient-shadow relative group">
+<div class="absolute top-4 left-4 bg-primary text-white font-label-sm text-label-sm px-2 py-1 rounded-sm z-10">节气限定</div>
+<div class="w-full h-48 bg-cover bg-center" data-alt="A meticulously crafted traditional Chinese osmanthus and Longjing green tea mousse cake, plated on a delicate celadon ceramic dish. The dessert features a smooth, pale green surface with delicate, translucent golden osmanthus jelly on top. The background is a soft, minimalist 'New Chinese Aesthetic' setting with natural light filtering through bamboo blinds, highlighting the textures of the dessert and the subtle grain of a wooden table. High-key lighting, serene mood, literary high-end style." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB9VCrxR2EJlwRkkVrzavgpHC0mqhqq3BYp4C3fewT6C-Tumr7V4UoWWVmfzo7fHQ-T26sRAQ97Jar3gK6Q5MWHs_o7QXnDVU1gfWdHTEQNBqBbSV2uOP9XZmZq5_jjPH0AIKrdJif9coCVfF9iNM2EzsCVvFrthCvMnIhYPKDRDIO55iQO6seY6TXaL4wkb9Pv8Qz-SYpLmrKn0cp2zosbycSdEvao3nX3bWGiGi6TAArfXDc31b69')"></div>
+<div class="p-4 flex justify-between items-end">
+<div>
+<p class="font-label-sm text-label-sm text-primary mb-1">大暑</p>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">桂花龙井慕斯</h2>
+</div>
+<div class="text-right">
+<p class="font-label-sm text-label-sm text-outline mb-1">每日限量 20 份</p>
+<button class="bg-primary text-white font-body-md text-body-md px-4 py-2 rounded flex items-center gap-1 hover:bg-on-primary-fixed-variant transition-colors">
+                        预订 <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Categories -->
+<section class="grid grid-cols-4 gap-gutter py-stack-sm">
+<div class="flex flex-col items-center gap-2 group cursor-pointer">
+<div class="w-14 h-14 rounded-full silk-card flex items-center justify-center text-primary group-hover:bg-primary-container group-hover:text-white transition-colors duration-300 ambient-shadow">
+<span class="material-symbols-outlined">cake</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">定制蛋糕</span>
+</div>
+<div class="flex flex-col items-center gap-2 group cursor-pointer">
+<div class="w-14 h-14 rounded-full silk-card flex items-center justify-center text-primary group-hover:bg-primary-container group-hover:text-white transition-colors duration-300 ambient-shadow">
+<span class="material-symbols-outlined">bakery_dining</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">切块甜品</span>
+</div>
+<div class="flex flex-col items-center gap-2 group cursor-pointer">
+<div class="w-14 h-14 rounded-full silk-card flex items-center justify-center text-primary group-hover:bg-primary-container group-hover:text-white transition-colors duration-300 ambient-shadow">
+<span class="material-symbols-outlined">emoji_food_beverage</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">中式茶点</span>
+</div>
+<div class="flex flex-col items-center gap-2 group cursor-pointer">
+<div class="w-14 h-14 rounded-full silk-card flex items-center justify-center text-primary group-hover:bg-primary-container group-hover:text-white transition-colors duration-300 ambient-shadow">
+<span class="material-symbols-outlined">redeem</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">伴手礼</span>
+</div>
+</section>
+<!-- Today's Recommendations -->
+<section class="flex flex-col gap-stack-md">
+<div class="flex items-center gap-2">
+<h3 class="font-display-md text-display-md text-on-surface">今日推荐</h3>
+<span class="w-1 h-1 bg-primary rounded-full"></span>
+</div>
+<div class="grid grid-cols-2 gap-gutter">
+<!-- Card 1 -->
+<div class="silk-card rounded-lg overflow-hidden flex flex-col cursor-pointer hover:shadow-md transition-shadow">
+<div class="w-full h-32 bg-cover bg-center" data-alt="A beautiful slice of matcha and red bean layered cake on a matte white ceramic plate. The cake has distinct, perfectly straight layers of vibrant green matcha sponge and dark burgundy red bean paste. The setting is minimal, with a soft, warm light casting gentle shadows. The aesthetic is clean, modern Chinese, emphasizing natural ingredients and a serene, uncluttered composition." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBa2BWIb7jwkOZsVVdB_sNlOpIw_r1NlVc9tknu3TC1kEjIieRNQ_ggKaSUn-BFSaFi3jcqEDBfq6jMjm6sLFnY1aPnMVDYQSPmvC08I8RpQC5Z6XYYknWn2Ii-M8sWNIO186GmmDkAmT5iVt04FIEfLw2vlSCcTK_5rdDrqTCRYG7KNSr6FRzLpUbOWBLoCNYYzMNcRG22Xs7u71PWAuroWdXWegwwKWYaTRWNpQXERtyDad7GfJTK')"></div>
+<div class="p-3 flex flex-col gap-1">
+<div class="flex items-start justify-between">
+<h4 class="font-headline-sm text-[16px] text-on-surface line-clamp-1">宇治抹茶红豆</h4>
+<span class="font-label-price text-[14px] text-primary">¥48</span>
+</div>
+<p class="font-label-sm text-label-sm text-outline line-clamp-1">清雅微苦 · 绵密</p>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="silk-card rounded-lg overflow-hidden flex flex-col cursor-pointer hover:shadow-md transition-shadow relative">
+<div class="absolute top-2 right-2 bg-primary text-white font-label-sm text-[10px] px-1.5 py-0.5 rounded-sm z-10">需提前48小时预定</div>
+<div class="w-full h-32 bg-cover bg-center" data-alt="An elegant, whole custom cake featuring a gradient peach color palette, adorned with edible, handcrafted fondant cherry blossoms and a subtle dusting of gold leaf. Placed on a textured wooden stand against a pure, rice-paper textured background. The lighting is soft and ethereal, emphasizing the premium, delicate craftsmanship and the 'New Chinese Aesthetic' of the dessert." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDKKXgnBpo6FLQEDTI9rgHR6QdMtuE_jYmaU7o54LvcxZ72_49Vj23k2f7cMK0DVKYn1-p9EP9QhMtWicjxmQaIg5z_NHB0NrQsRec0A2WSkNwWddSR_EnjFG3u-df77FCkkTpuMd572UNEXxAK2tZ89Q_8_2gufkWpgxikPZjg_nSr8B19UR8fJDx0ckTq-2hZ5Bmi_UVRzVzTuL0PBXFTjbYG7oEqpWrUrSWNvp_s8ZfDm_fGJZ3g')"></div>
+<div class="p-3 flex flex-col gap-1">
+<div class="flex items-start justify-between">
+<h4 class="font-headline-sm text-[16px] text-on-surface line-clamp-1">落樱·白桃乌龙</h4>
+<span class="font-label-price text-[14px] text-primary">¥288</span>
+</div>
+<p class="font-label-sm text-label-sm text-outline line-clamp-1">定制款 · 6英寸</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="bg-surface dark:bg-surface-dim docked full-width bottom-0 border-t border-outline-variant/20 shadow-[0_-2px_10px_rgba(58,54,48,0.03)] fixed left-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe md:hidden">
+<a class="flex flex-col items-center justify-center text-primary dark:text-inverse-primary bg-primary-container/10 rounded-full py-1 px-4 translate-y-[-2px] duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-sm text-label-sm mt-1">首页</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-tertiary hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">
+<span class="material-symbols-outlined">category</span>
+<span class="font-label-sm text-label-sm mt-1">分类</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-tertiary hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">
+<span class="material-symbols-outlined">shopping_basket</span>
+<span class="font-label-sm text-label-sm mt-1">提篮</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-tertiary hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm mt-1">我的</span>
+</a>
+</nav>
+</body></html>

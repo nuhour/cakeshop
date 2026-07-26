@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>地址管理 - 如也</title>
+<!-- Google Fonts & Material Symbols -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&amp;family=Noto+Serif:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#fff8f2",
+                        "on-secondary-container": "#795b3c",
+                        "on-secondary-fixed": "#2b1701",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed": "#ebe1d3",
+                        "on-primary-container": "#ffe9e6",
+                        "secondary-fixed-dim": "#e7bf9a",
+                        "on-primary-fixed": "#410000",
+                        "on-surface-variant": "#57423e",
+                        "tertiary-fixed-dim": "#cfc5b8",
+                        "tertiary-container": "#726b5f",
+                        "surface-tint": "#a33c2e",
+                        "tertiary": "#595348",
+                        "surface-container": "#f5ede4",
+                        "on-tertiary-fixed": "#201b12",
+                        "surface-dim": "#e1d9d0",
+                        "on-secondary-fixed-variant": "#5c4125",
+                        "primary-fixed": "#ffdad4",
+                        "error": "#ba1a1a",
+                        "surface-bright": "#fff8f2",
+                        "surface-variant": "#e9e1d8",
+                        "secondary-container": "#ffd5af",
+                        "on-error": "#ffffff",
+                        "secondary": "#77583a",
+                        "secondary-fixed": "#ffdcbd",
+                        "primary-container": "#b5493a",
+                        "on-tertiary-container": "#f7edde",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#fbf2e9",
+                        "inverse-primary": "#ffb4a8",
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#dec0bb",
+                        "on-secondary": "#ffffff",
+                        "surface": "#fff8f2",
+                        "inverse-on-surface": "#f8efe6",
+                        "surface-container-high": "#efe7de",
+                        "primary-fixed-dim": "#ffb4a8",
+                        "on-primary-fixed-variant": "#83251a",
+                        "primary": "#953225",
+                        "on-surface": "#1e1b16",
+                        "on-tertiary-fixed-variant": "#4c463c",
+                        "on-primary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-background": "#1e1b16",
+                        "surface-container-highest": "#e9e1d8",
+                        "outline": "#8a716d",
+                        "inverse-surface": "#34302a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "stack-md": "16px",
+                        "gutter": "16px",
+                        "stack-sm": "8px",
+                        "stack-lg": "32px",
+                        "unit": "4px",
+                        "margin-page": "24px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["beVietnamPro"],
+                        "body-md": ["beVietnamPro"],
+                        "headline-sm": ["notoSerif"],
+                        "body-lg": ["beVietnamPro"],
+                        "label-price": ["notoSerif"],
+                        "display-lg": ["notoSerif"],
+                        "display-md": ["notoSerif"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-md": ["14px", { "lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "headline-sm": ["20px", { "lineHeight": "1.5", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "letterSpacing": "0.02em", "fontWeight": "400" }],
+                        "label-price": ["18px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "display-lg": ["32px", { "lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                        "display-md": ["24px", { "lineHeight": "1.4", "letterSpacing": "0.08em", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom, 24px); }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen antialiased flex flex-col relative selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation (Adapted for Sub-page flow) -->
+<header class="sticky top-0 z-40 bg-surface/90 backdrop-blur-md flex justify-between items-center w-full px-margin-page py-4 max-w-7xl mx-auto border-b border-outline-variant/20">
+<button aria-label="返回" class="text-on-surface-variant hover:opacity-80 transition-opacity w-8 h-8 flex items-center justify-start">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="font-display-md text-display-md tracking-widest text-primary">地址管理</h1>
+<div class="w-8"></div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 px-margin-page py-stack-lg max-w-3xl mx-auto w-full pb-[120px]">
+<div class="flex flex-col gap-stack-md">
+<!-- Address Card 1 (Default) -->
+<article class="bg-surface-container-lowest border border-outline-variant/60 rounded-xl p-stack-md relative transition-transform hover:-translate-y-1 duration-300 ease-out shadow-[0_4px_20px_rgba(58,54,48,0.02)]">
+<div class="flex justify-between items-start mb-stack-sm">
+<div class="flex items-end gap-3">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">林清玄</h2>
+<span class="font-body-md text-body-md text-on-surface-variant mb-[2px]">138 **** 5678</span>
+</div>
+<button aria-label="编辑地址" class="text-tertiary-container hover:text-primary transition-colors p-1">
+<span class="material-symbols-outlined" style="font-size: 20px;">edit_square</span>
+</button>
+</div>
+<div class="flex items-center gap-2 mb-stack-sm">
+<span class="bg-primary text-on-primary font-label-sm text-label-sm px-2 py-1 rounded">默认</span>
+<span class="border border-outline text-tertiary font-label-sm text-label-sm px-2 py-1 rounded">家</span>
+</div>
+<div class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+                    浙江省 杭州市 西湖区<br/>
+                    灵隐街道 梅灵南路 12号 听茶小筑
+                </div>
+</article>
+<!-- Address Card 2 -->
+<article class="bg-surface-container-lowest border border-outline-variant/60 rounded-xl p-stack-md relative transition-transform hover:-translate-y-1 duration-300 ease-out shadow-[0_4px_20px_rgba(58,54,48,0.02)]">
+<div class="flex justify-between items-start mb-stack-sm">
+<div class="flex items-end gap-3">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">苏东坡</h2>
+<span class="font-body-md text-body-md text-on-surface-variant mb-[2px]">139 **** 4321</span>
+</div>
+<button aria-label="编辑地址" class="text-tertiary-container hover:text-primary transition-colors p-1">
+<span class="material-symbols-outlined" style="font-size: 20px;">edit_square</span>
+</button>
+</div>
+<div class="flex items-center gap-2 mb-stack-sm">
+<span class="border border-outline text-tertiary font-label-sm text-label-sm px-2 py-1 rounded">公司</span>
+</div>
+<div class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+                    上海市 浦东新区<br/>
+                    陆家嘴环路 1000号 恒生银行大厦 45层
+                </div>
+</article>
+<!-- Address Card 3 -->
+<article class="bg-surface-container-lowest border border-outline-variant/60 rounded-xl p-stack-md relative transition-transform hover:-translate-y-1 duration-300 ease-out shadow-[0_4px_20px_rgba(58,54,48,0.02)] opacity-80">
+<div class="flex justify-between items-start mb-stack-sm">
+<div class="flex items-end gap-3">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">白居易</h2>
+<span class="font-body-md text-body-md text-on-surface-variant mb-[2px]">137 **** 8899</span>
+</div>
+<button aria-label="编辑地址" class="text-tertiary-container hover:text-primary transition-colors p-1">
+<span class="material-symbols-outlined" style="font-size: 20px;">edit_square</span>
+</button>
+</div>
+<div class="flex items-center gap-2 mb-stack-sm">
+<span class="border border-outline text-tertiary font-label-sm text-label-sm px-2 py-1 rounded">父母家</span>
+</div>
+<div class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+                    江苏省 苏州市 姑苏区<br/>
+                    平江路 234号 拙政别墅区
+                </div>
+</article>
+</div>
+</main>
+<!-- Bottom Action Area -->
+<div class="fixed bottom-0 left-0 w-full bg-gradient-to-t from-background via-background/90 to-transparent pt-8 pb-safe px-margin-page z-50 pointer-events-none">
+<div class="max-w-3xl mx-auto pointer-events-auto pb-4">
+<button class="w-full bg-primary hover:bg-primary/90 text-on-primary font-headline-sm text-headline-sm py-4 rounded-lg shadow-sm transition-all active:scale-[0.98] flex justify-center items-center gap-2 tracking-widest">
+<span class="material-symbols-outlined" style="font-weight: 500;">add</span>
+                新增地址
+            </button>
+</div>
+</div>
+</body></html>

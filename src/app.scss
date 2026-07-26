@@ -1,0 +1,41 @@
+page {
+  min-height: 100%;
+  background: #fbf9f5;
+  color: #333333;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+}
+
+button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  line-height: 1;
+}
+
+button::after {
+  border: 0;
+}
+
+.cakeshop-page {
+  min-height: 100vh;
+  padding-bottom: 40px;
+  background: #fbf9f5;
+}
+
+.cakeshop-card {
+  border: 1px solid rgba(133, 116, 98, 0.16);
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(82, 69, 52, 0.08);
+}
+
+.cakeshop-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 24px 18px 14px;
+  color: #1b1c1a;
+  font-size: 22px;
+  font-weight: 700;
+}

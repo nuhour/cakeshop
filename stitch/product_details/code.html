@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>如也 - 商品详情</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;600;700&amp;family=Be+Vietnam+Pro:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#57423e",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-container": "#795b3c",
+                        "primary": "#953225",
+                        "on-primary-fixed-variant": "#83251a",
+                        "secondary-fixed": "#ffdcbd",
+                        "surface": "#fff8f2",
+                        "surface-container-highest": "#e9e1d8",
+                        "error-container": "#ffdad6",
+                        "background": "#fff8f2",
+                        "tertiary-fixed": "#ebe1d3",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#efe7de",
+                        "on-tertiary-fixed-variant": "#4c463c",
+                        "on-tertiary-fixed": "#201b12",
+                        "tertiary-fixed-dim": "#cfc5b8",
+                        "surface-container": "#f5ede4",
+                        "on-surface": "#1e1b16",
+                        "tertiary-container": "#726b5f",
+                        "surface-variant": "#e9e1d8",
+                        "on-error-container": "#93000a",
+                        "surface-tint": "#a33c2e",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-container": "#ffe9e6",
+                        "tertiary": "#595348",
+                        "surface-dim": "#e1d9d0",
+                        "outline-variant": "#dec0bb",
+                        "secondary-fixed-dim": "#e7bf9a",
+                        "inverse-on-surface": "#f8efe6",
+                        "surface-container-low": "#fbf2e9",
+                        "inverse-surface": "#34302a",
+                        "secondary": "#77583a",
+                        "on-background": "#1e1b16",
+                        "secondary-container": "#ffd5af",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed": "#2b1701",
+                        "inverse-primary": "#ffb4a8",
+                        "on-secondary-fixed-variant": "#5c4125",
+                        "primary-fixed-dim": "#ffb4a8",
+                        "surface-bright": "#fff8f2",
+                        "on-primary-fixed": "#410000",
+                        "primary-fixed": "#ffdad4",
+                        "outline": "#8a716d",
+                        "primary-container": "#b5493a",
+                        "error": "#ba1a1a",
+                        "on-tertiary-container": "#f7edde"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    spacing: {
+                        "gutter": "16px",
+                        "margin-page": "24px",
+                        "unit": "4px",
+                        "stack-sm": "8px",
+                        "stack-lg": "32px",
+                        "stack-md": "16px"
+                    },
+                    fontFamily: {
+                        "body-md": ["beVietnamPro"],
+                        "display-lg": ["notoSerif"],
+                        "headline-sm": ["notoSerif"],
+                        "body-lg": ["beVietnamPro"],
+                        "label-sm": ["beVietnamPro"],
+                        "display-md": ["notoSerif"],
+                        "label-price": ["notoSerif"]
+                    },
+                    fontSize: {
+                        "body-md": ["14px", { "lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "display-lg": ["32px", { "lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                        "headline-sm": ["20px", { "lineHeight": "1.5", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "letterSpacing": "0.02em", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "display-md": ["24px", { "lineHeight": "1.4", "letterSpacing": "0.08em", "fontWeight": "500" }],
+                        "label-price": ["18px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.surface');
+            color: theme('colors.on-surface');
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Ambient subtle shadow for minimalist cards */
+        .shadow-ambient {
+            box-shadow: 0 4px 20px rgba(58, 54, 48, 0.04);
+        }
+        
+        .silk-card {
+            background-color: theme('colors.surface-container-lowest');
+            border: 1px solid theme('colors.surface-container-highest');
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen pb-32">
+<!-- Top Navigation (Contextual departure page, no global nav shell needed, just a back button header) -->
+<header class="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-md border-b border-outline-variant/20 px-margin-page py-4 flex items-center justify-between transition-opacity">
+<button aria-label="Go back" class="text-on-surface hover:text-primary transition-colors flex items-center justify-center p-2 -ml-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">arrow_back</span>
+</button>
+<h1 class="font-headline-sm text-headline-sm text-on-surface tracking-widest">商品详情</h1>
+<button aria-label="Share" class="text-on-surface hover:text-primary transition-colors flex items-center justify-center p-2 -mr-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">ios_share</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-20">
+<!-- Hero Image Gallery -->
+<section class="w-full relative bg-surface-container-lowest">
+<div class="aspect-[4/5] md:aspect-[16/9] w-full overflow-hidden">
+<img alt="云松 · 咸奶油玄米蛋糕" class="w-full h-full object-cover" data-alt="A high-end, minimalist photograph of an elegant custom cake (咸奶油玄米蛋糕 - Salty Cream Genmaicha Cake). The cake sits on a textured, matte ceramic plate in a studio setting with a clean, silk-white and pale Xuan paper background. Soft, diffused lighting creates gentle shadows, highlighting the delicate texture of the cream and the scattered toasted rice. A sprig of pine or a subtle traditional Chinese element rests near the plate, embodying a poetic 'New Chinese Aesthetic' slow living vibe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqRm7mFSMKAyPriMfebCUX8LRjuIthgXrFp7TlhBlUsL1NNRIJhhMhlBAdd36L29eWEMxw8vMhVRuppUaI8SR0U27FssNRlOD6xXjFABytRmsXfG2K8OGvj7qrX_CA1TpAouH32rNDnEUvK8B672hwb8KJQ8Ix9r6vtQC7oKxYgOQQ83ml9UMNtxh1JmKgDk6a_nec0BcBAtE8VjNt8D5M-w9Lix6qRt-flHIop2zDnYsZT5wbR9oZ"/>
+</div>
+<!-- Minimalist Pagination Indicator -->
+<div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+<div class="w-1.5 h-1.5 rounded-full bg-primary"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-outline-variant/60"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-outline-variant/60"></div>
+</div>
+</section>
+<!-- Product Core Info (Bento-style layout starts) -->
+<div class="px-margin-page mt-stack-lg max-w-3xl mx-auto space-y-stack-lg">
+<!-- Header & Price -->
+<section class="flex flex-col space-y-stack-sm">
+<div class="flex justify-between items-start">
+<h2 class="font-display-md text-display-md text-on-surface">云松 · 咸奶油玄米蛋糕</h2>
+</div>
+<div class="flex items-baseline space-x-2 mt-2">
+<span class="font-label-price text-label-price text-primary">¥288</span>
+<span class="font-body-md text-body-md text-on-surface-variant">起</span>
+</div>
+<!-- Notice Badge -->
+<div class="inline-flex items-center space-x-2 mt-4 px-3 py-1.5 bg-error-container/30 border border-error-container rounded-DEFAULT w-fit">
+<span class="material-symbols-outlined text-primary text-[14px]" style="font-variation-settings: 'FILL' 1;">schedule</span>
+<span class="font-label-sm text-label-sm text-primary tracking-wider">需提前48小时预定</span>
+</div>
+</section>
+<div class="h-px w-full bg-outline-variant/30"></div>
+<!-- Specifications Selection (Glassmorphism/Minimal cards) -->
+<section class="space-y-stack-md">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">规格选择</h3>
+<!-- Size -->
+<div class="space-y-stack-sm">
+<label class="font-body-md text-body-md text-on-surface-variant">尺寸</label>
+<div class="flex flex-wrap gap-3">
+<button class="px-6 py-2 border-2 border-primary bg-primary-container/5 text-primary font-body-md text-body-md rounded-lg transition-colors">
+                            6寸 (适合2-4人)
+                        </button>
+<button class="px-6 py-2 border border-outline-variant bg-surface-container-lowest text-on-surface font-body-md text-body-md rounded-lg hover:border-primary/50 transition-colors">
+                            8寸 (适合5-8人)
+                        </button>
+</div>
+</div>
+<!-- Flavor/Variation (if applicable, placeholder for aesthetic) -->
+<div class="space-y-stack-sm mt-4">
+<label class="font-body-md text-body-md text-on-surface-variant">口味基底</label>
+<div class="flex flex-wrap gap-3">
+<button class="px-6 py-2 border-2 border-primary bg-primary-container/5 text-primary font-body-md text-body-md rounded-lg transition-colors">
+                            特调咸奶油
+                        </button>
+<button class="px-6 py-2 border border-outline-variant bg-surface-container-lowest text-on-surface font-body-md text-body-md rounded-lg hover:border-primary/50 transition-colors">
+                            原味轻乳
+                        </button>
+</div>
+</div>
+</section>
+<div class="h-px w-full bg-outline-variant/30"></div>
+<!-- Customization & Time -->
+<section class="space-y-stack-lg">
+<!-- Message Input -->
+<div class="space-y-stack-sm">
+<div class="flex justify-between items-baseline">
+<label class="font-headline-sm text-headline-sm text-on-surface" for="cake-message">贺牌留言</label>
+<span class="font-label-sm text-label-sm text-on-surface-variant">0/20</span>
+</div>
+<div class="relative">
+<input class="w-full bg-transparent border-0 border-b border-outline-variant focus:border-primary focus:ring-0 px-0 py-2 font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant/50 transition-colors" id="cake-message" placeholder="请填写贺卡内容（选填）" type="text"/>
+</div>
+</div>
+<!-- Date Selection Notice -->
+<div class="silk-card p-4 rounded-xl flex items-start space-x-4 shadow-ambient">
+<div class="p-2 bg-secondary-container/20 rounded-lg text-secondary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calendar_today</span>
+</div>
+<div>
+<h4 class="font-body-md text-body-md text-on-surface font-medium">最早可约时间</h4>
+<p class="font-body-lg text-body-lg text-primary mt-1">2023年07月25日 14:00</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-2">顺丰冷链配送 / 门店自提</p>
+</div>
+</div>
+</section>
+<!-- Filler for scroll -->
+<div class="h-12"></div>
+</div>
+</main>
+<!-- Bottom Action Bar (Contextual) -->
+<div class="fixed bottom-0 left-0 w-full z-50 bg-surface/95 backdrop-blur-md border-t border-outline-variant/20 px-margin-page py-4 pb-safe flex items-center justify-between gap-4">
+<!-- Minor Actions -->
+<div class="flex items-center space-x-6 mr-2">
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 0;">support_agent</span>
+<span class="font-label-sm text-label-sm mt-1">客服</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 0;">favorite</span>
+<span class="font-label-sm text-label-sm mt-1">收藏</span>
+</button>
+</div>
+<!-- Primary Actions -->
+<div class="flex-1 flex gap-3">
+<button class="flex-1 py-3 px-4 rounded-lg border border-primary text-primary font-body-md text-body-md font-medium text-center transition-all hover:bg-primary-container/5 active:scale-95">
+                加入提篮
+            </button>
+<button class="flex-1 py-3 px-4 rounded-lg bg-primary text-on-primary font-body-md text-body-md font-medium text-center transition-all hover:bg-on-primary-fixed-variant active:scale-95 shadow-ambient">
+                立即预定
+            </button>
+</div>
+</div>
+</body></html>

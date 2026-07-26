@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>联系客服 - 如也</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&amp;family=Be+Vietnam+Pro:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#795b3c",
+                        "surface-tint": "#a33c2e",
+                        "surface-dim": "#e1d9d0",
+                        "inverse-surface": "#34302a",
+                        "primary-fixed": "#ffdad4",
+                        "secondary-container": "#ffd5af",
+                        "on-tertiary-fixed": "#201b12",
+                        "on-tertiary-container": "#f7edde",
+                        "outline": "#8a716d",
+                        "surface-variant": "#e9e1d8",
+                        "on-secondary-fixed-variant": "#5c4125",
+                        "surface-container": "#f5ede4",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#77583a",
+                        "tertiary-container": "#726b5f",
+                        "on-primary-fixed-variant": "#83251a",
+                        "secondary-fixed": "#ffdcbd",
+                        "on-surface-variant": "#57423e",
+                        "on-secondary-fixed": "#2b1701",
+                        "tertiary-fixed": "#ebe1d3",
+                        "surface": "#fff8f2",
+                        "inverse-on-surface": "#f8efe6",
+                        "surface-container-highest": "#e9e1d8",
+                        "secondary-fixed-dim": "#e7bf9a",
+                        "on-surface": "#1e1b16",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-container": "#ffe9e6",
+                        "tertiary-fixed-dim": "#cfc5b8",
+                        "background": "#fff8f2",
+                        "on-tertiary-fixed-variant": "#4c463c",
+                        "inverse-primary": "#ffb4a8",
+                        "primary-container": "#b5493a",
+                        "on-secondary": "#ffffff",
+                        "on-background": "#1e1b16",
+                        "error": "#ba1a1a",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed": "#410000",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#ffb4a8",
+                        "outline-variant": "#dec0bb",
+                        "error-container": "#ffdad6",
+                        "primary": "#953225",
+                        "tertiary": "#595348",
+                        "surface-bright": "#fff8f2",
+                        "surface-container-high": "#efe7de",
+                        "surface-container-low": "#fbf2e9"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "unit": "4px",
+                        "stack-lg": "32px",
+                        "gutter": "16px",
+                        "stack-md": "16px",
+                        "margin-page": "24px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Be Vietnam Pro", "sans-serif"],
+                        "label-price": ["Noto Serif SC", "serif"],
+                        "display-md": ["Noto Serif SC", "serif"],
+                        "body-lg": ["Be Vietnam Pro", "sans-serif"],
+                        "headline-sm": ["Noto Serif SC", "serif"],
+                        "body-md": ["Be Vietnam Pro", "sans-serif"],
+                        "display-lg": ["Noto Serif SC", "serif"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "label-price": ["18px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "display-md": ["24px", { "lineHeight": "1.4", "letterSpacing": "0.08em", "fontWeight": "500" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "letterSpacing": "0.02em", "fontWeight": "400" }],
+                        "headline-sm": ["20px", { "lineHeight": "1.5", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-md": ["14px", { "lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "display-lg": ["32px", { "lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: theme('colors.background'); color: theme('colors.on-background'); }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid theme('colors.surface-variant');
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-24 md:pb-0 pt-16">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 flex justify-between items-center w-full px-margin-page py-4 max-w-7xl mx-auto flat no shadows">
+<button class="text-on-surface-variant dark:text-surface-variant hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">menu</span>
+</button>
+<div class="font-display-lg text-display-lg tracking-widest text-primary dark:text-on-primary-fixed-variant">
+            如 也
+        </div>
+<button class="text-on-surface-variant dark:text-surface-variant hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">search</span>
+</button>
+</header>
+<main class="max-w-3xl mx-auto px-margin-page py-stack-lg flex flex-col gap-stack-lg">
+<!-- Brand Message -->
+<section class="text-center py-stack-md">
+<h1 class="font-display-md text-display-md text-primary mb-stack-sm">一期一会，静候佳音。</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-lg mx-auto">
+                如也有幸与您在这一刻相遇。无论是对茶点的探寻，还是对留白的感悟，我们都愿意静心倾听。
+            </p>
+</section>
+<!-- Core Contact Options -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Online Chat -->
+<button class="glass-card rounded-lg p-stack-md flex flex-col items-center justify-center gap-stack-sm group hover:border-primary-container transition-colors">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-primary group-hover:bg-primary-container group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[24px]">chat_bubble</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">在线客服</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">即时沟通，为您解忧</p>
+<span class="mt-2 px-4 py-2 bg-primary-container text-on-primary rounded font-label-sm text-label-sm shadow-sm">开始对话</span>
+</button>
+<!-- Phone Call -->
+<button class="glass-card rounded-lg p-stack-md flex flex-col items-center justify-center gap-stack-sm group hover:border-primary-container transition-colors">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-primary group-hover:bg-primary-container group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[24px]">call</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">电话客服</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">400-888-8888</p>
+<span class="mt-2 px-4 py-2 border border-primary text-primary rounded font-label-sm text-label-sm group-hover:bg-primary-container group-hover:text-on-primary group-hover:border-primary-container transition-all">拨打热线</span>
+</button>
+</section>
+<!-- FAQ Accordion -->
+<section class="mt-stack-lg">
+<h2 class="font-headline-sm text-headline-sm text-on-surface mb-stack-md flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">help_outline</span>
+                常见问题
+            </h2>
+<div class="flex flex-col gap-2">
+<!-- FAQ Item 1 -->
+<div class="border-b border-surface-variant py-2">
+<button class="w-full flex justify-between items-center py-2 text-left hover:text-primary transition-colors" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.material-symbols-outlined').classList.toggle('rotate-180')">
+<span class="font-body-lg text-body-lg">如也的茶点如何保存？</span>
+<span class="material-symbols-outlined transition-transform duration-300">expand_more</span>
+</button>
+<div class="hidden pt-2 pb-4 font-body-md text-body-md text-on-surface-variant">
+                        建议置于阴凉干燥处，避免阳光直射。部分含有鲜奶或生鲜成分的糕点，请置于0-4℃冷藏，并在24小时内食用完毕，以保最佳风味。
+                    </div>
+</div>
+<!-- FAQ Item 2 -->
+<div class="border-b border-surface-variant py-2">
+<button class="w-full flex justify-between items-center py-2 text-left hover:text-primary transition-colors" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.material-symbols-outlined').classList.toggle('rotate-180')">
+<span class="font-body-lg text-body-lg">关于配送范围与时效？</span>
+<span class="material-symbols-outlined transition-transform duration-300">expand_more</span>
+</button>
+<div class="hidden pt-2 pb-4 font-body-md text-body-md text-on-surface-variant">
+                        同城支持专送，最快2小时送达。其他地区采用冷链物流，预计次日或隔日送达。具体请在结算页面输入地址查看详细时效。
+                    </div>
+</div>
+<!-- FAQ Item 3 -->
+<div class="border-b border-surface-variant py-2">
+<button class="w-full flex justify-between items-center py-2 text-left hover:text-primary transition-colors" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.material-symbols-outlined').classList.toggle('rotate-180')">
+<span class="font-body-lg text-body-lg">是否提供礼盒定制服务？</span>
+<span class="material-symbols-outlined transition-transform duration-300">expand_more</span>
+</button>
+<div class="hidden pt-2 pb-4 font-body-md text-body-md text-on-surface-variant">
+                        提供企业采购及私人伴手礼定制服务。我们提供专署腰封、贺卡等定制选项。详情请通过“在线客服”或电话联系大客户经理。
+                    </div>
+</div>
+</div>
+</section>
+<!-- Social/QR Code -->
+<section class="mt-stack-lg pt-stack-md border-t border-surface-variant text-center">
+<h3 class="font-body-lg text-body-lg text-on-surface mb-stack-sm">关注我们</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-stack-md">获取最新时令茶点资讯与雅集活动邀请。</p>
+<div class="w-32 h-32 mx-auto bg-surface-container rounded-lg border border-outline-variant p-2 shadow-[0_2px_10px_rgba(58,54,48,0.03)] flex items-center justify-center">
+<img class="w-full h-full object-cover rounded opacity-80 mix-blend-multiply" data-alt="A clean, minimalist QR code graphic centered in a square frame. The style is subtle and high-end, utilizing soft, muted tones typical of a minimalist luxury brand, avoiding harsh pure blacks. The design should evoke a sense of quiet elegance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGlx-Ba9QPltwlHjwjmDxxqOyLxXzHsKpMgJnS4950UUBtSkSUzFxivUw_uMTPBP5O_NlEtntu4jVyncqjbWaaU35EGsN8vIMeBFq68_-Sv5k5gq-3Yg6-7E09pAeo3rOmYSCMDz7RRZzr9Nozz35Nxbe15QM5esGekQLawmMguO7etsZ40YvePAlGCSjohC9Ak_D-5HN0U8m9lruIVXOGgE4ht2swRqVwaQr-n9O_FKAmMx5JOkyQ"/>
+</div>
+<p class="font-label-sm text-label-sm text-tertiary mt-2">微信搜索公众号「如也」</p>
+</section>
+</main>
+<!-- BottomNavBar (Hidden on md, visible on mobile) -->
+<!-- Note: Contact/Customer Service is not considered a top-level global nav destination per shell logic rules. However, to fulfill the requirement of rendering the components from the JSON strictly, I am rendering it, but visually it should arguably be suppressed on this specific dead-end subpage in a real app. -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe border-t border-outline-variant/20 bg-surface dark:bg-surface-dim shadow-[0_-2px_10px_rgba(58,54,48,0.03)]">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-tertiary hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">
+<span class="material-symbols-outlined mb-1">home</span>
+<span class="font-label-sm text-label-sm">首页</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-tertiary hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">
+<span class="material-symbols-outlined mb-1">category</span>
+<span class="font-label-sm text-label-sm">分类</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-tertiary hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">
+<span class="material-symbols-outlined mb-1">shopping_basket</span>
+<span class="font-label-sm text-label-sm">提篮</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-inverse-primary bg-primary-container/10 rounded-full py-1 px-4 translate-y-[-2px] duration-300 ease-out" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-sm text-label-sm">我的</span>
+</a>
+</nav>
+</body></html>

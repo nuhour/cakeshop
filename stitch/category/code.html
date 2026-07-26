@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>分类 - 如也</title>
+<!-- Google Fonts: Noto Serif (Display/Headline/Price) & Be Vietnam Pro (Body/Label) -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&amp;family=Noto+Serif:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#57423e",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-container": "#795b3c",
+                        "primary": "#953225",
+                        "on-primary-fixed-variant": "#83251a",
+                        "secondary-fixed": "#ffdcbd",
+                        "surface": "#fff8f2",
+                        "surface-container-highest": "#e9e1d8",
+                        "error-container": "#ffdad6",
+                        "background": "#fff8f2",
+                        "tertiary-fixed": "#ebe1d3",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#efe7de",
+                        "on-tertiary-fixed-variant": "#4c463c",
+                        "on-tertiary-fixed": "#201b12",
+                        "tertiary-fixed-dim": "#cfc5b8",
+                        "surface-container": "#f5ede4",
+                        "on-surface": "#1e1b16",
+                        "tertiary-container": "#726b5f",
+                        "surface-variant": "#e9e1d8",
+                        "on-error-container": "#93000a",
+                        "surface-tint": "#a33c2e",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-container": "#ffe9e6",
+                        "tertiary": "#595348",
+                        "surface-dim": "#e1d9d0",
+                        "outline-variant": "#dec0bb",
+                        "secondary-fixed-dim": "#e7bf9a",
+                        "inverse-on-surface": "#f8efe6",
+                        "surface-container-low": "#fbf2e9",
+                        "inverse-surface": "#34302a",
+                        "secondary": "#77583a",
+                        "on-background": "#1e1b16",
+                        "secondary-container": "#ffd5af",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed": "#2b1701",
+                        "inverse-primary": "#ffb4a8",
+                        "on-secondary-fixed-variant": "#5c4125",
+                        "primary-fixed-dim": "#ffb4a8",
+                        "surface-bright": "#fff8f2",
+                        "on-primary-fixed": "#410000",
+                        "primary-fixed": "#ffdad4",
+                        "outline": "#8a716d",
+                        "primary-container": "#b5493a",
+                        "error": "#ba1a1a",
+                        "on-tertiary-container": "#f7edde"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "margin-page": "24px",
+                        "unit": "4px",
+                        "stack-sm": "8px",
+                        "stack-lg": "32px",
+                        "stack-md": "16px",
+                        "safe": "env(safe-area-inset-bottom, 24px)"
+                    },
+                    "fontFamily": {
+                        "body-md": ["beVietnamPro"],
+                        "display-lg": ["notoSerif"],
+                        "headline-sm": ["notoSerif"],
+                        "body-lg": ["beVietnamPro"],
+                        "label-sm": ["beVietnamPro"],
+                        "display-md": ["notoSerif"],
+                        "label-price": ["notoSerif"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", { "lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "display-lg": ["32px", { "lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                        "headline-sm": ["20px", { "lineHeight": "1.5", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "letterSpacing": "0.02em", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "display-md": ["24px", { "lineHeight": "1.4", "letterSpacing": "0.08em", "fontWeight": "500" }],
+                        "label-price": ["18px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Hide scrollbar for clean aesthetics */
+        ::-webkit-scrollbar { display: none; }
+        * { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .ambient-shadow {
+            box-shadow: 0 10px 40px -10px rgba(58, 54, 48, 0.05);
+        }
+        
+        .active-nav-indicator {
+            position: relative;
+        }
+        .active-nav-indicator::before {
+            content: '';
+            position: absolute;
+            left: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 16px;
+            background-color: theme('colors.primary');
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface antialiased min-h-screen flex flex-col font-body-md">
+<!-- Top App Bar -->
+<header class="bg-surface/80 backdrop-blur-md flex justify-between items-center w-full px-margin-page py-4 max-w-7xl mx-auto border-b border-outline-variant/30 sticky top-0 z-40">
+<button class="text-primary hover:opacity-80 transition-opacity flex items-center justify-center p-2 -ml-2">
+<span class="material-symbols-outlined text-[24px]">menu</span>
+</button>
+<h1 class="font-display-md text-display-md tracking-widest text-primary">如 也</h1>
+<button class="text-primary hover:opacity-80 transition-opacity flex items-center justify-center p-2 -mr-2">
+<span class="material-symbols-outlined text-[24px]">search</span>
+</button>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 w-full max-w-7xl mx-auto flex px-margin-page py-stack-lg gap-8 md:gap-16 pb-[100px] md:pb-stack-lg">
+<!-- Left Side Navigation -->
+<aside class="w-20 md:w-32 flex-shrink-0">
+<nav class="sticky top-[100px] flex flex-col gap-stack-lg">
+<a class="font-body-lg text-body-lg text-on-surface-variant hover:text-primary transition-colors text-center md:text-left" href="#">定制蛋糕</a>
+<a class="font-body-lg text-body-lg text-on-surface-variant hover:text-primary transition-colors text-center md:text-left" href="#">切块甜品</a>
+<a class="font-body-lg text-body-lg text-primary font-medium active-nav-indicator text-center md:text-left" href="#">中式茶点</a>
+<a class="font-body-lg text-body-lg text-on-surface-variant hover:text-primary transition-colors text-center md:text-left" href="#">伴手礼</a>
+<a class="font-body-lg text-body-lg text-on-surface-variant hover:text-primary transition-colors text-center md:text-left" href="#">季节限定</a>
+</nav>
+</aside>
+<!-- Right Product List -->
+<section class="flex-1 flex flex-col gap-stack-lg">
+<!-- Category Header -->
+<div class="flex items-center gap-4 border-b border-outline-variant/30 pb-4">
+<h2 class="font-display-md text-display-md text-on-surface">中式茶点</h2>
+<span class="font-label-sm text-label-sm text-on-surface-variant tracking-widest px-2 py-1 rounded border border-outline-variant/50">传统手作</span>
+</div>
+<!-- Bento-style Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md md:gap-stack-lg">
+<!-- Featured Item (Spans Full Width on Mobile, Full Width on Desktop too for pacing) -->
+<article class="col-span-1 md:col-span-2 bg-surface-container-lowest border border-outline-variant/40 rounded-lg overflow-hidden ambient-shadow flex flex-col md:flex-row group hover:-translate-y-1 transition-transform duration-300">
+<div class="w-full md:w-1/2 aspect-[4/3] md:aspect-auto overflow-hidden">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-700" data-alt="A highly detailed, elegant food photography shot of traditional Chinese Longjing Tea Pastries. The flaky, light green pastries resemble delicate tea leaves, arranged thoughtfully on a textured Xuan paper surface. Soft, natural daylight casts gentle shadows, emphasizing a sophisticated, high-end 'New Chinese Aesthetic' in a serene light-mode setting. Minimalist negative space frames the composition perfectly." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBLNmYkNVeWaMgyyfqFZaiRvdMd9vKmOIRMML0qrH_3PF1MlrwTRnIC3ndsB9KIupIAOIyk46YnDqhUsIZrRLMWz-rwjESZQqAw7xLK-qeg5Xs_tT7pLUNkl9Z9gn9JSueMdcw6qmYjdA0JivIYLZS3kL_FEWZHm_a8LtwdPbn9teKbgZIichUeoYNjBTcUzZAPufUbUYioLCEyuBSMembql46S4Nv9wp5JjETmOVobON0U-Q3mOzgl')"></div>
+</div>
+<div class="w-full md:w-1/2 p-margin-page flex flex-col justify-center">
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="px-2 py-1 border border-secondary/30 text-secondary font-label-sm text-label-sm rounded bg-surface">龙井茶香</span>
+<span class="px-2 py-1 border border-secondary/30 text-secondary font-label-sm text-label-sm rounded bg-surface">招牌推荐</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">雨前龙井茶酥</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-stack-lg line-clamp-3">取明前龙井原叶研磨入酥，层层起酥如羽，入口茶香清远，不甜不腻。搭配一壶清茶，品味江南春意。</p>
+<div class="mt-auto flex justify-between items-end border-t border-outline-variant/20 pt-4">
+<span class="font-label-price text-label-price text-secondary">¥ 48 <span class="font-label-sm text-label-sm text-on-surface-variant font-normal">/ 盒 (4枚)</span></span>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-DEFAULT font-label-sm text-label-sm hover:bg-primary-fixed-variant transition-colors flex items-center gap-1">
+                                预定
+                            </button>
+</div>
+</div>
+</article>
+<!-- Standard Card 1 -->
+<article class="bg-surface-container-lowest border border-outline-variant/40 rounded-lg overflow-hidden ambient-shadow flex flex-col group hover:-translate-y-1 transition-transform duration-300">
+<div class="aspect-square overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="A close-up, premium studio shot of a delicate Chinese Osmanthus Dingsheng Cake (a traditional pink rice flour pastry). The cake sits on a minimalist matte white ceramic saucer. A few tiny, vibrant yellow osmanthus petals are scattered around it. The lighting is high-key and soft, creating a pure, poetic Zen atmosphere with ample negative space in a bright light-mode environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzw93kQQ8JGnnIarzbpBBYjnzU6KxXrnOLavQ-WXf8lVRkf-j2ThFuGMhS5aS6reaIctC46KpSlN0f1CcUyWtvrfhiNF7oxXX8LIXSY23WrTwfwY4N2oSZUGEncEx3vhzVBQcYlTgNSVe7G4yTbvrOfM-WUazR6zmJAvN-GQYNGSk8LjUNIX99tFezQNYhYBBFkUVMRptxF1favYzywdxsLSc8o_r2rF6KzOkZ4N6gUzikQq0M5QgM"/>
+</div>
+<div class="p-stack-md flex flex-col flex-1">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-1">金秋桂花定胜糕</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4 line-clamp-2">古法松糕工艺，内陷细腻红豆沙，点缀手摘丹桂，软糯香甜，寓意高升。</p>
+<div class="mt-auto flex justify-between items-center pt-4">
+<span class="font-label-price text-label-price text-secondary">¥ 32</span>
+<button class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center hover:bg-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Standard Card 2 -->
+<article class="bg-surface-container-lowest border border-outline-variant/40 rounded-lg overflow-hidden ambient-shadow flex flex-col group hover:-translate-y-1 transition-transform duration-300">
+<div class="aspect-square overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="An elegant, minimalist photograph of a Chinese Lotus Pastry (Hehua Su) with delicate pink and white layered petals opening up, revealing a golden center. Placed on a piece of raw silk fabric with a subtle off-white background. Gentle, diffused studio lighting accentuates the crisp textures of the pastry and the refined, scholarly 'New Chinese Aesthetic'." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrd7O836VqN6IWukj2Pvl19pk8ZAzWEwU55mDqQXz8gENFYUSKhrr-SDLg4xXi-ofeE2oMCj9MjS5CDybB7HiYtcZd3JPCcp7XyUZB2KrzWLH6YxiR87DywqungTLOekOzj4IYrkPHceg08lwA8w-FA0li5avkBTt6Ar8Bnx-AWqQdRFyb7_wCkxNfnucM9rHo_KolH2lIxb4k34hmEcIIVczwDRPcr0GVWsPoYDwqYZqlbpI2M4Ev"/>
+</div>
+<div class="p-stack-md flex flex-col flex-1">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-1">出水芙蓉荷花酥</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4 line-clamp-2">形似含苞待放的荷花，酥皮薄如蝉翼，内裹椰蓉蛋黄心，酥脆与绵密交织。</p>
+<div class="mt-auto flex justify-between items-center pt-4">
+<span class="font-label-price text-label-price text-secondary">¥ 38</span>
+<button class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center hover:bg-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+</div>
+</div>
+</article>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe md:hidden border-t border-outline-variant/20 bg-surface shadow-[0_-2px_10px_rgba(58,54,48,0.03)]">
+<!-- 首页 (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors w-16 group" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1 group-hover:scale-110 transition-transform">home</span>
+<span class="font-label-sm text-label-sm">首页</span>
+</a>
+<!-- 分类 (Active) -->
+<a class="flex flex-col items-center justify-center text-primary bg-primary-container/10 rounded-full py-1 px-4 translate-y-[-2px] duration-300 ease-out" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1" style="font-variation-settings: 'FILL' 1;">category</span>
+<span class="font-label-sm text-label-sm">分类</span>
+</a>
+<!-- 提篮 (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors w-16 group relative" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1 group-hover:scale-110 transition-transform">shopping_basket</span>
+<span class="font-label-sm text-label-sm">提篮</span>
+<!-- Notification Dot -->
+<span class="absolute top-0 right-2 w-2 h-2 bg-primary rounded-full border border-surface"></span>
+</a>
+<!-- 我的 (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors w-16 group" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1 group-hover:scale-110 transition-transform">person</span>
+<span class="font-label-sm text-label-sm">我的</span>
+</a>
+</nav>
+</body></html>

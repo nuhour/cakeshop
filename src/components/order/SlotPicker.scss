@@ -1,0 +1,34 @@
+.slot-picker {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.slot-picker__item {
+  padding: 12px;
+  border: 1px solid #d7c3ae;
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+.slot-picker__item--active {
+  border-color: #f5a623;
+  background: #fff4db;
+}
+
+.slot-picker__time,
+.slot-picker__capacity {
+  display: block;
+}
+
+.slot-picker__time {
+  color: #333333;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.slot-picker__capacity {
+  margin-top: 4px;
+  color: #999999;
+  font-size: 12px;
+}
