@@ -53,8 +53,8 @@ export default function HomePage() {
         <Text className="cs-seal home-brand__seal">如也</Text>
       </View>
 
-      <View className="home-search cs-hairline" onClick={() => goCategory({ keyword })}>
-        <Text className="home-search__icon">◎</Text>
+      <View className="home-search cs-hairline">
+        <Text className="home-search__icon" onClick={() => goCategory({ keyword })}>◎</Text>
         <Input
           className="home-search__input"
           value={keyword}

@@ -93,7 +93,7 @@ export default function MinePage() {
         </View>
         <View className="mine-card__info">
           <Text className="mine-card__name cs-serif">{profile?.nickname || '如也甜品屋会员'}</Text>
-          <Text className="mine-card__level">{profile?.level || '暖麦会员'}</Text>
+          <Text className="mine-card__level">{profile?.level || '如也会员'}</Text>
         </View>
         <Text className="cs-seal mine-card__seal">如也</Text>
         <Button className="mine-card__auth" onClick={profile ? logout : login}>{profile ? '退出' : '登录'}</Button>

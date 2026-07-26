@@ -32,7 +32,7 @@ export default function CartPage() {
       Taro.showToast({ title: stockWarnings[0], icon: 'none' })
       return
     }
-    checkoutStore.set({ source: 'cart' })
+    checkoutStore.set({ source: 'cart', slotId: undefined })
     Taro.navigateTo({ url: '/pages/checkout/index' })
   }
 
@@ -92,7 +92,7 @@ export default function CartPage() {
           <Text className="cart-bar__label">合计</Text>
           <PriceText value={cartStore.getSelectedTotal()} />
         </View>
-        <Button className="cart-bar__button" disabled={!canCheckout} onClick={checkout}>去预约</Button>
+        <Button className="cart-bar__button" disabled={!canCheckout} onClick={checkout}>结算</Button>
       </View>
     </View>
   )

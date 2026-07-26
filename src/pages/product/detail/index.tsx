@@ -41,13 +41,26 @@ export default function ProductDetailPage() {
   }, [id])
 
   useEffect(() => {
-    if (!product) return
+    if (!product || product.productType !== 'reservation') {
+      setEarliestSlot(null)
+      setSlotLoaded(true)
+      return
+    }
     setSlotLoaded(false)
     csApi.slots({ minLeadHours: product.leadTimeHours })
-      .then((slots) => setEarliestSlot(slots[0] || null))
+      .then((slots) => {
+        const now = new Date()
+        const upcoming = slots.find((slot) => {
+          const [year, month, day] = slot.date.split('-').map((part) => Number(part))
+          const [hour, minute] = slot.startTime.split(':').map((part) => Number(part))
+          const slotTime = new Date(year || 0, (month || 1) - 1, day || 1, hour || 0, minute || 0)
+          return slotTime.getTime() > now.getTime()
+        })
+        setEarliestSlot(upcoming || null)
+      })
       .catch(() => setEarliestSlot(null))
       .finally(() => setSlotLoaded(true))
-  }, [product?.id, product?.leadTimeHours])
+  }, [product?.id, product?.leadTimeHours, product?.productType])
 
   if (!product) return <View className="cakeshop-page detail-page" />
   const soldOut = !product.isActive || product.stock <= 0
@@ -60,7 +73,7 @@ export default function ProductDetailPage() {
       Taro.showToast({ title: '商品已售罄', icon: 'none' })
       return
     }
-    checkoutStore.set({ source: 'buyNow', productId: product.id, quantity, flavorId, specId, plaqueText: normalizedPlaqueText })
+    checkoutStore.set({ source: 'buyNow', productId: product.id, quantity, flavorId, specId, plaqueText: normalizedPlaqueText, slotId: undefined })
     Taro.navigateTo({ url: '/pages/checkout/index' })
   }
 
@@ -147,13 +160,15 @@ export default function ProductDetailPage() {
           </View>
         ) : null}
 
-        <View className="detail-slot cakeshop-card">
-          <Text className="detail-slot__icon">◔</Text>
-          <View className="detail-slot__body">
-            <Text className="detail-slot__title">最早可约时间</Text>
-            <Text className="detail-slot__value">{!slotLoaded ? '加载中…' : earliestSlot ? formatSlot(earliestSlot) : '暂无可约时段'}</Text>
+        {isReservation ? (
+          <View className="detail-slot cakeshop-card">
+            <Text className="detail-slot__icon">◔</Text>
+            <View className="detail-slot__body">
+              <Text className="detail-slot__title">最早可约时间</Text>
+              <Text className="detail-slot__value">{!slotLoaded ? '加载中…' : earliestSlot ? formatSlot(earliestSlot) : '暂无可约时段'}</Text>
+            </View>
           </View>
-        </View>
+        ) : null}
 
         <View className="detail-quantity">
           <Text className="detail-label">数量</Text>
