@@ -11,6 +11,15 @@ import './index.scss'
 
 const CATEGORY_ICONS = ['🍰', '🧁', '🍵', '🎁']
 
+// switchTab（跳转 tabBar 页面）在微信小程序真机上不会携带 query 参数，
+// 用本地缓存把筛选条件传给分类页，由分类页在 useDidShow 里读取并清除。
+const PENDING_FILTER_KEY = 'cakeshop_pending_category_filter'
+
+interface PendingCategoryFilter {
+  categoryId?: string
+  keyword?: string
+}
+
 export default function HomePage() {
   const [home, setHome] = useState<CsHomePayload>(catalogStore.getHome() || demoHome)
   const [keyword, setKeyword] = useState('')
@@ -28,12 +37,9 @@ export default function HomePage() {
     }
   }
 
-  const goCategory = (params: Record<string, string> = {}) => {
-    const query = Object.entries(params)
-      .filter(([, value]) => !!value)
-      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
-      .join('&')
-    Taro.switchTab({ url: query ? `/pages/category/index?${query}` : '/pages/category/index' })
+  const goCategory = (filter: PendingCategoryFilter) => {
+    Taro.setStorageSync(PENDING_FILTER_KEY, filter)
+    Taro.switchTab({ url: '/pages/category/index' })
   }
 
   const banner = home.banners[0]

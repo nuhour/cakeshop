@@ -9,6 +9,15 @@ import { PriceText } from '@/components/ui/PriceText'
 import { EmptyState } from '@/components/ui/EmptyState'
 import './index.scss'
 
+// 与首页约定的临时筛选缓存 key：switchTab 跳 tabBar 页面时微信不会携带 query 参数，
+// 首页把 keyword/categoryId 写入这里，本页读取一次后立即清除。
+const PENDING_FILTER_KEY = 'cakeshop_pending_category_filter'
+
+interface PendingCategoryFilter {
+  categoryId?: string
+  keyword?: string
+}
+
 export default function CategoryPage() {
   const [categories, setCategories] = useState<CsCategory[]>(catalogStore.getCategories())
   const [products, setProducts] = useState<CsProduct[]>(catalogStore.getProducts())
@@ -20,17 +29,16 @@ export default function CategoryPage() {
   }
 
   useDidShow(() => {
-    const params = Taro.getCurrentInstance().router?.params || {}
-    const paramCategoryId = params.categoryId ? String(params.categoryId) : ''
-    const hasKeywordParam = params.keyword !== undefined
-    const paramKeyword = hasKeywordParam ? String(params.keyword) : ''
+    const stored = Taro.getStorageSync(PENDING_FILTER_KEY)
+    const pending: PendingCategoryFilter | null = stored && typeof stored === 'object' ? stored : null
+    if (pending) Taro.removeStorageSync(PENDING_FILTER_KEY)
 
     catalogStore.loadCategories().then((items) => {
       setCategories(items)
-      const nextActive = paramCategoryId || active || items[0]?.id || ''
-      const nextKeyword = hasKeywordParam ? paramKeyword : keyword
+      const nextActive = (pending && pending.categoryId) || active || items[0]?.id || ''
+      const nextKeyword = pending ? (pending.keyword || '') : keyword
       setActive(nextActive)
-      if (hasKeywordParam) setKeyword(nextKeyword)
+      setKeyword(nextKeyword)
       reload(nextActive, nextKeyword)
     })
   })
