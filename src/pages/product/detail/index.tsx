@@ -8,6 +8,7 @@ import { checkoutStore } from '@/store/checkout'
 import { userStore } from '@/store/user'
 import { csApi } from '@/api/cakeshop'
 import { AppNavBar } from '@/components/ui/AppNavBar'
+import { EmptyState } from '@/components/ui/EmptyState'
 import { PriceText } from '@/components/ui/PriceText'
 import { openShopContact } from '@/utils/service'
 import './index.scss'
@@ -31,13 +32,17 @@ export default function ProductDetailPage() {
   const [galleryIndex, setGalleryIndex] = useState(0)
   const [earliestSlot, setEarliestSlot] = useState<CsFulfillmentSlot | null>(null)
   const [slotLoaded, setSlotLoaded] = useState(false)
+  const [notFound, setNotFound] = useState(false)
 
   useEffect(() => {
+    setNotFound(false)
     catalogStore.loadProduct(id).then((item) => {
-      if (!item) return
       setProduct(item)
       setFlavorId(item.flavors[0]?.id)
       setSpecId(item.specs[0]?.id)
+    }).catch((error) => {
+      if (!catalogStore.findProduct(id)) setNotFound(true)
+      Taro.showToast({ title: error instanceof Error ? error.message : '商品加载失败', icon: 'none' })
     })
   }, [id])
 
@@ -63,7 +68,14 @@ export default function ProductDetailPage() {
       .finally(() => setSlotLoaded(true))
   }, [product?.id, product?.leadTimeHours, product?.productType])
 
-  if (!product) return <View className="cakeshop-page detail-page" />
+  if (!product) {
+    return (
+      <View className="cakeshop-page detail-page">
+        <AppNavBar title="商品详情" back />
+        {notFound ? <EmptyState title="商品不存在或已下架" description="换个商品看看吧" /> : null}
+      </View>
+    )
+  }
   const soldOut = !product.isActive || product.stock <= 0
   const isReservation = product.productType === 'reservation'
   const gallery = product.media.length ? product.media.map((item) => item.url) : [product.cover]

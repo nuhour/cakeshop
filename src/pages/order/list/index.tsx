@@ -52,23 +52,29 @@ export default function OrderListPage() {
   }
 
   const handleAction = async (actionId: CsOrderActionId, order: CsOrder) => {
-    if (actionId === 'pay') {
-      await orderStore.payOrder(order.id)
-      Taro.showToast({ title: '支付成功', icon: 'success' })
-    } else if (actionId === 'cancel') {
-      await orderStore.cancelOrder(order.id)
-      Taro.showToast({ title: '已取消', icon: 'success' })
-    } else if (actionId === 'confirm') {
-      await orderStore.confirmOrder(order.id)
-      Taro.showToast({ title: '订单已完成', icon: 'success' })
-    } else if (actionId === 'buyAgain') {
+    if (actionId === 'buyAgain') {
       Taro.switchTab({ url: '/pages/category/index' })
       return
-    } else if (actionId === 'contactService') {
+    }
+    if (actionId === 'contactService') {
       openShopContact()
       return
     }
-    reload()
+    try {
+      if (actionId === 'pay') {
+        await orderStore.payOrder(order.id)
+        Taro.showToast({ title: '支付成功', icon: 'success' })
+      } else if (actionId === 'cancel') {
+        await orderStore.cancelOrder(order.id)
+        Taro.showToast({ title: '已取消', icon: 'success' })
+      } else if (actionId === 'confirm') {
+        await orderStore.confirmOrder(order.id)
+        Taro.showToast({ title: '订单已完成', icon: 'success' })
+      }
+      reload()
+    } catch (error) {
+      Taro.showToast({ title: error instanceof Error ? error.message : '操作失败，请稍后重试', icon: 'none' })
+    }
   }
 
   return (

@@ -24,22 +24,30 @@ export default function OrderDetailPage() {
   if (!order) return <View className="cakeshop-page"><AppNavBar title="订单详情" back /></View>
 
   const handleAction = async (actionId: CsOrderActionId) => {
-    if (actionId === 'pay') {
-      const next = await orderStore.payOrder(order.id)
-      setOrder({ ...next })
-      Taro.showToast({ title: '支付成功', icon: 'success' })
-    } else if (actionId === 'cancel') {
-      const next = await orderStore.cancelOrder(order.id)
-      setOrder({ ...next })
-      Taro.showToast({ title: '已取消', icon: 'success' })
-    } else if (actionId === 'confirm') {
-      const next = await orderStore.confirmOrder(order.id)
-      setOrder({ ...next })
-      Taro.showToast({ title: '订单已完成', icon: 'success' })
-    } else if (actionId === 'buyAgain') {
+    if (actionId === 'buyAgain') {
       Taro.switchTab({ url: '/pages/category/index' })
-    } else if (actionId === 'contactService') {
+      return
+    }
+    if (actionId === 'contactService') {
       openShopContact()
+      return
+    }
+    try {
+      if (actionId === 'pay') {
+        const next = await orderStore.payOrder(order.id)
+        setOrder({ ...next })
+        Taro.showToast({ title: '支付成功', icon: 'success' })
+      } else if (actionId === 'cancel') {
+        const next = await orderStore.cancelOrder(order.id)
+        setOrder({ ...next })
+        Taro.showToast({ title: '已取消', icon: 'success' })
+      } else if (actionId === 'confirm') {
+        const next = await orderStore.confirmOrder(order.id)
+        setOrder({ ...next })
+        Taro.showToast({ title: '订单已完成', icon: 'success' })
+      }
+    } catch (error) {
+      Taro.showToast({ title: error instanceof Error ? error.message : '操作失败，请稍后重试', icon: 'none' })
     }
   }
 
@@ -74,11 +82,15 @@ export default function OrderDetailPage() {
       <View className="order-detail-card">
         <Text className="order-detail-title cs-serif">订单商品</Text>
         {order.items.map((item, index) => {
-          const product = catalogStore.findProduct(item.productId) || item.product
+          // 优先使用订单创建时的商品快照，避免商品下架/改价后老订单显示当前（错误）信息
+          const product = item.product || catalogStore.findProduct(item.productId)
           return (
             <View key={`${item.productId}_${index}`} className="order-detail-item">
               <View className="order-detail-line">
-                <Text>{product?.name || item.productId} x{item.quantity}</Text>
+                <Text>
+                  {product?.name || item.productId} x{item.quantity}
+                  {product && !product.isActive ? <Text className="order-detail-item__badge">已下架</Text> : null}
+                </Text>
                 <PriceText value={item.price * item.quantity} size="small" />
               </View>
               {item.plaqueText ? <Text className="order-detail-plaque">贺牌：{item.plaqueText}</Text> : null}

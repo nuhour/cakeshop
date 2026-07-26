@@ -5,8 +5,8 @@ import type { CsHomePayload } from '@/types'
 import { catalogStore } from '@/store/catalog'
 import { cartStore } from '@/store/cart'
 import { userStore } from '@/store/user'
-import { demoHome } from '@/store/demo'
 import { AppNavBar } from '@/components/ui/AppNavBar'
+import { EmptyState } from '@/components/ui/EmptyState'
 import { ProductCard } from '@/components/product/ProductCard'
 import './index.scss'
 
@@ -22,7 +22,7 @@ interface PendingCategoryFilter {
 }
 
 export default function HomePage() {
-  const [home, setHome] = useState<CsHomePayload>(catalogStore.getHome() || demoHome)
+  const [home, setHome] = useState<CsHomePayload>(catalogStore.getHome())
   const [keyword, setKeyword] = useState('')
 
   useDidShow(() => {
@@ -94,20 +94,26 @@ export default function HomePage() {
         ))}
       </View>
 
-      <View className="cakeshop-section-title">
-        <Text className="cs-serif">今日推荐</Text>
-      </View>
-      <View className="home-recommend">
-        {home.recommendedProducts.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            productType={product.productType}
-            leadTimeHours={product.leadTimeHours}
-            onAdd={addProduct}
-          />
-        ))}
-      </View>
+      {home.recommendedProducts.length ? (
+        <>
+          <View className="cakeshop-section-title">
+            <Text className="cs-serif">今日推荐</Text>
+          </View>
+          <View className="home-recommend">
+            {home.recommendedProducts.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                productType={product.productType}
+                leadTimeHours={product.leadTimeHours}
+                onAdd={addProduct}
+              />
+            ))}
+          </View>
+        </>
+      ) : (
+        <EmptyState title="暂时无法加载推荐商品" description="下拉刷新或稍后再试" />
+      )}
     </View>
   )
 }

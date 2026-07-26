@@ -1,14 +1,21 @@
 import Taro from '@tarojs/taro'
 import type { CsCategory, CsHomePayload, CsProduct } from '@/types'
 import { csApi } from '@/api/cakeshop'
-import { demoCategories, demoHome, demoProducts } from './demo'
 
 const CATEGORY_KEY = 'cakeshop_categories'
 const PRODUCT_KEY = 'cakeshop_products'
 
-let categories: CsCategory[] = Taro.getStorageSync(CATEGORY_KEY) || demoCategories
-let products: CsProduct[] = Taro.getStorageSync(PRODUCT_KEY) || demoProducts
-let home: CsHomePayload = demoHome
+const emptyHome = (): CsHomePayload => ({
+  categories: [],
+  products: [],
+  banners: [],
+  recommendedProducts: [],
+  newProducts: []
+})
+
+let categories: CsCategory[] = Taro.getStorageSync(CATEGORY_KEY) || []
+let products: CsProduct[] = Taro.getStorageSync(PRODUCT_KEY) || []
+let home: CsHomePayload = emptyHome()
 
 const persist = () => {
   Taro.setStorageSync(CATEGORY_KEY, categories)
@@ -27,10 +34,9 @@ export const catalogStore = {
       products = home.products
       persist()
     } catch (_error) {
-      home = demoHome
-      categories = demoCategories
-      products = demoProducts
-      persist()
+      // 保留已有缓存的 categories/products 供其它页面（如提篮）继续按 id 查找，
+      // 但如实告知调用方本次首页数据获取失败，不用假数据掩盖。
+      home = emptyHome()
     }
     return home
   },
@@ -45,15 +51,10 @@ export const catalogStore = {
     try {
       products = await csApi.products(params)
       persist()
+      return products
     } catch (_error) {
-      const { categoryId, keyword } = params
-      products = demoProducts.filter((item) => {
-        const matchesCategory = !categoryId || item.categoryId === categoryId
-        const matchesKeyword = !keyword || item.name.includes(keyword) || item.subtitle.includes(keyword)
-        return matchesCategory && matchesKeyword
-      })
+      return []
     }
-    return products
   },
   async loadProduct(id: string) {
     try {
@@ -63,8 +64,8 @@ export const catalogStore = {
         : [product, ...products]
       persist()
       return product
-    } catch (_error) {
-      return this.findProduct(id)
+    } catch (error) {
+      throw error
     }
   }
 }

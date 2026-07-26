@@ -198,7 +198,9 @@ export default function CheckoutPage() {
         Taro.showToast({ title: payError instanceof Error ? payError.message : '支付发起失败，可在订单详情中重试', icon: 'none' })
       }
       checkoutStore.clear()
-      const goToOrder = () => Taro.navigateTo({ url: `/pages/order/detail/index?id=${order.id}` })
+      // 用 redirectTo 而非 navigateTo：把结算页从页面栈中替换掉，
+      // 避免下单后用户从订单详情返回时又回到一个已清空/已提交的结算页重复下单。
+      const goToOrder = () => Taro.redirectTo({ url: `/pages/order/detail/index?id=${order.id}` })
       if (payFailed) {
         setTimeout(goToOrder, 1500)
       } else {
@@ -229,12 +231,14 @@ export default function CheckoutPage() {
         {checkout.fulfillmentType === 'pickup' ? (
           <View className="checkout-panel">
             <Text className="checkout-title cs-serif">自提门店</Text>
-            {stores.map((store) => (
+            {stores.length ? stores.map((store) => (
               <View key={store.id} className={`checkout-store ${checkout.storeId === store.id ? 'checkout-store--active' : ''}`} onClick={() => sync({ storeId: store.id, slotId: undefined })}>
                 <Text className="checkout-store__name">{store.name}</Text>
                 <Text className="checkout-store__addr">{store.address} · {store.businessHours}</Text>
               </View>
-            ))}
+            )) : (
+              <Text className="checkout-address-empty">门店列表加载失败，请稍后重试</Text>
+            )}
             <View className="checkout-inputs">
               <Input className="checkout-input" placeholder="取货人姓名" value={checkout.pickupContactName || ''} onInput={(event) => sync({ pickupContactName: String(event.detail.value || '') })} />
               <Input className="checkout-input" placeholder="取货人手机号" value={checkout.pickupContactPhone || ''} onInput={(event) => sync({ pickupContactPhone: String(event.detail.value || '') })} />

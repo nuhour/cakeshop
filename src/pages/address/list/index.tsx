@@ -55,13 +55,21 @@ export default function AddressListPage() {
   }
 
   const remove = async (id: string) => {
-    await addressStore.remove(id)
-    setAddresses([...addressStore.getList()])
+    try {
+      await addressStore.remove(id)
+      setAddresses([...addressStore.getList()])
+    } catch (error) {
+      Taro.showToast({ title: error instanceof Error ? error.message : '删除失败', icon: 'none' })
+    }
   }
 
   const setDefault = async (id: string) => {
-    await addressStore.setDefault(id)
-    setAddresses([...addressStore.getList()])
+    try {
+      await addressStore.setDefault(id)
+      setAddresses([...addressStore.getList()])
+    } catch (error) {
+      Taro.showToast({ title: error instanceof Error ? error.message : '设置失败', icon: 'none' })
+    }
   }
 
   return (

@@ -2,7 +2,6 @@ import { ScrollView, Text, View } from '@tarojs/components'
 import { useEffect, useMemo, useState } from 'react'
 import type { FulfillmentType, CsFulfillmentSlot } from '@/types'
 import { csApi } from '@/api/cakeshop'
-import { demoSlots } from '@/store/demo'
 import './SlotPicker.scss'
 
 interface Props {
@@ -52,11 +51,7 @@ export function SlotPicker({ fulfillmentType, storeId, minLeadHours, selectedId,
       })
       .catch(() => {
         if (!active) return
-        setSlots(demoSlots.filter((item) => (
-          item.date === activeDate &&
-          item.fulfillmentType === fulfillmentType &&
-          (!storeId || item.storeId === storeId)
-        )))
+        setSlots([])
       })
       .finally(() => {
         if (active) setLoading(false)

@@ -33,6 +33,16 @@
   letter-spacing: 0.05em;
 }
 
+.order-detail-item__badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  font-size: 11px;
+  color: #953225;
+  background: rgba(149, 50, 37, 0.08);
+  border-radius: 999px;
+}
+
 .order-detail-status__slot {
   margin-top: 8px;
   font-size: 15px;
