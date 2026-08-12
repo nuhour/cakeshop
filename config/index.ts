@@ -19,7 +19,7 @@ export default defineConfig(async (merge) => {
     compiler: 'webpack5',
     output: {
       // 微信开发者工具监听 dist 时保留已有 app.json，避免增量编译窗口短暂丢失入口文件。
-      clean: false
+      clean: process.env.NODE_ENV !== 'development'
     },
     alias: {
       '@': path.resolve(__dirname, '..', 'src')
