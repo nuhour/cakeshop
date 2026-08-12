@@ -17,6 +17,10 @@ export default defineConfig(async (merge) => {
     plugins: [],
     framework: 'react',
     compiler: 'webpack5',
+    output: {
+      // 微信开发者工具监听 dist 时保留已有 app.json，避免增量编译窗口短暂丢失入口文件。
+      clean: false
+    },
     alias: {
       '@': path.resolve(__dirname, '..', 'src')
     },
