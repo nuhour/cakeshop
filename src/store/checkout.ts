@@ -41,8 +41,6 @@ export const checkoutStore = {
   get: () => state,
   set(next: Partial<CsCheckoutState>) {
     state = { ...state, ...next }
-    if (next.fulfillmentType === 'pickup') state.addressId = undefined
-    if (next.fulfillmentType === 'delivery') state.storeId = undefined
     persist()
   },
   clear() {

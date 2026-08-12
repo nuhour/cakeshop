@@ -237,7 +237,7 @@
   gap: 12px;
   padding: 12px 18px 22px;
   border-top: 1px solid $hairline;
-  background: rgba($paper, 0.96);
+  background: $paper;
 }
 
 .detail-bar__minor {
@@ -249,8 +249,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  height: 46px;
   color: $ink-soft;
   font-size: 11px;
+}
+
+.detail-bar__ghost--active {
+  color: $cinnabar;
+  font-weight: 700;
 }
 
 .detail-bar__actions {

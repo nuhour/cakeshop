@@ -5,6 +5,7 @@ import type { CsFulfillmentSlot, CsProduct } from '@/types'
 import { catalogStore } from '@/store/catalog'
 import { cartStore } from '@/store/cart'
 import { checkoutStore } from '@/store/checkout'
+import { favoriteStore } from '@/store/favorite'
 import { userStore } from '@/store/user'
 import { csApi } from '@/api/cakeshop'
 import { AppNavBar } from '@/components/ui/AppNavBar'
@@ -34,6 +35,7 @@ export default function ProductDetailPage() {
   const [earliestSlot, setEarliestSlot] = useState<CsFulfillmentSlot | null>(null)
   const [slotLoaded, setSlotLoaded] = useState(false)
   const [notFound, setNotFound] = useState(false)
+  const [favorited, setFavorited] = useState(favoriteStore.has(id))
 
   useEffect(() => {
     setNotFound(false)
@@ -100,6 +102,13 @@ export default function ProductDetailPage() {
     } catch (error) {
       Taro.showToast({ title: error instanceof Error ? error.message : '加入失败', icon: 'none' })
     }
+  }
+
+  const toggleFavorite = async () => {
+    if (!(await userStore.ensureLogin('登录后可收藏商品'))) return
+    const next = favoriteStore.toggle(product.id)
+    setFavorited(next)
+    Taro.showToast({ title: next ? '已收藏' : '已取消收藏', icon: next ? 'success' : 'none' })
   }
 
   return (
@@ -199,7 +208,9 @@ export default function ProductDetailPage() {
       <View className="detail-bar">
         <View className="detail-bar__minor">
           <Button className="detail-bar__ghost" onClick={openShopContact}>客服</Button>
-          <Button className="detail-bar__ghost">收藏</Button>
+          <Button className={`detail-bar__ghost ${favorited ? 'detail-bar__ghost--active' : ''}`} onClick={toggleFavorite}>
+            {favorited ? '已收藏' : '收藏'}
+          </Button>
         </View>
         <View className="detail-bar__actions">
           <Button className="detail-bar__cart" disabled={soldOut} onClick={addToCart}>加入提篮</Button>

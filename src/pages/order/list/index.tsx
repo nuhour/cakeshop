@@ -7,7 +7,7 @@ import { userStore } from '@/store/user'
 import { AppNavBar } from '@/components/ui/AppNavBar'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { OrderCard } from '@/components/order/OrderCard'
-import { statusGroupForMine, type CsOrderActionId } from '@/utils/orderActions'
+import { confirmOrderAction, repeatOrderToCart, statusGroupForMine, type CsOrderActionId } from '@/utils/orderActions'
 import { openShopContact } from '@/utils/service'
 import './index.scss'
 
@@ -53,7 +53,16 @@ export default function OrderListPage() {
 
   const handleAction = async (actionId: CsOrderActionId, order: CsOrder) => {
     if (actionId === 'buyAgain') {
-      Taro.switchTab({ url: '/pages/category/index' })
+      try {
+        const result = await repeatOrderToCart(order)
+        await Taro.switchTab({ url: '/pages/cart/index' })
+        Taro.showToast({
+          title: result.skippedNames.length ? `已加入 ${result.addedQuantity} 件，部分商品暂缺` : `已加入提篮，共 ${result.addedQuantity} 件`,
+          icon: 'none'
+        })
+      } catch (error) {
+        Taro.showToast({ title: error instanceof Error ? error.message : '再次购买失败', icon: 'none' })
+      }
       return
     }
     if (actionId === 'contactService') {
@@ -61,6 +70,7 @@ export default function OrderListPage() {
       return
     }
     try {
+      if (!(await confirmOrderAction(actionId))) return
       if (actionId === 'pay') {
         await orderStore.payOrder(order.id)
         Taro.showToast({ title: '支付成功', icon: 'success' })

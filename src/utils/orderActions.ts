@@ -1,4 +1,7 @@
+import Taro from '@tarojs/taro'
 import type { CsOrder, OrderStatus } from '@/types'
+import { cartStore } from '@/store/cart'
+import { catalogStore } from '@/store/catalog'
 
 export type CsOrderActionId =
   | 'pay'
@@ -98,6 +101,54 @@ export const getDetailBarActions = (order: Pick<CsOrder, 'status'>) => {
   return preferred
     .map((id) => actions.find((action) => action.id === id))
     .filter((action): action is CsOrderAction => Boolean(action))
+}
+
+export const confirmOrderAction = async (actionId: CsOrderActionId) => {
+  if (actionId === 'cancel') {
+    const result = await Taro.showModal({
+      title: '取消订单',
+      content: '取消后会释放本单商品与预约档期，确定继续吗？',
+      confirmText: '确认取消',
+      confirmColor: '#953225'
+    })
+    return result.confirm
+  }
+  if (actionId === 'confirm') {
+    const result = await Taro.showModal({
+      title: '确认已完成',
+      content: '请在已取货或已收到配送商品后确认完成。',
+      confirmText: '确认完成',
+      confirmColor: '#953225'
+    })
+    return result.confirm
+  }
+  return true
+}
+
+export const repeatOrderToCart = async (order: Pick<CsOrder, 'items'>) => {
+  let addedQuantity = 0
+  const skippedNames: string[] = []
+
+  // 下单历史可能来自任意分类；每次重购都刷新全量目录，避免旧的筛选缓存误判商品缺货。
+  await catalogStore.loadProducts()
+
+  for (const item of order.items) {
+    const product = catalogStore.findProduct(item.productId)
+    if (!product || !product.isActive || product.stock <= 0) {
+      skippedNames.push(product?.name || item.product?.name || item.productId)
+      continue
+    }
+    const quantity = Math.min(item.quantity, product.stock)
+    try {
+      await cartStore.add(item.productId, quantity, item.flavorId, item.specId, item.plaqueText)
+      addedQuantity += quantity
+    } catch (_error) {
+      skippedNames.push(product.name)
+    }
+  }
+
+  if (!addedQuantity) throw new Error('原订单商品当前暂缺，请稍后再试')
+  return { addedQuantity, skippedNames }
 }
 
 export const statusGroupForMine: Array<{ label: string; value: OrderStatus }> = [

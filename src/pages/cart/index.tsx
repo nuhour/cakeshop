@@ -21,7 +21,8 @@ export default function CartPage() {
     const authed = userStore.isLoggedIn()
     setLoggedIn(authed)
     if (authed) {
-      cartStore.load().then(setItems)
+      // 先补齐商品缓存，避免用户从搜索/单一分类进入后，提篮中的其它分类商品缺少名称和价格。
+      catalogStore.loadProducts().then(() => cartStore.load()).then(setItems)
     } else {
       setItems([])
     }
@@ -31,7 +32,7 @@ export default function CartPage() {
     try {
       await userStore.login()
       setLoggedIn(true)
-      cartStore.load().then(setItems)
+      catalogStore.loadProducts().then(() => cartStore.load()).then(setItems)
       Taro.showToast({ title: '登录成功', icon: 'success' })
     } catch (error) {
       Taro.showToast({ title: error instanceof Error ? error.message : '登录失败', icon: 'none' })

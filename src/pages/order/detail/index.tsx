@@ -6,7 +6,7 @@ import { orderStore } from '@/store/order'
 import { catalogStore } from '@/store/catalog'
 import { AppNavBar } from '@/components/ui/AppNavBar'
 import { PriceText } from '@/components/ui/PriceText'
-import { getDetailBarActions, orderStatusDetail, type CsOrderActionId } from '@/utils/orderActions'
+import { confirmOrderAction, getDetailBarActions, orderStatusDetail, repeatOrderToCart, type CsOrderActionId } from '@/utils/orderActions'
 import { openShopContact } from '@/utils/service'
 import './index.scss'
 
@@ -25,7 +25,16 @@ export default function OrderDetailPage() {
 
   const handleAction = async (actionId: CsOrderActionId) => {
     if (actionId === 'buyAgain') {
-      Taro.switchTab({ url: '/pages/category/index' })
+      try {
+        const result = await repeatOrderToCart(order)
+        await Taro.switchTab({ url: '/pages/cart/index' })
+        Taro.showToast({
+          title: result.skippedNames.length ? `已加入 ${result.addedQuantity} 件，部分商品暂缺` : `已加入提篮，共 ${result.addedQuantity} 件`,
+          icon: 'none'
+        })
+      } catch (error) {
+        Taro.showToast({ title: error instanceof Error ? error.message : '再次购买失败', icon: 'none' })
+      }
       return
     }
     if (actionId === 'contactService') {
@@ -33,6 +42,7 @@ export default function OrderDetailPage() {
       return
     }
     try {
+      if (!(await confirmOrderAction(actionId))) return
       if (actionId === 'pay') {
         const next = await orderStore.payOrder(order.id)
         setOrder({ ...next })

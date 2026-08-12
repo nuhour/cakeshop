@@ -22,6 +22,12 @@ const persist = () => {
   Taro.setStorageSync(PRODUCT_KEY, products)
 }
 
+const mergeProducts = (nextProducts: CsProduct[]) => {
+  const nextById = new Map(products.map((item) => [item.id, item]))
+  nextProducts.forEach((item) => nextById.set(item.id, item))
+  products = Array.from(nextById.values())
+}
+
 export const catalogStore = {
   getCategories: () => categories,
   getProducts: () => products,
@@ -49,9 +55,12 @@ export const catalogStore = {
   },
   async loadProducts(params: { categoryId?: string; keyword?: string; type?: string } = {}) {
     try {
-      products = await csApi.products(params)
+      const loaded = await csApi.products(params)
+      // 分类和搜索结果只用于当前列表展示；商品总缓存保留其它分类，供提篮与“再来一单”按 id 查找。
+      if (params.categoryId || params.keyword || params.type) mergeProducts(loaded)
+      else products = loaded
       persist()
-      return products
+      return loaded
     } catch (_error) {
       return []
     }

@@ -92,6 +92,8 @@ export default function CheckoutPage() {
 
   const buildPayload = (state: CsCheckoutState): CsCheckoutState => ({
     ...state,
+    storeId: state.fulfillmentType === 'pickup' ? state.storeId : undefined,
+    addressId: state.fulfillmentType === 'delivery' ? state.addressId : undefined,
     slotId: scheduled ? state.slotId : undefined,
     tablewareCount: scheduled ? state.tablewareCount : 0,
     candles: scheduled ? state.candles : '',
