@@ -34,9 +34,10 @@
 
 .home-search__action {
   flex: 0 0 auto;
-  min-width: 36px;
-  height: 28px;
-  padding: 0 4px;
+  min-width: 40px;
+  min-height: 32px;
+  height: 32px;
+  padding: 0 6px;
   flex-shrink: 0;
   border: 0;
   background: transparent;
@@ -62,8 +63,9 @@
 .home-error__retry {
   flex: 0 0 auto;
   min-width: 40px;
-  height: 28px;
-  padding: 0 4px;
+  min-height: 32px;
+  height: 32px;
+  padding: 0 6px;
   border: 0;
   background: transparent;
   flex-shrink: 0;

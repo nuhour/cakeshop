@@ -112,7 +112,9 @@
 
 .product-card__add--reserve {
   width: auto;
-  height: 30px;
+  min-width: 56px;
+  min-height: 36px;
+  height: 36px;
   padding: 0 14px;
   border-radius: $cs-radius;
   background: $cinnabar;

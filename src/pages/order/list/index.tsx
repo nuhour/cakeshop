@@ -129,7 +129,7 @@ export default function OrderListPage() {
       {loggedIn && loadError ? (
         <EmptyState title="订单加载失败" description={loadError} actionLabel="重新加载" onAction={() => void reload()} />
       ) : null}
-      {loggedIn && loading && !orders.length ? <View className="order-list-loading"><Text>正在加载订单…</Text></View> : null}
+      {loggedIn && loading ? <View className="order-list-loading"><Text>正在加载订单…</Text></View> : null}
       {loggedIn && !loading && !loadError && !orders.length ? (
         <EmptyState
           title="暂无订单"
@@ -138,7 +138,7 @@ export default function OrderListPage() {
           onAction={() => Taro.switchTab({ url: '/pages/category/index' })}
         />
       ) : null}
-      {orders.map((order) => (
+      {loggedIn && !loading && !loadError ? orders.map((order) => (
         <OrderCard
           key={order.id}
           order={order}
@@ -148,7 +148,7 @@ export default function OrderListPage() {
           }}
           actionDisabled={Boolean(actingOrderId)}
         />
-      ))}
+      )) : null}
     </View>
   )
 }

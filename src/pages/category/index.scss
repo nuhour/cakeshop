@@ -219,8 +219,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
+  width: 36px;
+  min-width: 36px;
+  height: 36px;
+  min-height: 36px;
   border-radius: 50%;
   background: $ink;
   color: #ffffff;
@@ -230,7 +232,9 @@
 
 .category-row__add--reserve {
   width: auto;
-  height: 28px;
+  min-width: 56px;
+  min-height: 36px;
+  height: 36px;
   padding: 0 12px;
   border-radius: $cs-radius;
   background: $cinnabar;
