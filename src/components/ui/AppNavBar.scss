@@ -11,7 +11,8 @@
   padding-right: 18px;
   padding-bottom: 10px;
   padding-left: 18px;
-  background: rgba($paper, 0.94);
+  // 使用不透明底色，避免滚动时状态卡片透出导航栏造成文字重影。
+  background: $paper;
   border-bottom: 1px solid $hairline;
   color: $ink;
 }

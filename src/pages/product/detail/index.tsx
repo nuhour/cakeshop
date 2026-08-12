@@ -1,5 +1,5 @@
 import Taro, { useRouter } from '@tarojs/taro'
-import { Button, Image, Input, Swiper, SwiperItem, Text, View } from '@tarojs/components'
+import { Button, Input, Swiper, SwiperItem, Text, View } from '@tarojs/components'
 import { useEffect, useState } from 'react'
 import type { CsFulfillmentSlot, CsProduct } from '@/types'
 import { catalogStore } from '@/store/catalog'
@@ -11,6 +11,7 @@ import { AppNavBar } from '@/components/ui/AppNavBar'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { PriceText } from '@/components/ui/PriceText'
 import { openShopContact } from '@/utils/service'
+import { ProductImage } from '@/components/product/ProductImage'
 import './index.scss'
 
 const WEEKDAYS = ['日', '一', '二', '三', '四', '五', '六']
@@ -114,7 +115,7 @@ export default function ProductDetailPage() {
         >
           {gallery.map((url, index) => (
             <SwiperItem key={`${url}-${index}`}>
-              <Image className="detail-gallery__image" src={url} mode="aspectFill" />
+              <ProductImage productId={product.id} src={url} className="detail-gallery__image" />
             </SwiperItem>
           ))}
         </Swiper>

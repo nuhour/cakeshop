@@ -55,6 +55,8 @@ export default function AddressListPage() {
   }
 
   const remove = async (id: string) => {
+    const result = await Taro.showModal({ title: '删除配送地址', content: '删除后将不再用于新订单，确定继续吗？' })
+    if (!result.confirm) return
     try {
       await addressStore.remove(id)
       setAddresses([...addressStore.getList()])

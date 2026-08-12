@@ -1,7 +1,8 @@
 import Taro from '@tarojs/taro'
-import { Button, Image, Text, View } from '@tarojs/components'
+import { Button, Text, View } from '@tarojs/components'
 import type { CsProduct } from '@/types'
 import { PriceText } from '@/components/ui/PriceText'
+import { ProductImage } from '@/components/product/ProductImage'
 import './ProductCard.scss'
 
 interface Props {
@@ -19,7 +20,7 @@ export function ProductCard({ product, onAdd, productType, leadTimeHours }: Prop
   return (
     <View className={`product-card ${soldOut ? 'product-card--sold-out' : ''}`} onClick={openDetail}>
       <View className="product-card__media">
-        <Image className="product-card__image" src={product.cover} mode="aspectFill" />
+        <ProductImage productId={product.id} src={product.cover} className="product-card__image" />
         {product.tags[0] ? <Text className="product-card__tag">{product.tags[0]}</Text> : null}
         {isReservation && leadTimeHours ? (
           <Text className="product-card__lead-time">提前{leadTimeHours}小时</Text>

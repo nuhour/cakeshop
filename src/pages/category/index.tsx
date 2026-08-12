@@ -1,5 +1,5 @@
 import Taro, { useDidShow } from '@tarojs/taro'
-import { Button, Image, Text, View } from '@tarojs/components'
+import { Button, Text, View } from '@tarojs/components'
 import { useState } from 'react'
 import type { CsCategory, CsProduct } from '@/types'
 import { catalogStore } from '@/store/catalog'
@@ -8,6 +8,7 @@ import { userStore } from '@/store/user'
 import { AppNavBar } from '@/components/ui/AppNavBar'
 import { PriceText } from '@/components/ui/PriceText'
 import { EmptyState } from '@/components/ui/EmptyState'
+import { ProductImage } from '@/components/product/ProductImage'
 import './index.scss'
 
 // 与首页约定的临时筛选缓存 key：switchTab 跳 tabBar 页面时微信不会携带 query 参数，
@@ -99,7 +100,7 @@ export default function CategoryPage() {
                     className={`category-row ${soldOut ? 'category-row--sold-out' : ''}`}
                     onClick={() => Taro.navigateTo({ url: `/pages/product/detail/index?id=${product.id}` })}
                   >
-                    <Image className="category-row__thumb" src={product.cover} mode="aspectFill" />
+                    <ProductImage productId={product.id} src={product.cover} className="category-row__thumb" />
                     <View className="category-row__body">
                       <Text className="category-row__name cs-serif">{product.name}</Text>
                       <Text className="category-row__subtitle">{product.subtitle}</Text>

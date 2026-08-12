@@ -1,5 +1,5 @@
 import Taro, { useDidShow } from '@tarojs/taro'
-import { Button, Image, Text, View } from '@tarojs/components'
+import { Button, Text, View } from '@tarojs/components'
 import { useState } from 'react'
 import type { CsCartItem } from '@/types'
 import { cartStore } from '@/store/cart'
@@ -9,6 +9,7 @@ import { userStore } from '@/store/user'
 import { AppNavBar } from '@/components/ui/AppNavBar'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { PriceText } from '@/components/ui/PriceText'
+import { ProductImage } from '@/components/product/ProductImage'
 import './index.scss'
 
 export default function CartPage() {
@@ -89,7 +90,7 @@ export default function CartPage() {
                 cartStore.toggle(item.productId, item.flavorId, item.specId, item.plaqueText).then(reload)
               }}
             />
-            <Image className="cart-item__image" src={product.cover} mode="aspectFill" />
+            <ProductImage productId={product.id} src={product.cover} className="cart-item__image" />
             <View className="cart-item__body">
               <Text className="cart-item__name">{product.name}</Text>
               <Text className="cart-item__sub">{invalid ? (product.stock <= 0 ? '已售罄，请移除后重新选择' : `库存仅剩 ${product.stock} 件`) : product.subtitle}</Text>
