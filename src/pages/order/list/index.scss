@@ -22,6 +22,11 @@
 
 .order-tabs__item {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  margin: 0;
   padding: 9px 16px;
   border: 1px solid $hairline;
   border-radius: 999px;
@@ -29,6 +34,7 @@
   color: $ink-soft;
   font-size: 13px;
   font-weight: 600;
+  line-height: 1.2;
 }
 
 .order-tabs__badge {

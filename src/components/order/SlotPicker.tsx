@@ -1,4 +1,4 @@
-import { Text, View } from '@tarojs/components'
+import { Button, Text, View } from '@tarojs/components'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { FulfillmentType, CsFulfillmentSlot } from '@/types'
 import { csApi } from '@/api/cakeshop'
@@ -109,7 +109,7 @@ export function SlotPicker({ fulfillmentType, storeId, minLeadHours, selectedId,
     <View className="slot-picker">
       <View className="slot-picker__dates">
         {dateList.map((item) => (
-          <View
+          <Button
             key={item.key}
             className={`slot-picker__date ${activeDate === item.key ? 'slot-picker__date--active' : ''}`}
             onClick={() => {
@@ -120,25 +120,26 @@ export function SlotPicker({ fulfillmentType, storeId, minLeadHours, selectedId,
           >
             <Text className="slot-picker__date-label">{item.label}</Text>
             <Text className="slot-picker__date-sub">{item.sub}</Text>
-          </View>
+          </Button>
         ))}
       </View>
       <View className="slot-picker__grid">
         {loading ? (
           <Text className="slot-picker__empty">加载中…</Text>
         ) : loadError ? (
-          <Text className="slot-picker__empty slot-picker__empty--error" onClick={() => setRetryKey((value) => value + 1)}>
+          <Button className="slot-picker__empty slot-picker__empty--error" onClick={() => setRetryKey((value) => value + 1)}>
             {loadError} · 点此重试
-          </Text>
+          </Button>
         ) : slots.length ? slots.map((slot) => {
           const isFull = slot.availableCapacity <= 0
           const isActive = selectedId === slot.id
           return (
-            <View
+            <Button
               key={slot.id}
               className={`slot-picker__item ${isActive ? 'slot-picker__item--active' : ''} ${
                 isFull ? 'slot-picker__item--full' : ''
               }`}
+              disabled={isFull}
               onClick={() => {
                 if (isFull) return
                 onSelect(slot.id)
@@ -146,7 +147,7 @@ export function SlotPicker({ fulfillmentType, storeId, minLeadHours, selectedId,
             >
               <Text className="slot-picker__time">{slot.startTime}-{slot.endTime}</Text>
               <Text className="slot-picker__capacity">{isFull ? '已满' : `余${slot.availableCapacity}`}</Text>
-            </View>
+            </Button>
           )
         }) : (
           <Text className="slot-picker__empty">该日期暂无可约时段</Text>

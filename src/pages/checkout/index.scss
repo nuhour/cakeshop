@@ -29,12 +29,21 @@
 }
 
 .checkout-tabs__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
   padding: 10px;
+  border: 0;
   border-radius: $cs-radius;
+  background: transparent;
   color: $ink-soft;
   text-align: center;
   font-size: 14px;
   font-weight: 600;
+  line-height: 1.4;
 }
 
 .checkout-tabs__item--active {
@@ -48,10 +57,17 @@
 }
 
 .checkout-store {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
   margin-top: 10px;
   padding: 12px;
   border: 1px solid $hairline;
   border-radius: $cs-radius-lg;
+  background: $card;
+  color: $ink;
+  text-align: left;
+  line-height: 1.4;
 }
 
 .checkout-store--active {
@@ -74,10 +90,16 @@
 
 .checkout-address-empty {
   display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  border: 0;
   justify-content: space-between;
   padding: 14px;
   border-radius: $cs-radius-lg;
   background: $card-warm;
+  text-align: left;
+  line-height: 1.4;
 }
 
 .checkout-address-empty--error {
@@ -87,8 +109,28 @@
 }
 
 .checkout-address-manage {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
   display: block;
   margin-top: 12px;
+  color: $tea-brown;
+  text-align: left;
+  line-height: 1.4;
+}
+
+.checkout-address-link {
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: 1.4;
 }
 
 .checkout-store__name {
@@ -172,6 +214,18 @@
   color: #ffffff;
 }
 
+.checkout-line--switch {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: $ink-soft;
+  text-align: left;
+  line-height: 1.4;
+}
+
 .checkout-error {
   display: block;
   margin-top: 8px;
@@ -240,12 +294,18 @@
 }
 
 .checkout-candle-chip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  margin: 0;
   padding: 6px 12px;
   border: 1px solid $hairline;
   border-radius: $cs-radius;
   background: $card;
   color: $ink-soft;
   font-size: 12px;
+  line-height: 1.2;
 }
 
 .checkout-candle-chip--active {

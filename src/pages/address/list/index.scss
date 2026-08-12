@@ -20,7 +20,14 @@
 }
 
 .address-error__retry {
+  min-width: 40px;
+  height: 28px;
+  padding: 0 4px;
+  border: 0;
+  background: transparent;
+  color: $cinnabar;
   flex-shrink: 0;
+  line-height: 1;
   font-weight: 700;
 }
 
@@ -65,9 +72,14 @@
 }
 
 .address-card__edit {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
   color: $cinnabar;
   font-size: 13px;
   font-weight: 600;
+  line-height: 1.4;
 }
 
 .address-card__tags {
@@ -108,6 +120,17 @@
   font-weight: 600;
 }
 
+.address-card__actions button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: $tea-brown;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
 .address-form {
   display: grid;
   gap: 10px;
@@ -130,9 +153,18 @@
 }
 
 .address-form__default {
+  justify-content: flex-start;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
   gap: 8px;
   color: $ink-soft;
   font-size: 14px;
+  line-height: 1.4;
+  text-align: left;
 }
 
 .address-check {

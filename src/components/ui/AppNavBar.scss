@@ -28,22 +28,32 @@
 .app-nav__back {
   position: absolute;
   left: 10px;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 0;
   border-radius: 50%;
   background: rgba($card, 0.88);
   color: $cinnabar;
   font-size: 26px;
+  line-height: 1;
 }
 
 .app-nav__right {
   position: absolute;
   right: 18px;
   bottom: 16px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
   color: $cinnabar;
   font-size: 14px;
   font-weight: 700;
+  line-height: 1.4;
 }
 
 .app-nav__icon {

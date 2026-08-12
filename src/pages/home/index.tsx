@@ -1,5 +1,5 @@
 import Taro, { useDidShow, usePullDownRefresh } from '@tarojs/taro'
-import { Image, Input, Text, View } from '@tarojs/components'
+import { Button, Image, Input, Text, View } from '@tarojs/components'
 import { useState } from 'react'
 import type { CsHomePayload } from '@/types'
 import { catalogStore } from '@/store/catalog'
@@ -86,18 +86,18 @@ export default function HomePage() {
           onInput={(event) => setKeyword(String(event.detail.value || ''))}
           onConfirm={search}
         />
-        <Text className="home-search__action" onClick={search}>搜索</Text>
+        <Button className="home-search__action" onClick={search}>搜索</Button>
       </View>
 
       {loadError && home.recommendedProducts.length ? (
         <View className="home-error">
           <Text>网络刷新失败，当前展示最近缓存</Text>
-          <Text className="home-error__retry" onClick={refresh}>重试</Text>
+          <Button className="home-error__retry" onClick={refresh}>重试</Button>
         </View>
       ) : null}
 
       {banner ? (
-        <View
+        <Button
           className="home-banner cakeshop-card"
           onClick={() => banner.linkUrl && Taro.navigateTo({ url: banner.linkUrl })}
         >
@@ -107,19 +107,19 @@ export default function HomePage() {
             <Text className="home-banner__term">{banner.title}</Text>
             <Text className="home-banner__name cs-serif">{banner.subtitle}</Text>
           </View>
-        </View>
+        </Button>
       ) : null}
 
       <View className="home-categories">
         {home.categories.slice(0, 4).map((category, index) => (
-          <View
+          <Button
             key={category.id}
             className="home-categories__item"
             onClick={() => goCategory({ categoryId: category.id })}
           >
             <Text className="home-categories__icon">{CATEGORY_ICONS[index] || '🍰'}</Text>
             <Text className="home-categories__label">{category.name}</Text>
-          </View>
+          </Button>
         ))}
       </View>
 

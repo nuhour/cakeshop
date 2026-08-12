@@ -122,7 +122,7 @@ export default function AddressListPage() {
       {loadError ? (
         <View className="address-error">
           <Text>{loadError}</Text>
-          <Text className="address-error__retry" onClick={() => void reload()}>重试</Text>
+          <Button className="address-error__retry" onClick={() => void reload()}>重试</Button>
         </View>
       ) : null}
       {!addresses.length && !loadError ? (
@@ -140,7 +140,7 @@ export default function AddressListPage() {
               <Text className="address-card__name cs-serif">{item.name}</Text>
               <Text className="address-card__phone">{item.phone}</Text>
             </View>
-            <Text className="address-card__edit" onClick={() => edit(item)}>编辑</Text>
+            <Button className="address-card__edit" onClick={() => edit(item)}>编辑</Button>
           </View>
           <View className="address-card__tags">
             {item.isDefault ? <Text className="address-card__tag address-card__tag--default">默认</Text> : null}
@@ -148,8 +148,8 @@ export default function AddressListPage() {
           </View>
           <Text className="address-card__detail">{item.region} {item.detail}</Text>
           <View className="address-card__actions">
-            {!item.isDefault ? <Text onClick={() => setDefault(item.id)}>设为默认</Text> : null}
-            <Text onClick={() => remove(item.id)}>删除</Text>
+            {!item.isDefault ? <Button onClick={() => setDefault(item.id)}>设为默认</Button> : null}
+            <Button onClick={() => remove(item.id)}>删除</Button>
           </View>
         </View>
       ))}
@@ -161,10 +161,10 @@ export default function AddressListPage() {
         <Input className="address-form__input" placeholder="配送区域，例如 陕西省 西安市 雁塔区" value={form.region} onInput={(event) => updateForm('region', String(event.detail.value || ''))} />
         <Input className="address-form__input" placeholder="详细地址，例如 甜蜜路18号2单元" value={form.detail} onInput={(event) => updateForm('detail', String(event.detail.value || ''))} />
         <Input className="address-form__input" placeholder="标签，例如 家 / 公司" value={form.tag} onInput={(event) => updateForm('tag', String(event.detail.value || ''))} />
-        <View className="address-form__default" onClick={() => updateForm('isDefault', !form.isDefault)}>
+        <Button className="address-form__default" onClick={() => updateForm('isDefault', !form.isDefault)}>
           <Text className={form.isDefault ? 'address-check address-check--active' : 'address-check'} />
           <Text>设为默认地址</Text>
-        </View>
+        </Button>
         <View className="address-form__buttons">
           {editing ? <Button className="address-cancel" disabled={saving} onClick={() => resetForm(addresses)}>取消</Button> : null}
           <Button className="address-submit" disabled={saving} onClick={submit}>{saving ? '保存中…' : '保存地址'}</Button>

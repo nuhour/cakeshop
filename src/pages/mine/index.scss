@@ -81,10 +81,16 @@
 }
 
 .mine-assets {
+  box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  width: calc(100% - 36px);
   margin: 14px 18px;
   padding: 20px 0;
+  border: 0;
+  color: inherit;
+  text-align: left;
+  line-height: 1.2;
 }
 
 .mine-assets__item {
@@ -147,8 +153,13 @@
 }
 
 .mine-section__more {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
   color: $ink-soft;
   font-size: 13px;
+  line-height: 1.4;
 }
 
 .mine-order-grid {
@@ -163,6 +174,12 @@
   flex-direction: column;
   align-items: center;
   gap: 8px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  line-height: 1.2;
 }
 
 .mine-order-grid__icon {
@@ -204,9 +221,16 @@
 .mine-menu__item {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   gap: 12px;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
   padding: 16px 0;
   border-bottom: 1px solid $hairline;
+  background: transparent;
+  text-align: left;
+  line-height: 1.4;
 }
 
 .mine-menu__item:last-child {

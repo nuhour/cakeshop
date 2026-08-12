@@ -80,8 +80,11 @@ export default function CategoryPage() {
 
   const search = () => {
     const nextKeyword = draftKeyword.trim()
+    // 输入关键词时切换到全部品类，避免当前分类条件把搜索结果悄悄过滤掉。
+    const nextActive = nextKeyword ? '' : active
+    setActive(nextActive)
     setKeyword(nextKeyword)
-    void reload(active, nextKeyword)
+    void reload(nextActive, nextKeyword)
   }
 
   const clearKeyword = () => {
@@ -115,23 +118,23 @@ export default function CategoryPage() {
           onInput={(event) => setDraftKeyword(String(event.detail.value || ''))}
           onConfirm={search}
         />
-        {draftKeyword ? <Text className="category-search__clear" onClick={clearKeyword}>清除</Text> : null}
-        <Text className="category-search__submit" onClick={search}>搜索</Text>
+        {draftKeyword ? <Button className="category-search__clear" onClick={clearKeyword}>清除</Button> : null}
+        <Button className="category-search__submit" onClick={search}>搜索</Button>
       </View>
       <View className="category-body">
         <View className="category-nav">
-          <Text
+          <Button
             className={`category-nav__item ${active === '' ? 'category-nav__item--active' : ''}`}
             onClick={() => selectCategory('')}
-          >全部</Text>
+          >全部</Button>
           {categories.map((category) => (
-            <Text
+            <Button
               key={category.id}
               className={`category-nav__item ${active === category.id ? 'category-nav__item--active' : ''}`}
               onClick={() => selectCategory(category.id)}
             >
               {category.name}
-            </Text>
+            </Button>
           ))}
         </View>
 
@@ -146,7 +149,7 @@ export default function CategoryPage() {
           {loadError && products.length ? (
             <View className="category-error">
               <Text>{loadError}</Text>
-              <Text className="category-error__retry" onClick={() => reload(active, keyword)}>重试</Text>
+              <Button className="category-error__retry" onClick={() => reload(active, keyword)}>重试</Button>
             </View>
           ) : null}
 

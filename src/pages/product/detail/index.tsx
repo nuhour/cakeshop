@@ -42,6 +42,7 @@ export default function ProductDetailPage() {
 
   useEffect(() => {
     setNotFound(false)
+    setFavorited(favoriteStore.has(id))
     setLoading(!catalogStore.findProduct(id))
     catalogStore.loadProduct(id).then((item) => {
       setProduct(item)
@@ -68,7 +69,7 @@ export default function ProductDetailPage() {
           const [year, month, day] = slot.date.split('-').map((part) => Number(part))
           const [hour, minute] = slot.startTime.split(':').map((part) => Number(part))
           const slotTime = new Date(year || 0, (month || 1) - 1, day || 1, hour || 0, minute || 0)
-          return slotTime.getTime() > now.getTime()
+          return slot.availableCapacity > 0 && slotTime.getTime() > now.getTime()
         })
         setEarliestSlot(upcoming || null)
       })
@@ -168,13 +169,13 @@ export default function ProductDetailPage() {
           <Text className="detail-label">尺寸</Text>
           <View className="detail-options">
             {product.specs.map((item) => (
-              <Text key={item.id} className={`detail-chip ${specId === item.id ? 'detail-chip--active' : ''}`} onClick={() => setSpecId(item.id)}>{item.name}</Text>
+              <Button key={item.id} className={`detail-chip ${specId === item.id ? 'detail-chip--active' : ''}`} onClick={() => setSpecId(item.id)}>{item.name}</Button>
             ))}
           </View>
           <Text className="detail-label">口味基底</Text>
           <View className="detail-options">
             {product.flavors.map((item) => (
-              <Text key={item.id} className={`detail-chip ${flavorId === item.id ? 'detail-chip--active' : ''}`} onClick={() => setFlavorId(item.id)}>{item.name}</Text>
+              <Button key={item.id} className={`detail-chip ${flavorId === item.id ? 'detail-chip--active' : ''}`} onClick={() => setFlavorId(item.id)}>{item.name}</Button>
             ))}
           </View>
         </View>

@@ -30,6 +30,11 @@
 
 .category-search__clear,
 .category-search__submit {
+  height: 28px;
+  padding: 0 4px;
+  border: 0;
+  background: transparent;
+  line-height: 1;
   flex-shrink: 0;
   font-size: 12px;
   font-weight: 700;
@@ -58,10 +63,19 @@
 }
 
 .category-nav__item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
   padding: 12px 10px;
+  border: 0;
+  background: transparent;
   color: $ink-soft;
   font-size: 14px;
   line-height: 1.4;
+  text-align: left;
 }
 
 .category-nav__item--active {
@@ -120,7 +134,14 @@
 }
 
 .category-error__retry {
+  min-width: 40px;
+  height: 28px;
+  padding: 0 4px;
+  border: 0;
+  background: transparent;
   flex-shrink: 0;
+  color: $cinnabar;
+  line-height: 1;
   font-weight: 700;
 }
 

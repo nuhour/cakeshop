@@ -11,7 +11,8 @@ const API_TIMEOUT = 15000
 const LOGIN_REQUIRED_EVENT = 'cakeshop:login-required'
 
 export const getBaseUrl = () => {
-  const env = process.env.TARO_APP_CAKESHOP_API_BASE_URL || process.env.CAKESHOP_API_BASE_URL
+  // 只读取 Taro 在构建期注入的常量，避免小程序运行时访问未定义的 process。
+  const env = process.env.TARO_APP_CAKESHOP_API_BASE_URL
   return (env || '').replace(/\/$/, '')
 }
 

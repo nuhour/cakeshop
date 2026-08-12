@@ -87,7 +87,7 @@ export default function CartPage() {
       {loggedIn && loadError ? (
         <View className="cart-error">
           <Text>{loadError}</Text>
-          <Text className="cart-error__retry" onClick={refresh}>重试</Text>
+          <Button className="cart-error__retry" onClick={refresh}>重试</Button>
         </View>
       ) : null}
       {showReservationNotice ? (

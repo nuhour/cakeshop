@@ -107,7 +107,7 @@ export default function OrderListPage() {
       <AppNavBar title="我的订单" back />
       <View className="order-tabs">
         {tabs.map((tab) => (
-          <Text
+          <Button
             key={tab.label}
             className={`order-tabs__item ${active === tab.value ? 'order-tabs__item--active' : ''}`}
             onClick={() => {
@@ -117,7 +117,7 @@ export default function OrderListPage() {
           >
             {tab.label}
             {tab.value && counts[tab.value] ? <Text className="order-tabs__badge">{counts[tab.value]}</Text> : null}
-          </Text>
+          </Button>
         ))}
       </View>
       {!loggedIn ? (

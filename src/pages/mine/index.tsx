@@ -123,7 +123,7 @@ export default function MinePage() {
         <Button className="mine-card__auth" onClick={loggedIn ? logout : login}>{loggedIn ? '退出' : '登录'}</Button>
       </View>
 
-      <View className="mine-assets cakeshop-card" onClick={loggedIn ? undefined : login}>
+      <Button className="mine-assets cakeshop-card" onClick={loggedIn ? undefined : login}>
         <View className="mine-assets__item">
           <Text className="mine-assets__value cs-serif">{loggedIn ? `¥${asset.balance.toFixed(2)}` : '--'}</Text>
           <Text className="mine-assets__label">余额</Text>
@@ -137,21 +137,21 @@ export default function MinePage() {
           <Text className="mine-assets__label">优惠券</Text>
         </View>
         {!loggedIn ? <Text className="mine-assets__hint">登录后查看会员资产</Text> : null}
-      </View>
+      </Button>
 
       <View className="mine-section cakeshop-card">
         <View className="mine-section__head cs-hairline">
           <Text className="cs-serif">我的订单</Text>
-          <Text
+          <Button
             className="mine-section__more"
             onClick={async () => {
               if (await ensureLoggedIn()) Taro.navigateTo({ url: '/pages/order/list/index' })
             }}
-          >全部订单 ›</Text>
+          >全部订单 ›</Button>
         </View>
         <View className="mine-order-grid">
           {statusGroupForMine.map((item) => (
-            <View
+            <Button
               key={item.value}
               className="mine-order-grid__item"
               onClick={async () => {
@@ -163,18 +163,18 @@ export default function MinePage() {
                 {orderCounts[item.value] ? <Text className="mine-order-grid__badge">{orderCounts[item.value]}</Text> : null}
               </View>
               <Text className="mine-order-grid__label">{item.label}</Text>
-            </View>
+            </Button>
           ))}
         </View>
       </View>
 
       <View className="mine-menu cakeshop-card">
         {menuItems.map((item) => (
-          <View key={item.label} className="mine-menu__item" onClick={item.onClick}>
+          <Button key={item.label} className="mine-menu__item" onClick={item.onClick}>
             <Text className="mine-menu__icon">{item.icon}</Text>
             <Text className="mine-menu__label">{item.label}</Text>
             <Text className="mine-menu__arrow">›</Text>
-          </View>
+          </Button>
         ))}
       </View>
     </View>

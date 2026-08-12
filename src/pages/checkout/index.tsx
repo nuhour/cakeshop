@@ -286,13 +286,13 @@ export default function CheckoutPage() {
       <View className="checkout-card">
         <View className="checkout-tabs">
           {(['pickup', 'delivery'] as FulfillmentType[]).map((type) => (
-            <Text
+            <Button
               key={type}
               className={`checkout-tabs__item ${checkout.fulfillmentType === type ? 'checkout-tabs__item--active' : ''}`}
               onClick={() => sync({ fulfillmentType: type, slotId: undefined })}
             >
               {type === 'delivery' ? '外卖配送' : '到店自提'}
-            </Text>
+            </Button>
           ))}
         </View>
 
@@ -302,18 +302,18 @@ export default function CheckoutPage() {
             {storeLoadError ? (
               <View className="checkout-address-empty checkout-address-empty--error">
                 <Text>{storeLoadError}</Text>
-                <Text onClick={() => void reloadStores()}>重试 ›</Text>
+                <Button className="checkout-address-link" onClick={() => void reloadStores()}>重试 ›</Button>
               </View>
             ) : stores.length ? stores.map((store) => (
-              <View key={store.id} className={`checkout-store ${checkout.storeId === store.id ? 'checkout-store--active' : ''}`} onClick={() => sync({ storeId: store.id, slotId: undefined })}>
+              <Button key={store.id} className={`checkout-store ${checkout.storeId === store.id ? 'checkout-store--active' : ''}`} onClick={() => sync({ storeId: store.id, slotId: undefined })}>
                 <Text className="checkout-store__name">{store.name}</Text>
                 <Text className="checkout-store__addr">{store.address} · {store.businessHours}</Text>
-              </View>
+              </Button>
             )) : (
-              <View className="checkout-address-empty" onClick={() => void reloadStores()}>
+              <Button className="checkout-address-empty" onClick={() => void reloadStores()}>
                 <Text>暂无可用门店</Text>
                 <Text>点击重试 ›</Text>
-              </View>
+              </Button>
             )}
             <View className="checkout-inputs">
               <Input className="checkout-input" placeholder="取货人姓名" value={checkout.pickupContactName || ''} onInput={(event) => sync({ pickupContactName: String(event.detail.value || '') })} />
@@ -326,24 +326,24 @@ export default function CheckoutPage() {
             {addressLoadError ? (
               <View className="checkout-address-empty checkout-address-empty--error">
                 <Text>{addressLoadError}</Text>
-                <Text onClick={() => Taro.navigateTo({ url: '/pages/address/list/index' })}>去重试 ›</Text>
+                <Button className="checkout-address-link" onClick={() => Taro.navigateTo({ url: '/pages/address/list/index' })}>去重试 ›</Button>
               </View>
             ) : !addresses.length ? (
-              <View className="checkout-address-empty" onClick={() => Taro.navigateTo({ url: '/pages/address/list/index' })}>
+              <Button className="checkout-address-empty" onClick={() => Taro.navigateTo({ url: '/pages/address/list/index' })}>
                 <Text>还没有配送地址</Text>
                 <Text>去添加 ›</Text>
-              </View>
+              </Button>
             ) : addresses.map((address) => (
-              <View
+              <Button
                 key={address.id}
                 className={`checkout-store ${checkout.addressId === address.id ? 'checkout-store--active' : ''}`}
                 onClick={() => sync({ addressId: address.id })}
               >
                 <Text className="checkout-store__name">{address.name} {address.phone}</Text>
                 <Text className="checkout-store__addr">{address.region} · {address.detail}</Text>
-              </View>
+              </Button>
             ))}
-            <Text className="checkout-address-manage" onClick={() => Taro.navigateTo({ url: '/pages/address/list/index' })}>管理配送地址 ›</Text>
+            <Button className="checkout-address-manage" onClick={() => Taro.navigateTo({ url: '/pages/address/list/index' })}>管理配送地址 ›</Button>
           </View>
         )}
       </View>
@@ -401,13 +401,13 @@ export default function CheckoutPage() {
             <Text className="checkout-extra-label">蜡烛</Text>
             <View className="checkout-candle-options">
               {(['none', 'plain', 'digit'] as CandleMode[]).map((mode) => (
-                <Text
+                <Button
                   key={mode}
                   className={`checkout-candle-chip ${candleMode === mode ? 'checkout-candle-chip--active' : ''}`}
                   onClick={() => applyCandleMode(mode)}
                 >
                   {mode === 'none' ? '不需要' : mode === 'plain' ? '普通蜡烛' : '数字蜡烛'}
-                </Text>
+                </Button>
               ))}
             </View>
           </View>
@@ -432,9 +432,9 @@ export default function CheckoutPage() {
         {displayPointsAmount > 0 ? (
           <View className="checkout-line"><Text>积分抵扣</Text><PriceText value={-displayPointsAmount} size="small" /></View>
         ) : null}
-        <View className="checkout-line checkout-line--switch" onClick={() => sync({ usePoints: !checkout.usePoints })}>
+        <Button className="checkout-line checkout-line--switch" onClick={() => sync({ usePoints: !checkout.usePoints })}>
           <Text>使用积分抵扣</Text><Text className={checkout.usePoints ? 'checkout-switch checkout-switch--on' : 'checkout-switch'}>{checkout.usePoints ? '已启用' : '未启用'}</Text>
-        </View>
+        </Button>
         {previewError ? <Text className="checkout-error">{previewError}</Text> : null}
         {previewLoading ? <Text className="checkout-preview-loading">正在核对价格与优惠…</Text> : null}
         <Textarea className="checkout-message" placeholder="给门店留言，例如少油、分袋包装" value={checkout.message} onInput={(event) => sync({ message: String(event.detail.value || '') })} />

@@ -1,5 +1,5 @@
 import Taro from '@tarojs/taro'
-import { Text, View } from '@tarojs/components'
+import { Button, Text, View } from '@tarojs/components'
 import { useEffect, useState } from 'react'
 import './AppNavBar.scss'
 
@@ -60,15 +60,15 @@ export function AppNavBar({ title, back = false, rightText, onRight }: Props) {
   return (
     <View className="app-nav" style={style}>
       {back ? (
-        <View className="app-nav__back" style={backStyle} onClick={goBack}>
+        <Button className="app-nav__back" style={backStyle} onClick={goBack}>
           <Text className="app-nav__icon">‹</Text>
-        </View>
+        </Button>
       ) : null}
       <Text className="app-nav__title">{title}</Text>
       {rightText ? (
-        <View className="app-nav__right" onClick={onRight}>
+        <Button className="app-nav__right" onClick={onRight}>
           <Text>{rightText}</Text>
-        </View>
+        </Button>
       ) : null}
     </View>
   )

@@ -19,7 +19,14 @@
 }
 
 .cart-error__retry {
+  min-width: 40px;
+  height: 28px;
+  padding: 0 4px;
+  border: 0;
+  background: transparent;
+  color: $cinnabar;
   flex-shrink: 0;
+  line-height: 1;
   font-weight: 700;
 }
 
