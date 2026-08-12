@@ -23,9 +23,7 @@ export const addressStore = {
   find: (id?: string) => addresses.find((item) => item.id === id),
   async load() {
     if (!userStore.isLoggedIn()) return addresses
-    try {
-      replace(await csApi.addresses())
-    } catch (_error) {}
+    replace(await csApi.addresses())
     return addresses
   },
   async save(address: CsAddress) {

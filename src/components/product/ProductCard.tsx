@@ -38,6 +38,10 @@ export function ProductCard({ product, onAdd, productType, leadTimeHours }: Prop
             onClick={(event) => {
               event.stopPropagation()
               if (soldOut) return
+              if (isReservation) {
+                openDetail()
+                return
+              }
               onAdd?.(product.id)
             }}
           >

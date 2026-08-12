@@ -10,21 +10,45 @@ import { AppNavBar } from '@/components/ui/AppNavBar'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { PriceText } from '@/components/ui/PriceText'
 import { ProductImage } from '@/components/product/ProductImage'
+import { getProductUnitPrice } from '@/utils/pricing'
+import { getErrorMessage } from '@/api/client'
 import './index.scss'
 
 export default function CartPage() {
   const [loggedIn, setLoggedIn] = useState(userStore.isLoggedIn())
   const [items, setItems] = useState<CsCartItem[]>(userStore.isLoggedIn() ? cartStore.getItems() : [])
+  const [loading, setLoading] = useState(false)
+  const [loadError, setLoadError] = useState('')
 
   const reload = () => setItems([...cartStore.getItems()])
+  const refresh = async () => {
+    setLoading(true)
+    setLoadError('')
+    const errors: string[] = []
+    try {
+      await catalogStore.loadProducts()
+    } catch (error) {
+      errors.push(getErrorMessage(error, '商品信息刷新失败'))
+    }
+    try {
+      await cartStore.load()
+    } catch (error) {
+      errors.push(getErrorMessage(error, '提篮同步失败'))
+    }
+    reload()
+    setLoadError(errors[0] || '')
+    setLoading(false)
+  }
+
   useDidShow(() => {
     const authed = userStore.isLoggedIn()
     setLoggedIn(authed)
     if (authed) {
       // 先补齐商品缓存，避免用户从搜索/单一分类进入后，提篮中的其它分类商品缺少名称和价格。
-      catalogStore.loadProducts().then(() => cartStore.load()).then(setItems)
+      void refresh()
     } else {
       setItems([])
+      setLoadError('')
     }
   })
 
@@ -32,7 +56,7 @@ export default function CartPage() {
     try {
       await userStore.login()
       setLoggedIn(true)
-      catalogStore.loadProducts().then(() => cartStore.load()).then(setItems)
+      await refresh()
       Taro.showToast({ title: '登录成功', icon: 'success' })
     } catch (error) {
       Taro.showToast({ title: error instanceof Error ? error.message : '登录失败', icon: 'none' })
@@ -60,6 +84,12 @@ export default function CartPage() {
   return (
     <View className="cakeshop-page cart-page">
       <AppNavBar title="提篮" />
+      {loggedIn && loadError ? (
+        <View className="cart-error">
+          <Text>{loadError}</Text>
+          <Text className="cart-error__retry" onClick={refresh}>重试</Text>
+        </View>
+      ) : null}
       {showReservationNotice ? (
         <View className="cart-notice">
           <Text className="cart-notice__icon">◔</Text>
@@ -72,7 +102,15 @@ export default function CartPage() {
           <Button className="cs-login-btn" onClick={login}>微信一键登录</Button>
         </View>
       ) : null}
-      {loggedIn && !items.length ? <EmptyState title="提篮还是空的" description="先去挑几样美味甜品吧" /> : null}
+      {loggedIn && loading && !items.length ? <View className="cart-loading"><Text>正在同步提篮…</Text></View> : null}
+      {loggedIn && !loading && !items.length ? (
+        <EmptyState
+          title="提篮还是空的"
+          description="先去挑几样美味甜品吧"
+          actionLabel="去逛逛"
+          onAction={() => Taro.switchTab({ url: '/pages/category/index' })}
+        />
+      ) : null}
       {items.map((item) => {
         const product = catalogStore.findProduct(item.productId)
         if (!product) return null
@@ -103,7 +141,7 @@ export default function CartPage() {
               ) : null}
               {item.plaqueText ? <Text className="cart-item__plaque">贺牌：{item.plaqueText}</Text> : null}
               <View className="cart-item__foot">
-                <PriceText value={product.price} size="small" />
+                <PriceText value={getProductUnitPrice(product, item.specId)} size="small" />
                 <View className="cart-item__stepper">
                   <Button onClick={() => cartStore.setQuantity(item.productId, item.quantity - 1, item.flavorId, item.specId, item.plaqueText).then(reload).catch((error) => Taro.showToast({ title: error instanceof Error ? error.message : '调整失败', icon: 'none' }))}>-</Button>
                   <Text>{item.quantity}</Text>

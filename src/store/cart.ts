@@ -3,6 +3,7 @@ import type { CsCartItem } from '@/types'
 import { csApi } from '@/api/cakeshop'
 import { catalogStore } from './catalog'
 import { userStore } from './user'
+import { getProductUnitPrice } from '@/utils/pricing'
 
 const KEY = 'cakeshop_cart'
 export const CART_UPDATED_EVENT = 'cakeshop:cart-updated'
@@ -21,30 +22,29 @@ export const cartStore = {
   getItems: () => items,
   async load() {
     if (!userStore.isLoggedIn()) return items
-    try {
-      replaceItems(await csApi.cart())
-    } catch (_error) {}
+    replaceItems(await csApi.cart())
     return items
   },
   async add(productId: string, quantity = 1, flavorId?: string, specId?: string, plaqueText?: string) {
     const product = catalogStore.findProduct(productId)
     if (!product || !product.isActive) throw new Error('商品已下架')
     if (product.stock <= 0) throw new Error('商品已售罄')
-    const existing = items.find((item) => this.matches(item, productId, flavorId, specId, plaqueText))
+    const nextFlavorId = flavorId || product.flavors[0]?.id
+    const nextSpecId = specId || product.specs[0]?.id
+    const existing = items.find((item) => this.matches(item, productId, nextFlavorId, nextSpecId, plaqueText))
     const nextQuantity = (existing?.quantity || 0) + quantity
     if (nextQuantity > product.stock) throw new Error('库存不足')
+    if (userStore.isLoggedIn()) {
+      replaceItems(await csApi.addCartItem({ productId, quantity, flavorId: nextFlavorId, specId: nextSpecId, plaqueText }))
+      return items
+    }
     if (existing) {
       existing.quantity = nextQuantity
     } else {
-      items = [{ productId, quantity, flavorId, specId, plaqueText, selected: true }, ...items]
+      items = [{ productId, quantity, flavorId: nextFlavorId, specId: nextSpecId, plaqueText, selected: true }, ...items]
     }
     persist()
     notifyUpdated()
-    if (userStore.isLoggedIn()) {
-      try {
-        replaceItems(await csApi.addCartItem({ productId, quantity, flavorId, specId, plaqueText }))
-      } catch (_error) {}
-    }
     return items
   },
   async setQuantity(productId: string, quantity: number, flavorId?: string, specId?: string, plaqueText?: string) {
@@ -53,37 +53,35 @@ export const cartStore = {
     if (!product || !product.isActive) throw new Error('商品已下架')
     if (product.stock <= 0) throw new Error('商品已售罄')
     const nextQuantity = Math.min(Math.max(1, quantity), product.stock)
+    if (userStore.isLoggedIn()) {
+      replaceItems(await csApi.updateCartItem(productId, { quantity: nextQuantity, flavorId, specId, plaqueText: plaqueText || '' }))
+      return items
+    }
     items = items.map((item) => this.matches(item, productId, flavorId, specId, plaqueText) ? { ...item, quantity: nextQuantity } : item)
     persist()
     notifyUpdated()
-    if (userStore.isLoggedIn()) {
-      try {
-        replaceItems(await csApi.updateCartItem(productId, { quantity: nextQuantity, flavorId, specId, plaqueText: plaqueText || '' }))
-      } catch (_error) {}
-    }
     return items
   },
   async toggle(productId: string, flavorId?: string, specId?: string, plaqueText?: string) {
+    const current = items.find((row) => this.matches(row, productId, flavorId, specId, plaqueText))
+    if (!current) return items
+    if (userStore.isLoggedIn()) {
+      replaceItems(await csApi.updateCartItem(productId, { selected: !current.selected, flavorId, specId, plaqueText: plaqueText || '' }))
+      return items
+    }
     items = items.map((item) => this.matches(item, productId, flavorId, specId, plaqueText) ? { ...item, selected: !item.selected } : item)
     persist()
     notifyUpdated()
-    const item = items.find((row) => this.matches(row, productId, flavorId, specId, plaqueText))
-    if (userStore.isLoggedIn() && item) {
-      try {
-        replaceItems(await csApi.updateCartItem(productId, { selected: item.selected, flavorId, specId, plaqueText: plaqueText || '' }))
-      } catch (_error) {}
-    }
     return items
   },
   async remove(productId: string, flavorId?: string, specId?: string, plaqueText?: string) {
+    if (userStore.isLoggedIn()) {
+      replaceItems(await csApi.deleteCartItem(productId, { flavorId, specId, plaqueText: plaqueText || '' }))
+      return items
+    }
     items = items.filter((item) => !this.matches(item, productId, flavorId, specId, plaqueText))
     persist()
     notifyUpdated()
-    if (userStore.isLoggedIn()) {
-      try {
-        replaceItems(await csApi.deleteCartItem(productId, { flavorId, specId, plaqueText: plaqueText || '' }))
-      } catch (_error) {}
-    }
     return items
   },
   matches(item: CsCartItem, productId: string, flavorId?: string, specId?: string, plaqueText?: string) {
@@ -98,7 +96,7 @@ export const cartStore = {
   getSelectedTotal() {
     return items.filter((item) => item.selected).reduce((total, item) => {
       const product = catalogStore.findProduct(item.productId)
-      return total + (product?.price || 0) * item.quantity
+      return total + getProductUnitPrice(product, item.specId) * item.quantity
     }, 0)
   },
   getSelectedStockWarnings() {

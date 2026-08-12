@@ -10,10 +10,8 @@ const persist = () => Taro.setStorageSync(KEY, orders)
 
 export const orderStore = {
   async load(status?: OrderStatus) {
-    try {
-      orders = await csApi.orders(status)
-      persist()
-    } catch (_error) {}
+    orders = await csApi.orders(status)
+    persist()
     return this.list(status)
   },
   list(status?: OrderStatus) {
@@ -25,8 +23,10 @@ export const orderStore = {
       orders = orders.some((item) => item.id === order.id) ? orders.map((item) => item.id === order.id ? order : item) : [order, ...orders]
       persist()
       return order
-    } catch (_error) {
-      return this.find(id)
+    } catch (error) {
+      const cached = this.find(id)
+      if (cached) return cached
+      throw error
     }
   },
   find(id?: string) {

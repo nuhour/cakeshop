@@ -5,25 +5,58 @@ import type { CsOrder } from '@/types'
 import { orderStore } from '@/store/order'
 import { catalogStore } from '@/store/catalog'
 import { AppNavBar } from '@/components/ui/AppNavBar'
+import { EmptyState } from '@/components/ui/EmptyState'
 import { PriceText } from '@/components/ui/PriceText'
 import { confirmOrderAction, getDetailBarActions, orderStatusDetail, repeatOrderToCart, type CsOrderActionId } from '@/utils/orderActions'
 import { openShopContact } from '@/utils/service'
+import { getProductOptionSummary } from '@/utils/pricing'
+import { getErrorMessage } from '@/api/client'
 import './index.scss'
 
 export default function OrderDetailPage() {
   const router = useRouter()
   const id = String(router.params.id || '')
   const [order, setOrder] = useState<CsOrder | undefined>(orderStore.find(id))
+  const [loading, setLoading] = useState(!order)
+  const [loadError, setLoadError] = useState('')
+  const [acting, setActing] = useState(false)
 
   useEffect(() => {
+    let active = true
+    setLoading(true)
+    setLoadError('')
     orderStore.loadDetail(id).then((item) => {
+      if (!active) return
       if (item) setOrder(item)
+      else setLoadError('找不到这笔订单')
+    }).catch((error) => {
+      if (!active) return
+      setLoadError(getErrorMessage(error, '订单加载失败，请稍后重试'))
+    }).finally(() => {
+      if (active) setLoading(false)
     })
+    return () => {
+      active = false
+    }
   }, [id])
 
-  if (!order) return <View className="cakeshop-page"><AppNavBar title="订单详情" back /></View>
+  if (!order) {
+    return (
+      <View className="cakeshop-page order-detail-page--empty">
+        <AppNavBar title="订单详情" back />
+        <EmptyState
+          title={loading ? '正在加载订单' : '订单详情不可用'}
+          description={loading ? '请稍候' : loadError || '这笔订单可能已被移除'}
+          actionLabel={loading ? undefined : '查看我的订单'}
+          onAction={loading ? undefined : () => Taro.redirectTo({ url: '/pages/order/list/index' })}
+        />
+      </View>
+    )
+  }
 
   const handleAction = async (actionId: CsOrderActionId) => {
+    if (acting) return
+    setActing(true)
     if (actionId === 'buyAgain') {
       try {
         const result = await repeatOrderToCart(order)
@@ -34,11 +67,14 @@ export default function OrderDetailPage() {
         })
       } catch (error) {
         Taro.showToast({ title: error instanceof Error ? error.message : '再次购买失败', icon: 'none' })
+      } finally {
+        setActing(false)
       }
       return
     }
     if (actionId === 'contactService') {
       openShopContact()
+      setActing(false)
       return
     }
     try {
@@ -58,6 +94,8 @@ export default function OrderDetailPage() {
       }
     } catch (error) {
       Taro.showToast({ title: error instanceof Error ? error.message : '操作失败，请稍后重试', icon: 'none' })
+    } finally {
+      setActing(false)
     }
   }
 
@@ -103,6 +141,9 @@ export default function OrderDetailPage() {
                 </Text>
                 <PriceText value={item.price * item.quantity} size="small" />
               </View>
+              {getProductOptionSummary(product || undefined, item.flavorId, item.specId).length ? (
+                <Text className="order-detail-options">{getProductOptionSummary(product || undefined, item.flavorId, item.specId).join(' · ')}</Text>
+              ) : null}
               {item.plaqueText ? <Text className="order-detail-plaque">贺牌：{item.plaqueText}</Text> : null}
             </View>
           )
@@ -148,6 +189,7 @@ export default function OrderDetailPage() {
             <Button
               key={action.id}
               className={action.primary ? 'order-detail-bar__primary' : 'order-detail-bar__ghost'}
+              disabled={acting}
               onClick={() => handleAction(action.id)}
             >
               {action.label}

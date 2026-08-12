@@ -46,10 +46,21 @@ export function AppNavBar({ title, back = false, rightText, onRight }: Props) {
     width: `${metric.height}px`
   }
 
+  const goBack = () => {
+    try {
+      if (Taro.getCurrentPages().length > 1) {
+        Taro.navigateBack()
+        return
+      }
+    } catch (_error) {}
+    // 分享卡片、扫码或开发工具直达子页面时页面栈只有一层，回退到首页避免返回按钮无响应。
+    Taro.switchTab({ url: '/pages/home/index' })
+  }
+
   return (
     <View className="app-nav" style={style}>
       {back ? (
-        <View className="app-nav__back" style={backStyle} onClick={() => Taro.navigateBack()}>
+        <View className="app-nav__back" style={backStyle} onClick={goBack}>
           <Text className="app-nav__icon">‹</Text>
         </View>
       ) : null}

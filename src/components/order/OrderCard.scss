@@ -66,3 +66,7 @@
   background: $cinnabar;
   color: #ffffff;
 }
+
+.order-card button[disabled] {
+  opacity: 0.55;
+}

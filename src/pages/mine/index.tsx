@@ -45,7 +45,7 @@ export default function MinePage() {
     if (authed) {
       userStore.loadProfile().then((next) => setProfile(next ? { ...next } : null))
       csApi.assets().then(setAsset).catch(() => {})
-      orderStore.load().then(() => setOrderCounts(orderStore.statusCounts()))
+      orderStore.load().then(() => setOrderCounts(orderStore.statusCounts())).catch(() => {})
     } else {
       setProfile(null)
       setAsset(emptyAsset)
@@ -59,7 +59,7 @@ export default function MinePage() {
       setLoggedIn(true)
       setProfile(next ? { ...next } : null)
       csApi.assets().then(setAsset).catch(() => {})
-      orderStore.load().then(() => setOrderCounts(orderStore.statusCounts()))
+      orderStore.load().then(() => setOrderCounts(orderStore.statusCounts())).catch(() => {})
       Taro.showToast({ title: '登录成功', icon: 'success' })
       return true
     } catch (error) {

@@ -1,7 +1,7 @@
 import Taro, { useDidShow } from '@tarojs/taro'
 import { Button, Input, Text, Textarea, View } from '@tarojs/components'
 import { useEffect, useState } from 'react'
-import type { FulfillmentType, CsOrderPreview, CsStore } from '@/types'
+import type { FulfillmentType, CsCartItem, CsOrderPreview, CsStore } from '@/types'
 import { checkoutStore, type CsCheckoutState } from '@/store/checkout'
 import { slotStore } from '@/store/slot'
 import { orderStore } from '@/store/order'
@@ -10,9 +10,11 @@ import { catalogStore } from '@/store/catalog'
 import { addressStore } from '@/store/address'
 import { userStore } from '@/store/user'
 import { csApi } from '@/api/cakeshop'
+import { getErrorMessage } from '@/api/client'
 import { AppNavBar } from '@/components/ui/AppNavBar'
 import { SlotPicker } from '@/components/order/SlotPicker'
 import { PriceText } from '@/components/ui/PriceText'
+import { getProductOptionSummary, getProductUnitPrice } from '@/utils/pricing'
 import './index.scss'
 
 type CandleMode = 'none' | 'plain' | 'digit'
@@ -28,9 +30,13 @@ const parseCandles = (value: string): { mode: CandleMode; digit: string } => {
 export default function CheckoutPage() {
   const [checkout, setCheckout] = useState<CsCheckoutState>(checkoutStore.get())
   const [stores, setStores] = useState<CsStore[]>(slotStore.getStores())
+  const [storeLoadError, setStoreLoadError] = useState('')
   const [addresses, setAddresses] = useState(addressStore.getList())
+  const [addressLoadError, setAddressLoadError] = useState('')
   const [preview, setPreview] = useState<CsOrderPreview | null>(null)
   const [previewError, setPreviewError] = useState('')
+  const [previewLoading, setPreviewLoading] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
   const initialCandles = parseCandles(checkoutStore.get().candles)
   const [candleMode, setCandleMode] = useState<CandleMode>(initialCandles.mode)
   const [candleDigit, setCandleDigit] = useState<string>(initialCandles.digit)
@@ -40,23 +46,47 @@ export default function CheckoutPage() {
     setCheckout({ ...checkoutStore.get() })
   }
 
-  useDidShow(() => {
-    slotStore.loadStores().then((items) => {
+  const reloadStores = async () => {
+    try {
+      const items = await slotStore.loadStores()
       setStores(items)
-      if (!checkout.storeId && items[0]) sync({ storeId: items[0].id })
-    })
+      setStoreLoadError('')
+      if (!checkoutStore.get().storeId && items[0]) sync({ storeId: items[0].id })
+    } catch (error) {
+      setStoreLoadError(getErrorMessage(error, '门店加载失败，请稍后重试'))
+    }
+  }
+
+  useDidShow(() => {
+    void reloadStores()
     if (userStore.isLoggedIn()) {
+      const profile = userStore.getProfile()
+      const current = checkoutStore.get()
+      if ((!current.pickupContactName || !current.pickupContactPhone) && profile) {
+        sync({
+          pickupContactName: current.pickupContactName || profile.nickname,
+          pickupContactPhone: current.pickupContactPhone || profile.phone
+        })
+      }
       addressStore.load().then((items) => {
         setAddresses([...items])
+        setAddressLoadError('')
         const defaultAddress = items.find((item) => item.isDefault) || items[0]
-        if (!checkout.addressId && defaultAddress) sync({ addressId: defaultAddress.id })
-      })
+        if (!checkoutStore.get().addressId && defaultAddress) sync({ addressId: defaultAddress.id })
+      }).catch((error) => setAddressLoadError(getErrorMessage(error, '地址加载失败，请前往地址管理重试')))
     }
   })
 
   const buyNowProduct = checkout.source === 'buyNow' && checkout.productId ? catalogStore.findProduct(checkout.productId) : undefined
-  const selectedItems = checkout.source === 'buyNow' && checkout.productId
-    ? [{ productId: checkout.productId, quantity: checkout.quantity || 1 }]
+  const selectedItems: CsCartItem[] = checkout.source === 'buyNow' && checkout.productId
+    ? [{
+        productId: checkout.productId,
+        quantity: checkout.quantity || 1,
+        flavorId: checkout.flavorId,
+        specId: checkout.specId,
+        plaqueText: checkout.plaqueText,
+        selected: true
+      }]
     : cartStore.getSelectedItems()
 
   const scheduled = checkout.source === 'buyNow'
@@ -79,11 +109,11 @@ export default function CheckoutPage() {
 
   const productAmount = selectedItems.reduce((total, item) => {
     const product = catalogStore.findProduct(item.productId)
-    return total + (product?.price || 0) * item.quantity
+    return total + getProductUnitPrice(product, item.specId) * item.quantity
   }, 0)
   const deliveryAmount = checkout.fulfillmentType === 'delivery' ? 8 : 0
   const pointsAmount = checkout.usePoints ? Math.min(5, productAmount) : 0
-  const selectedKey = selectedItems.map((item) => `${item.productId}:${item.quantity}:${item.flavorId || ''}:${item.specId || ''}`).join('|')
+  const selectedKey = selectedItems.map((item) => `${item.productId}:${item.quantity}:${item.flavorId || ''}:${item.specId || ''}:${item.plaqueText || ''}`).join('|')
   const displayProductAmount = preview?.productAmount ?? productAmount
   const displayDeliveryAmount = preview?.deliveryAmount ?? deliveryAmount
   const displayCouponAmount = preview?.couponAmount ?? 0
@@ -103,16 +133,21 @@ export default function CheckoutPage() {
   const canPreview = selectedItems.length > 0
     && userStore.isLoggedIn()
     && (!scheduled || Boolean(checkout.slotId))
+    && (checkout.fulfillmentType !== 'pickup' || Boolean(checkout.storeId))
     && (checkout.fulfillmentType !== 'delivery' || Boolean(checkout.addressId))
+  const previewReady = Boolean(preview) && canPreview && !previewError
 
   useEffect(() => {
     if (!canPreview) {
       setPreview(null)
       setPreviewError('')
+      setPreviewLoading(false)
       return
     }
     let active = true
+    setPreview(null)
     setPreviewError('')
+    setPreviewLoading(true)
     csApi.previewOrder(buildPayload(checkout))
       .then((nextPreview) => {
         if (!active) return
@@ -122,6 +157,9 @@ export default function CheckoutPage() {
         if (!active) return
         setPreview(null)
         setPreviewError(error instanceof Error ? error.message : '价格计算失败')
+      })
+      .finally(() => {
+        if (active) setPreviewLoading(false)
       })
     return () => {
       active = false
@@ -162,7 +200,12 @@ export default function CheckoutPage() {
   }
 
   const submit = async () => {
+    if (submitting) return
     if (!(await userStore.ensureLogin('登录后可提交订单'))) return
+    if (!selectedItems.length) {
+      Taro.showToast({ title: '订单中没有可结算商品', icon: 'none' })
+      return
+    }
     const warnings = checkout.source === 'cart' ? cartStore.getSelectedStockWarnings() : selectedItems.map((item) => {
       const product = catalogStore.findProduct(item.productId)
       if (!product || !product.isActive) return '商品已下架'
@@ -182,14 +225,35 @@ export default function CheckoutPage() {
       Taro.showToast({ title: '请填写数字蜡烛的数字', icon: 'none' })
       return
     }
+    if (checkout.fulfillmentType === 'pickup' && !checkout.storeId) {
+      Taro.showToast({ title: '请选择自提门店', icon: 'none' })
+      return
+    }
     if (checkout.fulfillmentType === 'pickup' && (!checkout.pickupContactName || !checkout.pickupContactPhone)) {
       Taro.showToast({ title: '请填写取货人信息', icon: 'none' })
+      return
+    }
+    if (checkout.fulfillmentType === 'pickup' && !/^1\d{10}$/.test((checkout.pickupContactPhone || '').replace(/\s/g, ''))) {
+      Taro.showToast({ title: '请输入正确的11位手机号', icon: 'none' })
       return
     }
     if (checkout.fulfillmentType === 'delivery' && !checkout.addressId) {
       Taro.showToast({ title: '请选择配送地址', icon: 'none' })
       return
     }
+    if (previewLoading) {
+      Taro.showToast({ title: '价格正在计算，请稍候', icon: 'none' })
+      return
+    }
+    if (previewError) {
+      Taro.showToast({ title: previewError, icon: 'none' })
+      return
+    }
+    if (!previewReady) {
+      Taro.showToast({ title: '订单价格尚未核对完成', icon: 'none' })
+      return
+    }
+    setSubmitting(true)
     try {
       const order = await orderStore.createOrder(buildPayload(checkout))
       let payFailed = false
@@ -210,6 +274,8 @@ export default function CheckoutPage() {
       }
     } catch (error) {
       Taro.showToast({ title: error instanceof Error ? error.message : '提交失败', icon: 'none' })
+    } finally {
+      setSubmitting(false)
     }
   }
 
@@ -233,13 +299,21 @@ export default function CheckoutPage() {
         {checkout.fulfillmentType === 'pickup' ? (
           <View className="checkout-panel">
             <Text className="checkout-title cs-serif">自提门店</Text>
-            {stores.length ? stores.map((store) => (
+            {storeLoadError ? (
+              <View className="checkout-address-empty checkout-address-empty--error">
+                <Text>{storeLoadError}</Text>
+                <Text onClick={() => void reloadStores()}>重试 ›</Text>
+              </View>
+            ) : stores.length ? stores.map((store) => (
               <View key={store.id} className={`checkout-store ${checkout.storeId === store.id ? 'checkout-store--active' : ''}`} onClick={() => sync({ storeId: store.id, slotId: undefined })}>
                 <Text className="checkout-store__name">{store.name}</Text>
                 <Text className="checkout-store__addr">{store.address} · {store.businessHours}</Text>
               </View>
             )) : (
-              <Text className="checkout-address-empty">门店列表加载失败，请稍后重试</Text>
+              <View className="checkout-address-empty" onClick={() => void reloadStores()}>
+                <Text>暂无可用门店</Text>
+                <Text>点击重试 ›</Text>
+              </View>
             )}
             <View className="checkout-inputs">
               <Input className="checkout-input" placeholder="取货人姓名" value={checkout.pickupContactName || ''} onInput={(event) => sync({ pickupContactName: String(event.detail.value || '') })} />
@@ -249,7 +323,12 @@ export default function CheckoutPage() {
         ) : (
           <View className="checkout-panel">
             <Text className="checkout-title cs-serif">配送地址</Text>
-            {!addresses.length ? (
+            {addressLoadError ? (
+              <View className="checkout-address-empty checkout-address-empty--error">
+                <Text>{addressLoadError}</Text>
+                <Text onClick={() => Taro.navigateTo({ url: '/pages/address/list/index' })}>去重试 ›</Text>
+              </View>
+            ) : !addresses.length ? (
               <View className="checkout-address-empty" onClick={() => Taro.navigateTo({ url: '/pages/address/list/index' })}>
                 <Text>还没有配送地址</Text>
                 <Text>去添加 ›</Text>
@@ -277,7 +356,7 @@ export default function CheckoutPage() {
             storeId={checkout.fulfillmentType === 'pickup' ? checkout.storeId : undefined}
             minLeadHours={minLeadHours}
             selectedId={checkout.slotId}
-            onSelect={(slotId) => sync({ slotId })}
+            onSelect={(slotId) => sync({ slotId: slotId || undefined })}
           />
         </View>
       ) : (
@@ -291,10 +370,16 @@ export default function CheckoutPage() {
         {selectedItems.map((item) => {
           const product = catalogStore.findProduct(item.productId)
           if (!product) return null
+          const optionSummary = getProductOptionSummary(product, item.flavorId, item.specId)
+          const itemKey = `${item.productId}:${item.flavorId || ''}:${item.specId || ''}:${item.plaqueText || ''}`
           return (
-            <View key={item.productId} className="checkout-line">
-              <Text>{product.name} x{item.quantity}</Text>
-              <PriceText value={product.price * item.quantity} size="small" />
+            <View key={itemKey} className="checkout-product">
+              <View className="checkout-line">
+                <Text>{product.name} x{item.quantity}</Text>
+                <PriceText value={getProductUnitPrice(product, item.specId) * item.quantity} size="small" />
+              </View>
+              {optionSummary.length ? <Text className="checkout-product__options">{optionSummary.join(' · ')}</Text> : null}
+              {item.plaqueText ? <Text className="checkout-product__plaque">贺牌：{item.plaqueText}</Text> : null}
             </View>
           )
         })}
@@ -306,9 +391,9 @@ export default function CheckoutPage() {
           <View className="checkout-extra-row">
             <Text className="checkout-extra-label">餐具份数</Text>
             <View className="checkout-stepper">
-              <Button onClick={() => setTablewareCount(checkout.tablewareCount - 1)}>-</Button>
+              <Button disabled={checkout.tablewareCount <= 0} onClick={() => setTablewareCount(checkout.tablewareCount - 1)}>-</Button>
               <Text>{checkout.tablewareCount}</Text>
-              <Button onClick={() => setTablewareCount(checkout.tablewareCount + 1)}>+</Button>
+              <Button disabled={checkout.tablewareCount >= 20} onClick={() => setTablewareCount(checkout.tablewareCount + 1)}>+</Button>
             </View>
           </View>
           <View className="cs-hairline checkout-extra-divider" />
@@ -351,6 +436,7 @@ export default function CheckoutPage() {
           <Text>使用积分抵扣</Text><Text className={checkout.usePoints ? 'checkout-switch checkout-switch--on' : 'checkout-switch'}>{checkout.usePoints ? '已启用' : '未启用'}</Text>
         </View>
         {previewError ? <Text className="checkout-error">{previewError}</Text> : null}
+        {previewLoading ? <Text className="checkout-preview-loading">正在核对价格与优惠…</Text> : null}
         <Textarea className="checkout-message" placeholder="给门店留言，例如少油、分袋包装" value={checkout.message} onInput={(event) => sync({ message: String(event.detail.value || '') })} />
       </View>
 
@@ -359,7 +445,9 @@ export default function CheckoutPage() {
           <Text className="checkout-bar__label">合计</Text>
           <PriceText value={total} size="large" />
         </View>
-        <Button className="checkout-bar__button" onClick={submit}>微信支付</Button>
+        <Button className="checkout-bar__button" disabled={submitting || previewLoading || !previewReady} onClick={submit}>
+          {submitting ? '处理中…' : previewLoading ? '核价中…' : !previewReady ? (scheduled ? '请选择时段' : '等待核价') : '微信支付'}
+        </Button>
       </View>
     </View>
   )

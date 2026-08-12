@@ -8,9 +8,10 @@ import './OrderCard.scss'
 interface Props {
   order: CsOrder
   onAction?: (actionId: CsOrderActionId, order: CsOrder) => void
+  actionDisabled?: boolean
 }
 
-export function OrderCard({ order, onAction }: Props) {
+export function OrderCard({ order, onAction, actionDisabled = false }: Props) {
   const primaryActions = getCardPrimaryActions(order)
   const inlineActions = getCardInlineActions(order)
   const actions = [...inlineActions, ...primaryActions]
@@ -33,6 +34,7 @@ export function OrderCard({ order, onAction }: Props) {
               <Button
                 key={action.id}
                 className={action.primary ? 'order-card__primary' : 'order-card__ghost'}
+                disabled={actionDisabled}
                 onClick={(event) => {
                   event.stopPropagation()
                   onAction?.(action.id, order)

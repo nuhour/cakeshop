@@ -4,6 +4,10 @@
   padding-bottom: 110px;
 }
 
+.order-detail-page--empty {
+  padding-bottom: 40px;
+}
+
 .order-detail-status,
 .order-detail-pickup,
 .order-detail-card {
@@ -23,6 +27,7 @@
 .order-detail-status__slot,
 .order-detail-title,
 .order-detail-info,
+.order-detail-options,
 .order-detail-plaque {
   display: block;
 }
@@ -125,6 +130,13 @@
   line-height: 20px;
 }
 
+.order-detail-options {
+  margin-top: 2px;
+  color: $tea-brown;
+  font-size: 12px;
+  line-height: 18px;
+}
+
 .order-detail-total {
   margin-top: 8px;
   padding-top: 12px;
@@ -168,4 +180,8 @@
 .order-detail-bar__primary {
   background: $cinnabar;
   color: #ffffff;
+}
+
+.order-detail-bar button[disabled] {
+  opacity: 0.55;
 }

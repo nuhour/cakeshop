@@ -4,6 +4,14 @@
   padding-bottom: 24px;
 }
 
+.order-list-loading {
+  min-height: 180px;
+  padding-top: 36px;
+  color: $ink-soft;
+  font-size: 13px;
+  text-align: center;
+}
+
 .order-tabs {
   display: flex;
   gap: 8px;

@@ -12,6 +12,7 @@ import { AppNavBar } from '@/components/ui/AppNavBar'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { PriceText } from '@/components/ui/PriceText'
 import { openShopContact } from '@/utils/service'
+import { getProductUnitPrice } from '@/utils/pricing'
 import { ProductImage } from '@/components/product/ProductImage'
 import './index.scss'
 
@@ -34,11 +35,14 @@ export default function ProductDetailPage() {
   const [galleryIndex, setGalleryIndex] = useState(0)
   const [earliestSlot, setEarliestSlot] = useState<CsFulfillmentSlot | null>(null)
   const [slotLoaded, setSlotLoaded] = useState(false)
+  const [slotLoadError, setSlotLoadError] = useState('')
+  const [loading, setLoading] = useState(!product)
   const [notFound, setNotFound] = useState(false)
   const [favorited, setFavorited] = useState(favoriteStore.has(id))
 
   useEffect(() => {
     setNotFound(false)
+    setLoading(!catalogStore.findProduct(id))
     catalogStore.loadProduct(id).then((item) => {
       setProduct(item)
       setFlavorId(item.flavors[0]?.id)
@@ -46,7 +50,7 @@ export default function ProductDetailPage() {
     }).catch((error) => {
       if (!catalogStore.findProduct(id)) setNotFound(true)
       Taro.showToast({ title: error instanceof Error ? error.message : '商品加载失败', icon: 'none' })
-    })
+    }).finally(() => setLoading(false))
   }, [id])
 
   useEffect(() => {
@@ -56,6 +60,7 @@ export default function ProductDetailPage() {
       return
     }
     setSlotLoaded(false)
+    setSlotLoadError('')
     csApi.slots({ minLeadHours: product.leadTimeHours })
       .then((slots) => {
         const now = new Date()
@@ -67,7 +72,10 @@ export default function ProductDetailPage() {
         })
         setEarliestSlot(upcoming || null)
       })
-      .catch(() => setEarliestSlot(null))
+      .catch((error) => {
+        setEarliestSlot(null)
+        setSlotLoadError(error instanceof Error ? error.message : '时段暂不可用')
+      })
       .finally(() => setSlotLoaded(true))
   }, [product?.id, product?.leadTimeHours, product?.productType])
 
@@ -75,12 +83,16 @@ export default function ProductDetailPage() {
     return (
       <View className="cakeshop-page detail-page">
         <AppNavBar title="商品详情" back />
-        {notFound ? <EmptyState title="商品不存在或已下架" description="换个商品看看吧" /> : null}
+        <EmptyState
+          title={loading ? '正在加载商品' : notFound ? '商品不存在或已下架' : '商品详情暂不可用'}
+          description={loading ? '请稍候' : '换个商品看看吧'}
+        />
       </View>
     )
   }
   const soldOut = !product.isActive || product.stock <= 0
   const isReservation = product.productType === 'reservation'
+  const unitPrice = getProductUnitPrice(product, specId)
   const gallery = product.media.length ? product.media.map((item) => item.url) : [product.cover]
   const normalizedPlaqueText = plaqueText.trim() || undefined
 
@@ -138,7 +150,7 @@ export default function ProductDetailPage() {
           <Text className="detail-title cs-serif">{product.name}</Text>
           {isReservation ? <Text className="cs-seal detail-seal">预定</Text> : null}
         </View>
-        <PriceText value={product.price} original={product.originalPrice} />
+        <PriceText value={unitPrice} original={product.originalPrice} />
         <Text className="detail-subtitle">{product.subtitle}</Text>
         <Text className={soldOut ? 'detail-stock detail-stock--warn' : 'detail-stock'}>{soldOut ? '已售罄' : `库存 ${product.stock} 件`}</Text>
 
@@ -190,7 +202,7 @@ export default function ProductDetailPage() {
             <Text className="detail-slot__icon">◔</Text>
             <View className="detail-slot__body">
               <Text className="detail-slot__title">最早可约时间</Text>
-              <Text className="detail-slot__value">{!slotLoaded ? '加载中…' : earliestSlot ? formatSlot(earliestSlot) : '暂无可约时段'}</Text>
+              <Text className="detail-slot__value">{!slotLoaded ? '加载中…' : slotLoadError ? '时段暂不可用，结算时可重试' : earliestSlot ? formatSlot(earliestSlot) : '暂无可约时段'}</Text>
             </View>
           </View>
         ) : null}

@@ -5,17 +5,17 @@ import { csApi } from '@/api/cakeshop'
 const CATEGORY_KEY = 'cakeshop_categories'
 const PRODUCT_KEY = 'cakeshop_products'
 
-const emptyHome = (): CsHomePayload => ({
-  categories: [],
-  products: [],
+const cachedHome = (): CsHomePayload => ({
+  categories,
+  products,
   banners: [],
-  recommendedProducts: [],
-  newProducts: []
+  recommendedProducts: products.filter((item) => item.isRecommended),
+  newProducts: products.filter((item) => item.isNew)
 })
 
 let categories: CsCategory[] = Taro.getStorageSync(CATEGORY_KEY) || []
 let products: CsProduct[] = Taro.getStorageSync(PRODUCT_KEY) || []
-let home: CsHomePayload = emptyHome()
+let home: CsHomePayload = cachedHome()
 
 const persist = () => {
   Taro.setStorageSync(CATEGORY_KEY, categories)
@@ -39,10 +39,11 @@ export const catalogStore = {
       categories = home.categories
       products = home.products
       persist()
-    } catch (_error) {
+    } catch (error) {
       // 保留已有缓存的 categories/products 供其它页面（如提篮）继续按 id 查找，
-      // 但如实告知调用方本次首页数据获取失败，不用假数据掩盖。
-      home = emptyHome()
+      // 同时把本次错误交给页面显示，避免把网络异常误报为“暂无商品”。
+      home = cachedHome()
+      throw error
     }
     return home
   },
@@ -50,7 +51,9 @@ export const catalogStore = {
     try {
       categories = await csApi.categories()
       persist()
-    } catch (_error) {}
+    } catch (error) {
+      throw error
+    }
     return categories
   },
   async loadProducts(params: { categoryId?: string; keyword?: string; type?: string } = {}) {
@@ -61,8 +64,8 @@ export const catalogStore = {
       else products = loaded
       persist()
       return loaded
-    } catch (_error) {
-      return []
+    } catch (error) {
+      throw error
     }
   },
   async loadProduct(id: string) {

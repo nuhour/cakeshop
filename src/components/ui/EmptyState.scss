@@ -27,4 +27,19 @@
   margin-top: 6px;
   color: $ink-soft;
   font-size: 13px;
+  line-height: 20px;
+  text-align: center;
+}
+
+.empty-state__action {
+  min-width: 128px;
+  height: 40px;
+  margin-top: 18px;
+  padding: 0 20px;
+  border: 1px solid $cinnabar;
+  border-radius: 999px;
+  background: $card;
+  color: $cinnabar;
+  font-size: 14px;
+  font-weight: 700;
 }

@@ -1,6 +1,6 @@
 import Taro, { useDidShow } from '@tarojs/taro'
-import { Button, Text, View } from '@tarojs/components'
-import { useState } from 'react'
+import { Button, Input, Text, View } from '@tarojs/components'
+import { useRef, useState } from 'react'
 import type { CsCategory, CsProduct } from '@/types'
 import { catalogStore } from '@/store/catalog'
 import { cartStore } from '@/store/cart'
@@ -9,6 +9,7 @@ import { AppNavBar } from '@/components/ui/AppNavBar'
 import { PriceText } from '@/components/ui/PriceText'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { ProductImage } from '@/components/product/ProductImage'
+import { getErrorMessage } from '@/api/client'
 import './index.scss'
 
 // 与首页约定的临时筛选缓存 key：switchTab 跳 tabBar 页面时微信不会携带 query 参数，
@@ -25,11 +26,26 @@ export default function CategoryPage() {
   const [products, setProducts] = useState<CsProduct[]>(catalogStore.getProducts())
   const [active, setActive] = useState(categories[0]?.id || '')
   const [keyword, setKeyword] = useState('')
+  const [draftKeyword, setDraftKeyword] = useState('')
   const [loading, setLoading] = useState(false)
+  const [loadError, setLoadError] = useState('')
+  const requestId = useRef(0)
 
-  const reload = (categoryId: string, nextKeyword: string) => {
+  const reload = async (categoryId: string, nextKeyword: string, inheritedError = '') => {
+    const currentRequest = ++requestId.current
     setLoading(true)
-    catalogStore.loadProducts({ categoryId: categoryId || undefined, keyword: nextKeyword }).then(setProducts).finally(() => setLoading(false))
+    setLoadError(inheritedError)
+    try {
+      const items = await catalogStore.loadProducts({ categoryId: categoryId || undefined, keyword: nextKeyword })
+      if (currentRequest !== requestId.current) return
+      setProducts(items)
+    } catch (error) {
+      if (currentRequest !== requestId.current) return
+      setProducts([])
+      setLoadError(getErrorMessage(error, '商品加载失败，请稍后重试'))
+    } finally {
+      if (currentRequest === requestId.current) setLoading(false)
+    }
   }
 
   useDidShow(() => {
@@ -37,17 +53,42 @@ export default function CategoryPage() {
     const pending: PendingCategoryFilter | null = stored && typeof stored === 'object' ? stored : null
     if (pending) Taro.removeStorageSync(PENDING_FILTER_KEY)
 
-    setLoading(true)
-    catalogStore.loadCategories().then((items) => {
+    const initialize = async () => {
+      let items = catalogStore.getCategories()
+      let categoryError = ''
+      try {
+        items = await catalogStore.loadCategories()
+      } catch (error) {
+        categoryError = getErrorMessage(error, '分类加载失败，请稍后重试')
+      }
       setCategories(items)
       // 只有切换品类时才带 categoryId，单独搜索应覆盖全部品类。
       const nextActive = (pending && pending.categoryId) || (pending?.keyword ? '' : active || items[0]?.id || '')
       const nextKeyword = pending ? (pending.keyword || '') : keyword
       setActive(nextActive)
       setKeyword(nextKeyword)
-      reload(nextActive, nextKeyword)
-    })
+      setDraftKeyword(nextKeyword)
+      await reload(nextActive, nextKeyword, categoryError)
+    }
+    void initialize()
   })
+
+  const selectCategory = (categoryId: string) => {
+    setActive(categoryId)
+    void reload(categoryId, keyword)
+  }
+
+  const search = () => {
+    const nextKeyword = draftKeyword.trim()
+    setKeyword(nextKeyword)
+    void reload(active, nextKeyword)
+  }
+
+  const clearKeyword = () => {
+    setDraftKeyword('')
+    setKeyword('')
+    void reload(active, '')
+  }
 
   const addProduct = async (id: string) => {
     if (!(await userStore.ensureLogin('登录后可加入提篮'))) return
@@ -64,16 +105,30 @@ export default function CategoryPage() {
   return (
     <View className="cakeshop-page category-page">
       <AppNavBar title="如 也" />
+      <View className="category-search">
+        <Text className="category-search__icon">⌕</Text>
+        <Input
+          className="category-search__input"
+          value={draftKeyword}
+          placeholder="搜索商品"
+          confirmType="search"
+          onInput={(event) => setDraftKeyword(String(event.detail.value || ''))}
+          onConfirm={search}
+        />
+        {draftKeyword ? <Text className="category-search__clear" onClick={clearKeyword}>清除</Text> : null}
+        <Text className="category-search__submit" onClick={search}>搜索</Text>
+      </View>
       <View className="category-body">
         <View className="category-nav">
+          <Text
+            className={`category-nav__item ${active === '' ? 'category-nav__item--active' : ''}`}
+            onClick={() => selectCategory('')}
+          >全部</Text>
           {categories.map((category) => (
             <Text
               key={category.id}
               className={`category-nav__item ${active === category.id ? 'category-nav__item--active' : ''}`}
-              onClick={() => {
-                setActive(category.id)
-                reload(category.id, keyword)
-              }}
+              onClick={() => selectCategory(category.id)}
             >
               {category.name}
             </Text>
@@ -83,12 +138,29 @@ export default function CategoryPage() {
         <View className="category-list">
           <View className="category-list__header cs-hairline">
             <Text className="category-list__title cs-serif">{activeCategory?.name || '全部商品'}</Text>
+            <Text className="category-list__summary">
+              {keyword ? `关键词“${keyword}” · ` : ''}{loading ? '正在加载' : `${products.length} 件`}
+            </Text>
           </View>
+
+          {loadError && products.length ? (
+            <View className="category-error">
+              <Text>{loadError}</Text>
+              <Text className="category-error__retry" onClick={() => reload(active, keyword)}>重试</Text>
+            </View>
+          ) : null}
 
           {loading ? (
             <View className="category-list__loading">
               <Text>加载中…</Text>
             </View>
+          ) : loadError ? (
+            <EmptyState
+              title="商品加载失败"
+              description={loadError}
+              actionLabel="重新加载"
+              onAction={() => reload(active, keyword)}
+            />
           ) : products.length ? (
             <View className="category-list__items">
               {products.map((product) => {
@@ -112,6 +184,10 @@ export default function CategoryPage() {
                           onClick={(event) => {
                             event.stopPropagation()
                             if (soldOut) return
+                            if (isReservation) {
+                              Taro.navigateTo({ url: `/pages/product/detail/index?id=${product.id}` })
+                              return
+                            }
                             addProduct(product.id)
                           }}
                         >
@@ -124,7 +200,12 @@ export default function CategoryPage() {
               })}
             </View>
           ) : (
-            <EmptyState title="暂无相关商品" description="换个分类或关键词试试" />
+            <EmptyState
+              title="暂无相关商品"
+              description={keyword ? `没有找到与“${keyword}”相关的商品` : '换个分类试试'}
+              actionLabel={keyword ? '清除关键词' : undefined}
+              onAction={keyword ? clearKeyword : undefined}
+            />
           )}
         </View>
       </View>

@@ -1,4 +1,4 @@
-import Taro, { useDidShow } from '@tarojs/taro'
+import Taro, { useDidShow, usePullDownRefresh } from '@tarojs/taro'
 import { Image, Input, Text, View } from '@tarojs/components'
 import { useState } from 'react'
 import type { CsHomePayload } from '@/types'
@@ -8,6 +8,7 @@ import { userStore } from '@/store/user'
 import { AppNavBar } from '@/components/ui/AppNavBar'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { ProductCard } from '@/components/product/ProductCard'
+import { getErrorMessage } from '@/api/client'
 import './index.scss'
 
 const CATEGORY_ICONS = ['🍰', '🧁', '🍵', '🎁']
@@ -24,9 +25,28 @@ interface PendingCategoryFilter {
 export default function HomePage() {
   const [home, setHome] = useState<CsHomePayload>(catalogStore.getHome())
   const [keyword, setKeyword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [loadError, setLoadError] = useState('')
+
+  const refresh = async () => {
+    setLoading(true)
+    setLoadError('')
+    try {
+      setHome(await catalogStore.loadHome())
+    } catch (error) {
+      setHome(catalogStore.getHome())
+      setLoadError(getErrorMessage(error, '首页加载失败，请稍后重试'))
+    } finally {
+      setLoading(false)
+    }
+  }
 
   useDidShow(() => {
-    catalogStore.loadHome().then(setHome)
+    void refresh()
+  })
+
+  usePullDownRefresh(() => {
+    void refresh().finally(() => Taro.stopPullDownRefresh())
   })
 
   const addProduct = async (productId: string) => {
@@ -44,6 +64,8 @@ export default function HomePage() {
     Taro.switchTab({ url: '/pages/category/index' })
   }
 
+  const search = () => goCategory({ keyword: keyword.trim() })
+
   const banner = home.banners[0]
 
   return (
@@ -56,16 +78,23 @@ export default function HomePage() {
       </View>
 
       <View className="home-search cs-hairline">
-        <Text className="home-search__icon" onClick={() => goCategory({ keyword })}>◎</Text>
         <Input
           className="home-search__input"
           value={keyword}
           placeholder="寻找心仪的甜点..."
           confirmType="search"
           onInput={(event) => setKeyword(String(event.detail.value || ''))}
-          onConfirm={() => goCategory({ keyword })}
+          onConfirm={search}
         />
+        <Text className="home-search__action" onClick={search}>搜索</Text>
       </View>
+
+      {loadError && home.recommendedProducts.length ? (
+        <View className="home-error">
+          <Text>网络刷新失败，当前展示最近缓存</Text>
+          <Text className="home-error__retry" onClick={refresh}>重试</Text>
+        </View>
+      ) : null}
 
       {banner ? (
         <View
@@ -94,7 +123,9 @@ export default function HomePage() {
         ))}
       </View>
 
-      {home.recommendedProducts.length ? (
+      {loading && !home.recommendedProducts.length ? (
+        <View className="home-loading"><Text>正在加载甜品…</Text></View>
+      ) : home.recommendedProducts.length ? (
         <>
           <View className="cakeshop-section-title">
             <Text className="cs-serif">今日推荐</Text>
@@ -112,7 +143,12 @@ export default function HomePage() {
           </View>
         </>
       ) : (
-        <EmptyState title="暂时无法加载推荐商品" description="下拉刷新或稍后再试" />
+        <EmptyState
+          title={loadError ? '首页加载失败' : '暂无推荐商品'}
+          description={loadError || '稍后再来看看新鲜甜品'}
+          actionLabel="重新加载"
+          onAction={refresh}
+        />
       )}
     </View>
   )

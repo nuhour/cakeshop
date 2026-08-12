@@ -1,6 +1,8 @@
 @import '../../styles/tokens';
 
 .product-card {
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   border: 1px solid $hairline;
   border-radius: $cs-radius;
@@ -56,31 +58,43 @@
 }
 
 .product-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
   padding: 13px;
 }
 
 .product-card__name {
-  display: block;
+  display: -webkit-box;
+  min-height: 44px;
+  overflow: hidden;
   @include cs-serif-font;
   color: $ink;
   font-size: 17px;
   font-weight: 600;
   line-height: 22px;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .product-card__subtitle {
-  display: block;
-  min-height: 20px;
+  display: -webkit-box;
+  min-height: 54px;
   margin-top: 4px;
+  overflow: hidden;
   color: $ink-soft;
   font-size: 13px;
+  line-height: 18px;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
 }
 
 .product-card__footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 10px;
+  margin-top: auto;
+  padding-top: 10px;
 }
 
 .product-card__add {

@@ -68,6 +68,11 @@
   text-align: center;
 }
 
+.slot-picker__empty--error {
+  color: $cinnabar;
+  font-weight: 600;
+}
+
 .slot-picker__item {
   padding: 10px 6px;
   border: 1px solid $hairline;

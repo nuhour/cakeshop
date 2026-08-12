@@ -6,51 +6,89 @@ import { addressStore } from '@/store/address'
 import { userStore } from '@/store/user'
 import { AppNavBar } from '@/components/ui/AppNavBar'
 import { EmptyState } from '@/components/ui/EmptyState'
+import { getErrorMessage } from '@/api/client'
 import './index.scss'
 
-const emptyForm = (): CsAddress => ({
+const emptyForm = (isDefault = true): CsAddress => ({
   id: '',
   name: '',
   phone: '',
   region: '',
   detail: '',
   tag: '',
-  isDefault: true
+  isDefault
 })
 
 export default function AddressListPage() {
   const [addresses, setAddresses] = useState<CsAddress[]>(addressStore.getList())
-  const [form, setForm] = useState<CsAddress>(emptyForm())
+  const [form, setForm] = useState<CsAddress>(emptyForm(addressStore.getList().length === 0))
   const [editing, setEditing] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [loadError, setLoadError] = useState('')
 
-  const reload = () => addressStore.load().then((items) => setAddresses([...items]))
+  const reload = async () => {
+    setLoadError('')
+    try {
+      const items = await addressStore.load()
+      setAddresses([...items])
+    } catch (error) {
+      setLoadError(getErrorMessage(error, '地址加载失败，请稍后重试'))
+    }
+  }
 
   useDidShow(() => {
-    if (userStore.requireLogin('登录后可管理配送地址')) reload()
+    if (userStore.requireLogin('登录后可管理配送地址')) void reload()
   })
 
   const updateForm = (key: keyof CsAddress, value: string | boolean) => {
     setForm((current) => ({ ...current, [key]: value }))
   }
 
+  const scrollToForm = () => {
+    setTimeout(() => Taro.pageScrollTo({ selector: '#address-form', duration: 300 }), 0)
+  }
+
+  const resetForm = (nextAddresses = addressStore.getList()) => {
+    setForm(emptyForm(nextAddresses.length === 0))
+    setEditing(false)
+  }
+
   const edit = (address: CsAddress) => {
     setForm({ ...address })
     setEditing(true)
+    scrollToForm()
   }
 
   const submit = async () => {
-    if (!form.name || !form.phone || !form.region || !form.detail) {
+    if (saving) return
+    const normalized = {
+      ...form,
+      name: form.name.trim(),
+      phone: form.phone.replace(/\s/g, ''),
+      region: form.region.trim(),
+      detail: form.detail.trim(),
+      tag: form.tag.trim()
+    }
+    if (!normalized.name || !normalized.phone || !normalized.region || !normalized.detail) {
       Taro.showToast({ title: '请填写完整地址', icon: 'none' })
       return
     }
+    if (!/^1\d{10}$/.test(normalized.phone)) {
+      Taro.showToast({ title: '请输入正确的11位手机号', icon: 'none' })
+      return
+    }
+    setSaving(true)
     try {
-      await addressStore.save(form)
-      setForm(emptyForm())
-      setEditing(false)
-      setAddresses([...addressStore.getList()])
+      await addressStore.save(normalized)
+      const nextAddresses = [...addressStore.getList()]
+      setAddresses(nextAddresses)
+      setLoadError('')
+      resetForm(nextAddresses)
       Taro.showToast({ title: '已保存', icon: 'success' })
     } catch (error) {
       Taro.showToast({ title: error instanceof Error ? error.message : '保存失败', icon: 'none' })
+    } finally {
+      setSaving(false)
     }
   }
 
@@ -59,7 +97,10 @@ export default function AddressListPage() {
     if (!result.confirm) return
     try {
       await addressStore.remove(id)
-      setAddresses([...addressStore.getList()])
+      const nextAddresses = [...addressStore.getList()]
+      setAddresses(nextAddresses)
+      setLoadError('')
+      if (form.id === id) resetForm(nextAddresses)
     } catch (error) {
       Taro.showToast({ title: error instanceof Error ? error.message : '删除失败', icon: 'none' })
     }
@@ -69,6 +110,7 @@ export default function AddressListPage() {
     try {
       await addressStore.setDefault(id)
       setAddresses([...addressStore.getList()])
+      setLoadError('')
     } catch (error) {
       Taro.showToast({ title: error instanceof Error ? error.message : '设置失败', icon: 'none' })
     }
@@ -77,7 +119,20 @@ export default function AddressListPage() {
   return (
     <View className="cakeshop-page address-page">
       <AppNavBar title="配送地址" back />
-      {!addresses.length ? <EmptyState title="还没有配送地址" description="添加一个常用地址，预约配送更快" /> : null}
+      {loadError ? (
+        <View className="address-error">
+          <Text>{loadError}</Text>
+          <Text className="address-error__retry" onClick={() => void reload()}>重试</Text>
+        </View>
+      ) : null}
+      {!addresses.length && !loadError ? (
+        <EmptyState
+          title="还没有配送地址"
+          description="添加一个常用地址，预约配送更快"
+          actionLabel="立即添加"
+          onAction={scrollToForm}
+        />
+      ) : null}
       {addresses.map((item) => (
         <View key={item.id} className="address-card">
           <View className="address-card__head">
@@ -99,10 +154,10 @@ export default function AddressListPage() {
         </View>
       ))}
 
-      <View className="address-form">
+      <View id="address-form" className="address-form">
         <Text className="address-form__title cs-serif">{editing ? '编辑地址' : '新增地址'}</Text>
         <Input className="address-form__input" placeholder="收货人" value={form.name} onInput={(event) => updateForm('name', String(event.detail.value || ''))} />
-        <Input className="address-form__input" placeholder="手机号" value={form.phone} onInput={(event) => updateForm('phone', String(event.detail.value || ''))} />
+        <Input className="address-form__input" type="number" maxlength={11} placeholder="手机号" value={form.phone} onInput={(event) => updateForm('phone', String(event.detail.value || ''))} />
         <Input className="address-form__input" placeholder="配送区域，例如 陕西省 西安市 雁塔区" value={form.region} onInput={(event) => updateForm('region', String(event.detail.value || ''))} />
         <Input className="address-form__input" placeholder="详细地址，例如 甜蜜路18号2单元" value={form.detail} onInput={(event) => updateForm('detail', String(event.detail.value || ''))} />
         <Input className="address-form__input" placeholder="标签，例如 家 / 公司" value={form.tag} onInput={(event) => updateForm('tag', String(event.detail.value || ''))} />
@@ -111,8 +166,8 @@ export default function AddressListPage() {
           <Text>设为默认地址</Text>
         </View>
         <View className="address-form__buttons">
-          {editing ? <Button className="address-cancel" onClick={() => { setForm(emptyForm()); setEditing(false) }}>取消</Button> : null}
-          <Button className="address-submit" onClick={submit}>保存地址</Button>
+          {editing ? <Button className="address-cancel" disabled={saving} onClick={() => resetForm(addresses)}>取消</Button> : null}
+          <Button className="address-submit" disabled={saving} onClick={submit}>{saving ? '保存中…' : '保存地址'}</Button>
         </View>
       </View>
     </View>

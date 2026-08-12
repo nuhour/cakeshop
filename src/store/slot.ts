@@ -6,9 +6,7 @@ let stores: CsStore[] = []
 export const slotStore = {
   getStores: () => stores,
   async loadStores() {
-    try {
-      stores = await csApi.stores()
-    } catch (_error) {}
+    stores = await csApi.stores()
     return stores
   }
 }

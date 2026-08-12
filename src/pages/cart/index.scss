@@ -4,6 +4,32 @@
   padding-bottom: 120px;
 }
 
+.cart-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 14px 18px 0;
+  padding: 10px 12px;
+  border-radius: $cs-radius;
+  background: rgba($cinnabar, 0.08);
+  color: $cinnabar;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.cart-error__retry {
+  flex-shrink: 0;
+  font-weight: 700;
+}
+
+.cart-loading {
+  padding: 64px 0;
+  color: $ink-soft;
+  font-size: 13px;
+  text-align: center;
+}
+
 .cart-notice {
   display: flex;
   align-items: flex-start;

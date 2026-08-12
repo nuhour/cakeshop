@@ -11,6 +11,7 @@ export interface CsCategory {
 export interface CsProductOption {
   id: string
   name: string
+  price?: number
   priceDelta?: number
 }
 
