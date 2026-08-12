@@ -51,13 +51,24 @@ export default function CheckoutPage() {
       const items = await slotStore.loadStores()
       setStores(items)
       setStoreLoadError('')
-      if (!checkoutStore.get().storeId && items[0]) sync({ storeId: items[0].id })
+      const currentStoreId = checkoutStore.get().storeId
+      if (items.length && !items.some((item) => item.id === currentStoreId)) sync({ storeId: items[0].id })
     } catch (error) {
       setStoreLoadError(getErrorMessage(error, '门店加载失败，请稍后重试'))
     }
   }
 
   useDidShow(() => {
+    // 页面可能因导航栈缓存而复用，重新进入时以最新结算会话覆盖本地表单状态。
+    const currentCheckout = { ...checkoutStore.get() }
+    const currentCandles = parseCandles(currentCheckout.candles)
+    setCheckout(currentCheckout)
+    setCandleMode(currentCandles.mode)
+    setCandleDigit(currentCandles.digit)
+    setPreview(null)
+    setPreviewError('')
+    setPreviewLoading(false)
+    setSubmitting(false)
     void reloadStores()
     if (userStore.isLoggedIn()) {
       const profile = userStore.getProfile()
@@ -72,7 +83,8 @@ export default function CheckoutPage() {
         setAddresses([...items])
         setAddressLoadError('')
         const defaultAddress = items.find((item) => item.isDefault) || items[0]
-        if (!checkoutStore.get().addressId && defaultAddress) sync({ addressId: defaultAddress.id })
+        const currentAddressId = checkoutStore.get().addressId
+        if (!items.some((item) => item.id === currentAddressId)) sync({ addressId: defaultAddress?.id })
       }).catch((error) => setAddressLoadError(getErrorMessage(error, '地址加载失败，请前往地址管理重试')))
     }
   })
@@ -135,7 +147,10 @@ export default function CheckoutPage() {
     && (!scheduled || Boolean(checkout.slotId))
     && (checkout.fulfillmentType !== 'pickup' || Boolean(checkout.storeId))
     && (checkout.fulfillmentType !== 'delivery' || Boolean(checkout.addressId))
+  const pickupContactReady = checkout.fulfillmentType !== 'pickup'
+    || (Boolean(checkout.pickupContactName?.trim()) && /^1\d{10}$/.test((checkout.pickupContactPhone || '').replace(/\s/g, '')))
   const previewReady = Boolean(preview) && canPreview && !previewError
+  const canSubmit = previewReady && pickupContactReady
 
   useEffect(() => {
     if (!canPreview) {
@@ -445,8 +460,8 @@ export default function CheckoutPage() {
           <Text className="checkout-bar__label">合计</Text>
           <PriceText value={total} size="large" />
         </View>
-        <Button className="checkout-bar__button" disabled={submitting || previewLoading || !previewReady} onClick={submit}>
-          {submitting ? '处理中…' : previewLoading ? '核价中…' : !previewReady ? (scheduled ? '请选择时段' : '等待核价') : '微信支付'}
+        <Button className="checkout-bar__button" disabled={submitting || previewLoading || !canSubmit} onClick={submit}>
+          {submitting ? '处理中…' : previewLoading ? '核价中…' : !previewReady ? (scheduled ? '请选择时段' : '等待核价') : !pickupContactReady ? '填写取货信息' : '微信支付'}
         </Button>
       </View>
     </View>

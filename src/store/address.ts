@@ -41,7 +41,11 @@ export const addressStore = {
   },
   async remove(id: string) {
     await csApi.deleteAddress(id)
-    replace(addresses.filter((item) => item.id !== id))
+    const removed = addresses.find((item) => item.id === id)
+    const next = addresses.filter((item) => item.id !== id)
+    replace(removed?.isDefault && next.length
+      ? next.map((item, index) => ({ ...item, isDefault: index === 0 }))
+      : next)
     return addresses
   }
 }

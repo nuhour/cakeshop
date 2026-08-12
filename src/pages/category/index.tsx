@@ -63,7 +63,12 @@ export default function CategoryPage() {
       }
       setCategories(items)
       // 只有切换品类时才带 categoryId，单独搜索应覆盖全部品类。
-      const nextActive = (pending && pending.categoryId) || (pending?.keyword ? '' : active || items[0]?.id || '')
+      const requestedActive = (pending && pending.categoryId) || (pending?.keyword ? '' : active)
+      const nextActive = pending?.keyword
+        ? ''
+        : requestedActive && items.some((item) => item.id === requestedActive)
+          ? requestedActive
+          : items[0]?.id || ''
       const nextKeyword = pending ? (pending.keyword || '') : keyword
       setActive(nextActive)
       setKeyword(nextKeyword)

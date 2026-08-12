@@ -90,7 +90,7 @@ export default function CartPage() {
       Taro.showToast({ title: stockWarnings[0], icon: 'none' })
       return
     }
-    checkoutStore.set({ source: 'cart', slotId: undefined })
+    checkoutStore.start({ source: 'cart' })
     Taro.navigateTo({ url: '/pages/checkout/index' })
   }
 

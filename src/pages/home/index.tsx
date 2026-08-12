@@ -67,6 +67,16 @@ export default function HomePage() {
   const search = () => goCategory({ keyword: keyword.trim() })
 
   const banner = home.banners[0]
+  const bannerContent = banner ? (
+    <>
+      <Text className="home-banner__badge">节气限定</Text>
+      <Image className="home-banner__image" src={banner.image} mode="aspectFill" />
+      <View className="home-banner__footer">
+        <Text className="home-banner__term">{banner.title}</Text>
+        <Text className="home-banner__name cs-serif">{banner.subtitle}</Text>
+      </View>
+    </>
+  ) : null
 
   return (
     <View className="cakeshop-page home-page">
@@ -97,17 +107,13 @@ export default function HomePage() {
       ) : null}
 
       {banner ? (
-        <Button
-          className="home-banner cakeshop-card"
-          onClick={() => banner.linkUrl && Taro.navigateTo({ url: banner.linkUrl })}
-        >
-          <Text className="home-banner__badge">节气限定</Text>
-          <Image className="home-banner__image" src={banner.image} mode="aspectFill" />
-          <View className="home-banner__footer">
-            <Text className="home-banner__term">{banner.title}</Text>
-            <Text className="home-banner__name cs-serif">{banner.subtitle}</Text>
-          </View>
-        </Button>
+        banner.linkUrl ? (
+          <Button className="home-banner cakeshop-card" onClick={() => Taro.navigateTo({ url: banner.linkUrl })}>
+            {bannerContent}
+          </Button>
+        ) : (
+          <View className="home-banner cakeshop-card">{bannerContent}</View>
+        )
       ) : null}
 
       <View className="home-categories">

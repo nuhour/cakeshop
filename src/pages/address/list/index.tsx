@@ -32,6 +32,9 @@ export default function AddressListPage() {
     try {
       const items = await addressStore.load()
       setAddresses([...items])
+      if (!editing) {
+        setForm((current) => ({ ...current, isDefault: items.length === 0 }))
+      }
     } catch (error) {
       setLoadError(getErrorMessage(error, '地址加载失败，请稍后重试'))
     }

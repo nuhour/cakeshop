@@ -75,8 +75,6 @@ export default function OrderDetailPage() {
     if (actionId === 'contactService') {
       try {
         await openShopContact()
-      } catch (error) {
-        Taro.showToast({ title: error instanceof Error ? error.message : '客服信息加载失败', icon: 'none' })
       } finally {
         setActing(false)
       }
@@ -104,7 +102,10 @@ export default function OrderDetailPage() {
     }
   }
 
-  const detail = orderStatusDetail[order.status]
+  const detail = orderStatusDetail[order.status] || {
+    title: '订单状态更新中',
+    desc: '订单状态正在同步，请稍后刷新查看。'
+  }
   const actions = getDetailBarActions(order)
   const isPaid = Boolean(order.paidAt)
   const showPickupCode = order.fulfillmentType === 'pickup' && isPaid

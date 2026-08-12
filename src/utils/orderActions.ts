@@ -78,7 +78,7 @@ const actionsByStatus: Record<OrderStatus, CsOrderActionId[]> = {
 const toAction = (id: CsOrderActionId): CsOrderAction => ({ id, ...actionMeta[id] })
 
 export const getOrderActions = (order: Pick<CsOrder, 'status'>): CsOrderAction[] => {
-  return actionsByStatus[order.status].map(toAction)
+  return (actionsByStatus[order.status] || ['contactService']).map(toAction)
 }
 
 export const getCardPrimaryActions = (order: Pick<CsOrder, 'status'>) => {

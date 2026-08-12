@@ -25,7 +25,7 @@ export interface CsCheckoutState {
 
 const KEY = 'cakeshop_checkout'
 
-let state: CsCheckoutState = Taro.getStorageSync(KEY) || {
+const defaultState = (): CsCheckoutState => ({
   source: 'cart',
   fulfillmentType: 'pickup',
   usePoints: false,
@@ -33,7 +33,9 @@ let state: CsCheckoutState = Taro.getStorageSync(KEY) || {
   tablewareCount: 0,
   candles: '',
   message: ''
-}
+})
+
+let state: CsCheckoutState = { ...defaultState(), ...(Taro.getStorageSync(KEY) || {}) }
 
 const persist = () => Taro.setStorageSync(KEY, state)
 
@@ -43,16 +45,12 @@ export const checkoutStore = {
     state = { ...state, ...next }
     persist()
   },
+  start(next: Partial<CsCheckoutState>) {
+    state = { ...defaultState(), ...next }
+    persist()
+  },
   clear() {
-    state = {
-      source: 'cart',
-      fulfillmentType: 'pickup',
-      usePoints: false,
-      useBalance: false,
-      tablewareCount: 0,
-      candles: '',
-      message: ''
-    }
+    state = defaultState()
     persist()
   }
 }

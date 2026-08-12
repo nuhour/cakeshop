@@ -41,17 +41,35 @@ export default function ProductDetailPage() {
   const [favorited, setFavorited] = useState(favoriteStore.has(id))
 
   useEffect(() => {
+    let active = true
+    const cached = catalogStore.findProduct(id)
     setNotFound(false)
     setFavorited(favoriteStore.has(id))
-    setLoading(!catalogStore.findProduct(id))
+    setProduct(cached)
+    setLoading(!cached)
+    setFlavorId(cached?.flavors[0]?.id)
+    setSpecId(cached?.specs[0]?.id)
+    setQuantity(1)
+    setPlaqueText('')
+    setGalleryIndex(0)
+    setEarliestSlot(null)
+    setSlotLoaded(false)
+    setSlotLoadError('')
     catalogStore.loadProduct(id).then((item) => {
+      if (!active) return
       setProduct(item)
       setFlavorId(item.flavors[0]?.id)
       setSpecId(item.specs[0]?.id)
     }).catch((error) => {
-      if (!catalogStore.findProduct(id)) setNotFound(true)
+      if (!active) return
+      if (!cached) setNotFound(true)
       Taro.showToast({ title: error instanceof Error ? error.message : '商品加载失败', icon: 'none' })
-    }).finally(() => setLoading(false))
+    }).finally(() => {
+      if (active) setLoading(false)
+    })
+    return () => {
+      active = false
+    }
   }, [id])
 
   useEffect(() => {
@@ -103,7 +121,7 @@ export default function ProductDetailPage() {
       return
     }
     if (!(await userStore.ensureLogin('登录后可下单'))) return
-    checkoutStore.set({ source: 'buyNow', productId: product.id, buyNowProductType: product.productType, quantity, flavorId, specId, plaqueText: normalizedPlaqueText, slotId: undefined })
+    checkoutStore.start({ source: 'buyNow', productId: product.id, buyNowProductType: product.productType, quantity, flavorId, specId, plaqueText: normalizedPlaqueText })
     Taro.navigateTo({ url: '/pages/checkout/index' })
   }
 

@@ -80,7 +80,7 @@ export default function OrderListPage() {
         return
       }
       if (actionId === 'contactService') {
-        openShopContact()
+        await openShopContact()
         return
       }
       if (!(await confirmOrderAction(actionId))) return

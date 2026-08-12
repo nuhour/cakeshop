@@ -25,8 +25,8 @@ export const userStore = {
     try {
       await this.login()
       return true
-    } catch (_error) {
-      Taro.showToast({ title: message, icon: 'none' })
+    } catch (error) {
+      Taro.showToast({ title: error instanceof Error ? error.message : message, icon: 'none' })
       return false
     }
   },
