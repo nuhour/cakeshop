@@ -149,8 +149,9 @@ export default function CheckoutPage() {
     && (checkout.fulfillmentType !== 'delivery' || Boolean(checkout.addressId))
   const pickupContactReady = checkout.fulfillmentType !== 'pickup'
     || (Boolean(checkout.pickupContactName?.trim()) && /^1\d{10}$/.test((checkout.pickupContactPhone || '').replace(/\s/g, '')))
+  const candleReady = !scheduled || candleMode !== 'digit' || Boolean(candleDigit)
   const previewReady = Boolean(preview) && canPreview && !previewError
-  const canSubmit = previewReady && pickupContactReady
+  const canSubmit = previewReady && pickupContactReady && candleReady
 
   useEffect(() => {
     if (!canPreview) {
@@ -461,7 +462,7 @@ export default function CheckoutPage() {
           <PriceText value={total} size="large" />
         </View>
         <Button className="checkout-bar__button" disabled={submitting || previewLoading || !canSubmit} onClick={submit}>
-          {submitting ? '处理中…' : previewLoading ? '核价中…' : !previewReady ? (scheduled ? '请选择时段' : '等待核价') : !pickupContactReady ? '填写取货信息' : '微信支付'}
+          {submitting ? '处理中…' : previewLoading ? '核价中…' : !previewReady ? (scheduled ? '请选择时段' : '等待核价') : !pickupContactReady ? '填写取货信息' : !candleReady ? '填写蜡烛数字' : '微信支付'}
         </Button>
       </View>
     </View>
