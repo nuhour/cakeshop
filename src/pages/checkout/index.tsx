@@ -452,7 +452,7 @@ export default function CheckoutPage() {
         </Button>
         {previewError ? <Text className="checkout-error">{previewError}</Text> : null}
         {previewLoading ? <Text className="checkout-preview-loading">正在核对价格与优惠…</Text> : null}
-        <Textarea className="checkout-message" placeholder="给门店留言，例如少油、分袋包装" value={checkout.message} onInput={(event) => sync({ message: String(event.detail.value || '') })} />
+        <Textarea key={`checkout-message-${checkout.sessionId}`} className="checkout-message" placeholder="给门店留言，例如少油、分袋包装" value={checkout.message} onInput={(event) => sync({ message: String(event.detail.value || '') })} />
       </View>
 
       <View className="checkout-bar">

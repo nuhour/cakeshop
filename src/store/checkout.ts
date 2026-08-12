@@ -2,6 +2,7 @@ import Taro from '@tarojs/taro'
 import type { FulfillmentType } from '@/types'
 
 export interface CsCheckoutState {
+  sessionId: string
   source: 'cart' | 'buyNow'
   productId?: string
   buyNowProductType?: 'instock' | 'reservation'
@@ -26,6 +27,7 @@ export interface CsCheckoutState {
 const KEY = 'cakeshop_checkout'
 
 const defaultState = (): CsCheckoutState => ({
+  sessionId: '',
   source: 'cart',
   fulfillmentType: 'pickup',
   usePoints: false,
@@ -46,7 +48,11 @@ export const checkoutStore = {
     persist()
   },
   start(next: Partial<CsCheckoutState>) {
-    state = { ...defaultState(), ...next }
+    state = {
+      ...defaultState(),
+      sessionId: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+      ...next,
+    }
     persist()
   },
   clear() {

@@ -29,6 +29,10 @@
   position: absolute;
   left: 10px;
   box-sizing: border-box;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
   margin: 0;
   padding: 0;
   display: flex;
@@ -58,5 +62,5 @@
 
 .app-nav__icon {
   font-size: 34px;
-  line-height: 34px;
+  line-height: 40px;
 }

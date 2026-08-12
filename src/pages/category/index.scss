@@ -30,8 +30,9 @@
 
 .category-search__clear,
 .category-search__submit {
-  height: 28px;
-  padding: 0 4px;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 6px;
   border: 0;
   background: transparent;
   line-height: 1;
@@ -135,7 +136,8 @@
 
 .category-error__retry {
   min-width: 40px;
-  height: 28px;
+  min-height: 32px;
+  height: 32px;
   padding: 0 4px;
   border: 0;
   background: transparent;

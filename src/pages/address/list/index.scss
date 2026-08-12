@@ -21,7 +21,8 @@
 
 .address-error__retry {
   min-width: 40px;
-  height: 28px;
+  min-height: 32px;
+  height: 32px;
   padding: 0 4px;
   border: 0;
   background: transparent;
@@ -72,8 +73,10 @@
 }
 
 .address-card__edit {
+  min-width: 44px;
+  min-height: 36px;
   margin: 0;
-  padding: 0;
+  padding: 4px 0;
   border: 0;
   background: transparent;
   color: $cinnabar;
@@ -121,8 +124,9 @@
 }
 
 .address-card__actions button {
+  min-height: 36px;
   margin: 0;
-  padding: 0;
+  padding: 4px 0;
   border: 0;
   background: transparent;
   color: $tea-brown;
