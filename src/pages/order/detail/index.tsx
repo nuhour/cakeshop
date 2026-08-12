@@ -73,8 +73,13 @@ export default function OrderDetailPage() {
       return
     }
     if (actionId === 'contactService') {
-      openShopContact()
-      setActing(false)
+      try {
+        await openShopContact()
+      } catch (error) {
+        Taro.showToast({ title: error instanceof Error ? error.message : '客服信息加载失败', icon: 'none' })
+      } finally {
+        setActing(false)
+      }
       return
     }
     try {
@@ -106,6 +111,9 @@ export default function OrderDetailPage() {
   const slotText = order.fulfillmentMode === 'instant'
     ? '尽快交付'
     : `${order.appointmentDate} ${order.appointmentStartTime}-${order.appointmentEndTime}`
+  const fulfillmentText = order.fulfillmentType === 'pickup'
+    ? order.fulfillmentMode === 'instant' ? '到店自提' : '预约到店'
+    : order.fulfillmentMode === 'instant' ? '外卖配送' : '预约配送'
   const showExtras = order.tablewareCount > 0 || Boolean(order.candles)
 
   return (
@@ -115,7 +123,7 @@ export default function OrderDetailPage() {
         <Text className="order-detail-status__title cs-serif">{detail.title}</Text>
         <Text className="order-detail-status__desc">{detail.desc}</Text>
         <Text className="order-detail-status__slot">
-          {order.fulfillmentType === 'pickup' ? '预约到店' : '预约配送'} · {slotText}
+          {fulfillmentText} · {slotText}
         </Text>
       </View>
 

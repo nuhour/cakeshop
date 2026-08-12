@@ -80,16 +80,31 @@
 }
 
 .cart-item__check {
+  display: flex;
+  flex: 0 0 20px;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
   width: 20px;
   height: 20px;
-  margin-top: 36px;
+  margin: 36px 0 0;
+  padding: 0;
   border: 2px solid $hairline;
   border-radius: 50%;
+  background: transparent;
+  color: #ffffff;
+  line-height: 1;
 }
 
 .cart-item__check--active {
   border-color: $cinnabar;
   background: $cinnabar;
+}
+
+.cart-item__checkmark {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .cart-item__image {

@@ -8,6 +8,7 @@ import { csApi } from '@/api/cakeshop'
 import { AppNavBar } from '@/components/ui/AppNavBar'
 import { statusGroupForMine } from '@/utils/orderActions'
 import { openShopContact } from '@/utils/service'
+import { getErrorMessage } from '@/api/client'
 import './index.scss'
 
 const emptyAsset: CsMemberAsset = { balance: 0, points: 0, couponCount: 0 }
@@ -38,18 +39,33 @@ export default function MinePage() {
   const [profile, setProfile] = useState<CsUserProfile | null>(loggedIn ? userStore.getProfile() : null)
   const [asset, setAsset] = useState<CsMemberAsset>((loggedIn && userStore.getProfile()?.asset) || emptyAsset)
   const [orderCounts, setOrderCounts] = useState<Record<string, number>>(loggedIn ? orderStore.statusCounts() : {})
+  const [loadError, setLoadError] = useState('')
+
+  const loadMemberData = async () => {
+    setLoadError('')
+    try {
+      const nextProfile = await userStore.loadProfile()
+      const nextAsset = await csApi.assets()
+      await orderStore.load()
+      setProfile(nextProfile ? { ...nextProfile } : null)
+      setAsset(nextAsset)
+      setOrderCounts(orderStore.statusCounts())
+    } catch (error) {
+      setLoadError(getErrorMessage(error, '会员信息加载失败，请稍后重试'))
+      setOrderCounts(orderStore.statusCounts())
+    }
+  }
 
   useDidShow(() => {
     const authed = userStore.isLoggedIn()
     setLoggedIn(authed)
     if (authed) {
-      userStore.loadProfile().then((next) => setProfile(next ? { ...next } : null))
-      csApi.assets().then(setAsset).catch(() => {})
-      orderStore.load().then(() => setOrderCounts(orderStore.statusCounts())).catch(() => {})
+      void loadMemberData()
     } else {
       setProfile(null)
       setAsset(emptyAsset)
       setOrderCounts({})
+      setLoadError('')
     }
   })
 
@@ -58,8 +74,7 @@ export default function MinePage() {
       const next = await userStore.login()
       setLoggedIn(true)
       setProfile(next ? { ...next } : null)
-      csApi.assets().then(setAsset).catch(() => {})
-      orderStore.load().then(() => setOrderCounts(orderStore.statusCounts())).catch(() => {})
+      await loadMemberData()
       Taro.showToast({ title: '登录成功', icon: 'success' })
       return true
     } catch (error) {
@@ -103,6 +118,24 @@ export default function MinePage() {
     { icon: '📜', label: '条款与隐私', onClick: showTerms }
   ]
 
+  const memberAssets = (
+    <>
+      <View className="mine-assets__item">
+        <Text className="mine-assets__value cs-serif">{loggedIn ? `¥${asset.balance.toFixed(2)}` : '--'}</Text>
+        <Text className="mine-assets__label">余额</Text>
+      </View>
+      <View className="mine-assets__item">
+        <Text className="mine-assets__value cs-serif">{loggedIn ? asset.points : '--'}</Text>
+        <Text className="mine-assets__label">积分</Text>
+      </View>
+      <View className="mine-assets__item">
+        <Text className="mine-assets__value cs-serif">{loggedIn ? asset.couponCount : '--'}</Text>
+        <Text className="mine-assets__label">优惠券</Text>
+      </View>
+      {!loggedIn ? <Text className="mine-assets__hint">登录后查看会员资产</Text> : null}
+    </>
+  )
+
   return (
     <View className="cakeshop-page mine-page">
       <AppNavBar title="我的" />
@@ -123,21 +156,18 @@ export default function MinePage() {
         <Button className="mine-card__auth" onClick={loggedIn ? logout : login}>{loggedIn ? '退出' : '登录'}</Button>
       </View>
 
-      <Button className="mine-assets cakeshop-card" onClick={loggedIn ? undefined : login}>
-        <View className="mine-assets__item">
-          <Text className="mine-assets__value cs-serif">{loggedIn ? `¥${asset.balance.toFixed(2)}` : '--'}</Text>
-          <Text className="mine-assets__label">余额</Text>
+      {loadError ? (
+        <View className="mine-error">
+          <Text>{loadError}</Text>
+          <Button className="mine-error__retry" onClick={() => void loadMemberData()}>重试</Button>
         </View>
-        <View className="mine-assets__item">
-          <Text className="mine-assets__value cs-serif">{loggedIn ? asset.points : '--'}</Text>
-          <Text className="mine-assets__label">积分</Text>
-        </View>
-        <View className="mine-assets__item">
-          <Text className="mine-assets__value cs-serif">{loggedIn ? asset.couponCount : '--'}</Text>
-          <Text className="mine-assets__label">优惠券</Text>
-        </View>
-        {!loggedIn ? <Text className="mine-assets__hint">登录后查看会员资产</Text> : null}
-      </Button>
+      ) : null}
+
+      {loggedIn ? (
+        <View className="mine-assets cakeshop-card">{memberAssets}</View>
+      ) : (
+        <Button className="mine-assets cakeshop-card" onClick={login}>{memberAssets}</Button>
+      )}
 
       <View className="mine-section cakeshop-card">
         <View className="mine-section__head cs-hairline">

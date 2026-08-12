@@ -1,7 +1,7 @@
 import Taro, { useDidShow } from '@tarojs/taro'
 import { Button, Text, View } from '@tarojs/components'
 import { useState } from 'react'
-import type { CsCartItem } from '@/types'
+import type { CsCartItem, CsProduct } from '@/types'
 import { cartStore } from '@/store/cart'
 import { catalogStore } from '@/store/catalog'
 import { checkoutStore } from '@/store/checkout'
@@ -63,6 +63,19 @@ export default function CartPage() {
     }
   }
 
+  const toggleSelection = async (item: CsCartItem, product: CsProduct, invalid: boolean) => {
+    if (invalid && !item.selected) {
+      Taro.showToast({ title: product.stock <= 0 ? '商品已售罄' : '库存不足', icon: 'none' })
+      return
+    }
+    try {
+      await cartStore.toggle(item.productId, item.flavorId, item.specId, item.plaqueText)
+      reload()
+    } catch (error) {
+      Taro.showToast({ title: error instanceof Error ? error.message : '选择状态同步失败', icon: 'none' })
+    }
+  }
+
   const stockWarnings = cartStore.getSelectedStockWarnings()
   const selectedItems = cartStore.getSelectedItems()
   const canCheckout = Boolean(selectedItems.length) && stockWarnings.length === 0
@@ -119,16 +132,12 @@ export default function CartPage() {
         const flavorName = product.flavors.find((flavor) => flavor.id === item.flavorId)?.name
         return (
           <View key={`${item.productId}-${item.flavorId}-${item.specId}-${item.plaqueText || ''}`} className={`cart-item ${invalid ? 'cart-item--invalid' : ''}`}>
-            <View
+            <Button
               className={`cart-item__check ${item.selected ? 'cart-item__check--active' : ''}`}
-              onClick={() => {
-                if (invalid && !item.selected) {
-                  Taro.showToast({ title: product.stock <= 0 ? '商品已售罄' : '库存不足', icon: 'none' })
-                  return
-                }
-                cartStore.toggle(item.productId, item.flavorId, item.specId, item.plaqueText).then(reload)
-              }}
-            />
+              onClick={() => void toggleSelection(item, product, invalid)}
+            >
+              <Text className="cart-item__checkmark">{item.selected ? '✓' : ''}</Text>
+            </Button>
             <ProductImage productId={product.id} src={product.cover} className="cart-item__image" />
             <View className="cart-item__body">
               <Text className="cart-item__name">{product.name}</Text>

@@ -80,6 +80,33 @@
   font-weight: 600;
 }
 
+.mine-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 18px 14px;
+  padding: 10px 12px;
+  border-radius: $cs-radius;
+  background: rgba($cinnabar, 0.08);
+  color: $cinnabar;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.mine-error__retry {
+  flex: 0 0 auto;
+  min-width: 40px;
+  height: 28px;
+  padding: 0 4px;
+  border: 0;
+  background: transparent;
+  color: $cinnabar;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+}
+
 .mine-assets {
   box-sizing: border-box;
   display: grid;

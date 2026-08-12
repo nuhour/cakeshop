@@ -20,6 +20,7 @@ const emptyForm = (isDefault = true): CsAddress => ({
 })
 
 export default function AddressListPage() {
+  const [loggedIn, setLoggedIn] = useState(userStore.isLoggedIn())
   const [addresses, setAddresses] = useState<CsAddress[]>(addressStore.getList())
   const [form, setForm] = useState<CsAddress>(emptyForm(addressStore.getList().length === 0))
   const [editing, setEditing] = useState(false)
@@ -37,7 +38,16 @@ export default function AddressListPage() {
   }
 
   useDidShow(() => {
-    if (userStore.requireLogin('登录后可管理配送地址')) void reload()
+    const authed = userStore.isLoggedIn()
+    setLoggedIn(authed)
+    if (authed) {
+      void reload()
+    } else {
+      setAddresses([])
+      setLoadError('')
+      setForm(emptyForm(true))
+      setEditing(false)
+    }
   })
 
   const updateForm = (key: keyof CsAddress, value: string | boolean) => {
@@ -114,6 +124,27 @@ export default function AddressListPage() {
     } catch (error) {
       Taro.showToast({ title: error instanceof Error ? error.message : '设置失败', icon: 'none' })
     }
+  }
+
+  const login = async () => {
+    try {
+      await userStore.login()
+      setLoggedIn(true)
+      await reload()
+      Taro.showToast({ title: '登录成功', icon: 'success' })
+    } catch (error) {
+      Taro.showToast({ title: error instanceof Error ? error.message : '登录失败', icon: 'none' })
+    }
+  }
+
+  if (!loggedIn) {
+    return (
+      <View className="cakeshop-page address-page">
+        <AppNavBar title="配送地址" back />
+        <EmptyState title="登录后管理地址" description="登录后可以保存常用配送地址" />
+        <Button className="cs-login-btn" onClick={login}>微信一键登录</Button>
+      </View>
+    )
   }
 
   return (
