@@ -38,11 +38,21 @@ export const userStore = {
     return profile
   },
   async login() {
-    const loginResult = await Taro.login()
-    if (!loginResult.code) {
+    let code = ''
+    try {
+      const loginResult = await Taro.login()
+      code = loginResult.code || ''
+    } catch (error) {
+      // 开发者工具游客/模拟器环境偶尔没有登录 code，交给本地后端测试身份继续联调。
+      if (process.env.NODE_ENV !== 'development') throw error
+    }
+    if (!code && process.env.NODE_ENV === 'development') {
+      code = 'cakeshop-dev-login'
+    }
+    if (!code) {
       throw new Error('微信登录code获取失败')
     }
-    const result = await csApi.wechatLogin({ code: loginResult.code })
+    const result = await csApi.wechatLogin({ code })
     Taro.setStorageSync('cakeshop_token', result.access)
     Taro.setStorageSync('cakeshop_refresh_token', result.refresh)
     profile = result.profile

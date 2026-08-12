@@ -5,11 +5,12 @@
 }
 
 .slot-picker__dates {
-  display: block;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
   margin-bottom: 14px;
   padding-bottom: 10px;
   border-bottom: 1px solid $hairline;
-  white-space: nowrap;
 }
 
 .slot-picker__date {
@@ -19,11 +20,8 @@
   align-items: center;
   gap: 4px;
   padding-bottom: 8px;
-  margin-right: 26px;
-}
-
-.slot-picker__date:last-child {
-  margin-right: 0;
+  min-width: 0;
+  padding: 4px 2px 8px;
 }
 
 .slot-picker__date-label,

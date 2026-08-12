@@ -24,9 +24,11 @@ export default function CategoryPage() {
   const [products, setProducts] = useState<CsProduct[]>(catalogStore.getProducts())
   const [active, setActive] = useState(categories[0]?.id || '')
   const [keyword, setKeyword] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const reload = (categoryId: string, nextKeyword: string) => {
-    catalogStore.loadProducts({ categoryId, keyword: nextKeyword }).then(setProducts)
+    setLoading(true)
+    catalogStore.loadProducts({ categoryId: categoryId || undefined, keyword: nextKeyword }).then(setProducts).finally(() => setLoading(false))
   }
 
   useDidShow(() => {
@@ -34,9 +36,11 @@ export default function CategoryPage() {
     const pending: PendingCategoryFilter | null = stored && typeof stored === 'object' ? stored : null
     if (pending) Taro.removeStorageSync(PENDING_FILTER_KEY)
 
+    setLoading(true)
     catalogStore.loadCategories().then((items) => {
       setCategories(items)
-      const nextActive = (pending && pending.categoryId) || active || items[0]?.id || ''
+      // 只有切换品类时才带 categoryId，单独搜索应覆盖全部品类。
+      const nextActive = (pending && pending.categoryId) || (pending?.keyword ? '' : active || items[0]?.id || '')
       const nextKeyword = pending ? (pending.keyword || '') : keyword
       setActive(nextActive)
       setKeyword(nextKeyword)
@@ -80,7 +84,11 @@ export default function CategoryPage() {
             <Text className="category-list__title cs-serif">{activeCategory?.name || '全部商品'}</Text>
           </View>
 
-          {products.length ? (
+          {loading ? (
+            <View className="category-list__loading">
+              <Text>加载中…</Text>
+            </View>
+          ) : products.length ? (
             <View className="category-list__items">
               {products.map((product) => {
                 const soldOut = !product.isActive || product.stock <= 0

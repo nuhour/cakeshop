@@ -66,6 +66,13 @@
   gap: 12px;
 }
 
+.category-list__loading {
+  padding: 48px 0;
+  color: $ink-soft;
+  font-size: 13px;
+  text-align: center;
+}
+
 .category-row {
   @include cs-card;
   display: flex;

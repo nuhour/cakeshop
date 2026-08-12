@@ -1,4 +1,4 @@
-import { ScrollView, Text, View } from '@tarojs/components'
+import { Text, View } from '@tarojs/components'
 import { useEffect, useMemo, useState } from 'react'
 import type { FulfillmentType, CsFulfillmentSlot } from '@/types'
 import { csApi } from '@/api/cakeshop'
@@ -63,7 +63,7 @@ export function SlotPicker({ fulfillmentType, storeId, minLeadHours, selectedId,
 
   return (
     <View className="slot-picker">
-      <ScrollView className="slot-picker__dates" scrollX scrollWithAnimation showScrollbar={false}>
+      <View className="slot-picker__dates">
         {dateList.map((item) => (
           <View
             key={item.key}
@@ -74,7 +74,7 @@ export function SlotPicker({ fulfillmentType, storeId, minLeadHours, selectedId,
             <Text className="slot-picker__date-sub">{item.sub}</Text>
           </View>
         ))}
-      </ScrollView>
+      </View>
       <View className="slot-picker__grid">
         {loading ? (
           <Text className="slot-picker__empty">加载中…</Text>
