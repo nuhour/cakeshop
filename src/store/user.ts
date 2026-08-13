@@ -13,6 +13,11 @@ const persist = () => {
 export const userStore = {
   getProfile: () => profile,
   isLoggedIn: () => Boolean(Taro.getStorageSync('cakeshop_token')),
+  onLoginRequired(handler: () => void) {
+    const event = 'cakeshop:login-required'
+    Taro.eventCenter.on(event, handler)
+    return () => { Taro.eventCenter.off(event, handler) }
+  },
   requireLogin(message = '登录后可继续操作') {
     if (this.isLoggedIn()) return true
     Taro.showToast({ title: message, icon: 'none' })

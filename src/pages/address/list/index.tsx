@@ -1,6 +1,6 @@
 import Taro, { useDidShow } from '@tarojs/taro'
 import { Button, Input, Text, View } from '@tarojs/components'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { CsAddress } from '@/types'
 import { addressStore } from '@/store/address'
 import { userStore } from '@/store/user'
@@ -26,6 +26,14 @@ export default function AddressListPage() {
   const [editing, setEditing] = useState(false)
   const [saving, setSaving] = useState(false)
   const [loadError, setLoadError] = useState('')
+
+  useEffect(() => userStore.onLoginRequired(() => {
+    setLoggedIn(false)
+    setAddresses([])
+    setForm(emptyForm(true))
+    setEditing(false)
+    setLoadError('')
+  }), [])
 
   const reload = async () => {
     setLoadError('')

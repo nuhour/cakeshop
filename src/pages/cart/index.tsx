@@ -1,6 +1,6 @@
 import Taro, { useDidShow } from '@tarojs/taro'
 import { Button, Text, View } from '@tarojs/components'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { CsCartItem, CsProduct } from '@/types'
 import { cartStore } from '@/store/cart'
 import { catalogStore } from '@/store/catalog'
@@ -20,6 +20,12 @@ export default function CartPage() {
   const [loading, setLoading] = useState(false)
   const [loadError, setLoadError] = useState('')
 
+  useEffect(() => userStore.onLoginRequired(() => {
+    setLoggedIn(false)
+    setItems([])
+    setLoadError('')
+  }), [])
+
   const reload = () => setItems([...cartStore.getItems()])
   const refresh = async () => {
     setLoading(true)
@@ -35,7 +41,9 @@ export default function CartPage() {
     } catch (error) {
       errors.push(getErrorMessage(error, '提篮同步失败'))
     }
-    reload()
+    // 401 会先触发登录失效事件，避免并发刷新把本地旧提篮重新渲染出来。
+    if (userStore.isLoggedIn()) reload()
+    else setItems([])
     setLoadError(errors[0] || '')
     setLoading(false)
   }

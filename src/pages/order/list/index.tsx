@@ -1,6 +1,6 @@
 import Taro, { useDidShow, useRouter } from '@tarojs/taro'
 import { Button, Text, View } from '@tarojs/components'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { CsOrder, OrderStatus } from '@/types'
 import { orderStore } from '@/store/order'
 import { userStore } from '@/store/user'
@@ -28,6 +28,13 @@ export default function OrderListPage() {
   const [loading, setLoading] = useState(false)
   const [loadError, setLoadError] = useState('')
   const [actingOrderId, setActingOrderId] = useState('')
+
+  useEffect(() => userStore.onLoginRequired(() => {
+    setLoggedIn(false)
+    setOrders([])
+    setCounts({})
+    setLoadError('')
+  }), [])
 
   const reload = async (status = active) => {
     setLoading(true)

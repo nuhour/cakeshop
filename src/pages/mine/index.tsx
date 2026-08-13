@@ -1,6 +1,6 @@
 import Taro, { useDidShow } from '@tarojs/taro'
 import { Button, Image, Text, View } from '@tarojs/components'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { CsMemberAsset, CsUserProfile } from '@/types'
 import { userStore } from '@/store/user'
 import { orderStore } from '@/store/order'
@@ -40,6 +40,14 @@ export default function MinePage() {
   const [asset, setAsset] = useState<CsMemberAsset>((loggedIn && userStore.getProfile()?.asset) || emptyAsset)
   const [orderCounts, setOrderCounts] = useState<Record<string, number>>(loggedIn ? orderStore.statusCounts() : {})
   const [loadError, setLoadError] = useState('')
+
+  useEffect(() => userStore.onLoginRequired(() => {
+    setLoggedIn(false)
+    setProfile(null)
+    setAsset(emptyAsset)
+    setOrderCounts({})
+    setLoadError('')
+  }), [])
 
   const loadMemberData = async () => {
     setLoadError('')
